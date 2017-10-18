@@ -519,7 +519,7 @@
                         
                         <div class="timeline-body">
                         	<?PHP
-							$colors_arr = array("warning","default","success","danger");
+							$colors_arr = array("warning","default","success","danger","primary");
 							
 							if( $StudentActivities!='0' )
 							{
@@ -527,19 +527,21 @@
                                 <div class="timeline m-border">
                                         
                                         <?PHP
+										$cnt=0;
 										foreach( $StudentActivities->result() as $activ)
 										{
 											$cls = $colors_arr[array_rand($colors_arr)];
 											
 										?>
-                                        <div class="timeline-item border-<?PHP echo $cls; ?> border-l">
+                                        <div class="timeline-item border-<?PHP echo $colors_arr[$cnt]; ?> border-l">
                                             <div class="item-content">
                                                 <div class="text-small hob"><?PHP echo $activ->ActivityTitle?></div>
-                                                <p><a href="<?PHP echo base_url('view-student-activities');?>" target="_blank" class="text-<?PHP echo $cls;?>">Click here to view more</a></p>
+                                                <p><a href="<?PHP echo base_url('view-student-activities');?>" target="_blank" class="text-<?PHP echo $colors_arr[$cnt]; ?>">Click here to view more</a></p>
                                                 
                                             </div>
                                         </div>
                                         <?PHP
+										$cnt++;
 										}
 										?>
                                         

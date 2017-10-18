@@ -612,7 +612,7 @@ $(".deleteMark").on('click',function()
    //fee has to collect
    $(document).on('change','#ClassName,#sections',function()
    {
-	    if(Currentpge=="")
+	    if(Currentpge=="dashboard")
 		{
 			
 	   var ClassId = $("#ClassName").val();
