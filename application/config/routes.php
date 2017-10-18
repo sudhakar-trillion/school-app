@@ -201,6 +201,7 @@ $route['edit-vendor/:num']					=  'financials/editvendor';
 	
 	$route['add-nonteaching-staff-details'] =	'miscellaneous/addnonteachingdetails';
 	$route['view-nonteaching-staff-details'] =	'miscellaneous/viewnonteachingdetails';
+	$route['view-nonteaching-staff-details/:num'] =	'miscellaneous/viewnonteachingdetails';
 	
 	$route['edit-nonteaching-staff-details/:num'] = 'miscellaneous/editnonteachingstaffdetails';
 

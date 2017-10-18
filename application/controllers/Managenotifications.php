@@ -81,8 +81,18 @@ class Managenotifications extends CI_Controller
 		
 		$data['classes'] = $this->Commonmodel->getrows($table='newclass',$cond,$order_by='',$order_by_field='',$limit='');
 		$data['perpage']= $perpage;
-
-		$this->load->view('Admin/view-notification-to-student',$data);
+		
+		if($data['Notifications']!='0')
+			$this->load->view('Admin/view-notification-to-student',$data);
+		else
+		{
+			$data['routeto'] = "view-notification-to-student";
+			$data['pgeno'] = $this->uri->segment(2); 
+			$requrl = str_replace("-"," ",$this->uri->segment(1));
+			$data['viewingPage'] = $requrl;
+			
+			$this->load->view('Admin/pagenotfound',$data);
+		}
 
 		$this->load->view(FOOTER);
 		

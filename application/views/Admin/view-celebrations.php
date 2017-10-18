@@ -81,7 +81,8 @@
 
 											}//foreach ends here
 										  }//if not empty ends here
-					  					
+					  					else
+											echo  @$this->calendar->generate( date('Y'),$showMonth,$events[$showMonth]);
 										
 										  	
 									  }

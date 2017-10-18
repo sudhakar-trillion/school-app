@@ -144,7 +144,11 @@ class Miscellaneous extends CI_Controller
 				$data['routeto'] = 'view-nonteaching-staff';
 			else
 				$data['routeto'] = 'add-nonteaching-staff';
-			$this->load->view('Admin/pagenotfound',$data);
+				
+				$data['pgeno'] = $this->uri->segment(2); 
+					$requrl = str_replace("-"," ",$this->uri->segment(1));
+					$data['viewingPage'] = $requrl;
+				$this->load->view('Admin/pagenotfound',$data);
 		}
 		$this->load->view(FOOTER);
 	}
@@ -322,11 +326,17 @@ public function addnonteachingdetails()
 			$data['perpage']= $perpage;
 			$data['nontexhingstaffDetails'] = $qery['nontexhingstaffDetails'];
 			$data['pagination_string'] = $qery['pagination_string'];
+
 			$this->load->view('Admin/view-non-teaching-details',$data);
 		}
 		else
 		{
 			$data['routeto'] = 'add-nonteaching-staff-details';
+			
+			$data['pgeno'] = $this->uri->segment(2); 
+			$requrl = str_replace("-"," ",$this->uri->segment(1));
+			$data['viewingPage'] = $requrl;
+			
 			$this->load->view('Admin/pagenotfound',$data);	
 		}
 		
@@ -589,6 +599,10 @@ public function addnonteachingdetails()
 		else
 		{
 			$data['routeto'] = 'add-vehicle';
+			
+			$data['pgeno'] = $this->uri->segment(2); 
+					$requrl = str_replace("-"," ",$this->uri->segment(1));
+					$data['viewingPage'] = $requrl;
 			$this->load->view('Admin/pagenotfound',$data);	
 		}
 		
@@ -702,9 +716,17 @@ public function addnonteachingdetails()
 		
 		
 		$data['classes'] = $this->Commonmodel->getrows($table='newclass',$cond=array(),$order_by='',$order_by_field='',$limit='');
-	
-	
-	if( ( $this->uri->segment(2)!='' &&  $this->uri->segment(3)!='' && $this->uri->segment(4)!='' ) && ( $this->uri->segment(2)>0 &&  $this->uri->segment(3)>0 &&  $this->uri->segment(4)>0)  )
+		if( $data['classes']=='0')
+		{
+			$data['pgeno'] = $this->uri->segment(2); 
+			$requrl = str_replace("-"," ",$this->uri->segment(1));
+			$data['viewingPage'] = $requrl;
+			$data['routeto'] = 'add-class';
+			$this->load->view('Admin/pagenotfound',$data);
+		}
+		else
+		{
+			if( ( $this->uri->segment(2)!='' &&  $this->uri->segment(3)!='' && $this->uri->segment(4)!='' ) && ( $this->uri->segment(2)>0 &&  $this->uri->segment(3)>0 &&  $this->uri->segment(4)>0)  )
 	{
 			$cls = $this->uri->segment(2);
 			$sec = $this->uri->segment(3);
@@ -791,6 +813,9 @@ public function addnonteachingdetails()
 	
 		
 	$this->load->view('Admin/add-std-vehicle',$data);
+		}
+	
+	
 	$this->load->view(FOOTER);		
 	}
 	

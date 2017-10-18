@@ -22,7 +22,7 @@ class Requestdispatcher extends CI_Controller
 			$requested_from =  $_SERVER['HTTP_REFERER'];
 			
 			
-		if( strpos($requested_from, 'localhost') !== false || strpos($requested_from, '192.168.0.5') !== false ||  strpos($requested_from, 'trillionit.in') !== false)
+		if( strpos($requested_from, 'localhost') !== false || strpos($requested_from, '192.168.0.5') !== false ||  strpos($requested_from, 'trillionit.in') !== false || strpos($requested_from, 'adiakshara.in') !== false)
 			//if( strpos($requested_from, 'trillionit.in') !== false)
 			{
 			//foreach($posted_data as $key=>$val) { $_POST[$key] = htmlentities( stripslashes(strip_tags($val)), ENT_QUOTES | ENT_HTML5, 'UTF-8'); }
@@ -896,7 +896,7 @@ public function rollbackattendance()
 		$cond['ClassSection'] = $_POST['SectionId'];
 		
 		$AcademicYear = $this->schedulinglib->getAcademicyear();
-		$cond['AcademicYear'] = 	AcademicYear;
+		$cond['AcademicYear'] = $AcademicYear;
 
 		$stdslnos = $this->Commonmodel->getRows_fields($table,$cond,$fields='StudentId',$order_by='ASC',$order_by_field='StudentId',$limit='');
 		

@@ -15,4 +15,8 @@ application/logs/*
 !application/logs/index.html
 !application/logs/.htaccess
 /vendor/
+<<<<<<< HEAD
 /live-backup
+=======
+/live-backup
+>>>>>>> 315fe907c3cd7960560d97db413e8ab91a2cfcf7

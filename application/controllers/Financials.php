@@ -145,16 +145,16 @@ class Financials extends CI_Controller
 			}
 		}
 		
-		
-		
-		
-		
 		$vendorsDetails = $this->tsmpaginate->vendorsPaginateion($table,$cond,$baseurl,$perpage,$order_by_field,$datastring,$pagination_string);
 		
-		
-		if( $vendorsDetails=='0')
+		if( $vendorsDetails['Vendors']=='0')
 		{
 			$data['routeto'] = 'add-vendor';
+			
+			$data['pgeno'] = $this->uri->segment(2); 
+					$requrl = str_replace("-"," ",$this->uri->segment(1));
+					$data['viewingPage'] = $requrl;
+			
 			$this->load->view('Admin/pagenotfound',$data);
 		}
 		else
@@ -313,6 +313,10 @@ class Financials extends CI_Controller
 			$this->session->set_userdata('StaffType','');
 			
 			$data['routeto'] = 'view-salaries';
+			$data['pgeno'] = $this->uri->segment(2); 
+			$requrl = str_replace("-"," ",$this->uri->segment(1));
+			$data['viewingPage'] = $requrl;
+			
 			$this->load->view('Admin/pagenotfound',$data);
 		}
 		else
@@ -513,6 +517,11 @@ class Financials extends CI_Controller
 		if( $billDetails['Vendors']=='0')
 		{
 			$data['routeto'] = 'add-bill';
+			
+			$data['pgeno'] = $this->uri->segment(2); 
+				$requrl = str_replace("-"," ",$this->uri->segment(1));
+				$data['viewingPage'] = $requrl;
+			
 			$this->load->view('Admin/pagenotfound',$data);
 		}
 		else

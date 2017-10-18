@@ -41,12 +41,15 @@
 												<select name="Department" class="form-control">
                                           			<option value="">Select Department </option>      
                                                     <?PHP
+													if( $Departmetns!='0')
+													{
 														foreach($Departmetns->result() as $dept)
 														{
 															?>
                                                             <option value="<?PHP echo $dept->Department?>"> <?PHP echo $dept->Department?> </option>
                                                             <?PHP	
 														}
+													}
 														
 													?>
                                                 

@@ -182,6 +182,8 @@ else
                                             <?PHP
 												
 												$class_cnt=0;
+												if($classes!='0')
+												{
 												foreach( $classes->result() as $clas)
 												{
 													if( $class_cnt == 0 )
@@ -200,6 +202,7 @@ else
 													$class_cnt++;
 													
 												}
+											}
 											?>
                                             
                                             </select>
@@ -232,6 +235,8 @@ else
                                             <?PHP
 												
 												$ExamName_cnt=0;
+												if( $whichexam!='0')
+												{
 												foreach( $whichexam->result() as $xam)
 												{
 													if( $ExamName_cnt == 0 )
@@ -250,6 +255,7 @@ else
 													$ExamName_cnt++;
 													
 												}
+											}
 											?>
                                             
                                             </select>

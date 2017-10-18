@@ -119,7 +119,17 @@ class Managefeestructure extends CI_Controller
 		
 		$data['classes'] = $this->Commonmodel->getrows($table='newclass',$cond,$order_by='',$order_by_field='',$limit='');
 		$data['perpage']= $perpage;
-		$this->load->view('Admin/view-fee-structure',$data);
+		
+		if($data['feestructure']!='0')
+			$this->load->view('Admin/view-fee-structure',$data);
+		else
+			{
+				$data['routeto'] = 'view-fee-structure';
+				$data['pgeno'] = $this->uri->segment(2); 
+					$requrl = str_replace("-"," ",$this->uri->segment(1));
+					$data['viewingPage'] = $requrl;
+				$this->load->view('Admin/pagenotfound',$data);
+			}
 				
 		$this->load->view(FOOTER);		
 	}
@@ -407,11 +417,19 @@ class Managefeestructure extends CI_Controller
 				$prevPage = ceil($total_rows/$perpage);
 				
 				$data['routeto'] = 'view-students-fee-details/'.$prevPage;
+				
+				$data['pgeno'] = $this->uri->segment(2); 
+					$requrl = str_replace("-"," ",$this->uri->segment(1));
+					$data['viewingPage'] = $requrl;
 				$this->load->view('Admin/pagenotfound',$data);	
 			}
 			else
 			{
 				$data['routeto'] = 'dashboard';
+				
+				$data['pgeno'] = $this->uri->segment(2); 
+					$requrl = str_replace("-"," ",$this->uri->segment(1));
+					$data['viewingPage'] = $requrl;
 				$this->load->view('Admin/pagenotfound',$data);	
 			}
 		}
@@ -934,11 +952,11 @@ public function feepaid()
 		$cond = array();
 		$table ='feecollection';
 		
-		$cond['StudentId'] = $_POST['Rollno'];
-		$cond['ClassId'] = $_POST['ClassName'];
-		$cond['SectionId'] = $_POST['sections'];
-		$cond['MONTH(Month)'] = $_POST['month'];
-		$cond['AcademicYear'] = $_POST['AcademicYear'];
+		$cond['StudentId'] = @$_POST['Rollno'];
+		$cond['ClassId'] = 	 @$_POST['ClassName'];
+		$cond['SectionId'] = @$_POST['sections'];
+		$cond['MONTH(Month)'] = @$_POST['month'];
+		$cond['AcademicYear'] = @$_POST['AcademicYear'];
 		
 		$chk = $this->Commonmodel->checkexists($table,$cond);
 	

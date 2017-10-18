@@ -97,6 +97,32 @@ if( $_SERVER['HTTP_HOST'] == "localhost" || $_SERVER['HTTP_HOST'] == "192.168.0.
 		'save_queries' => TRUE
 	);
 }
+elseif( $_SERVER['HTTP_HOST'] == "www.adiakshara.in"  )
+{
+	$db['default'] = array(
+		'dsn'	=> '',
+		'hostname' => 'localhost',
+
+		'username' => 'adiaksha_sclmgmt',
+		'password' => 'Kr!$61rn>imuX7',
+		'database' => 'adiaksha_schoolapp',
+	
+		'dbdriver' => 'mysqli',
+		'dbprefix' => '',
+		'pconnect' => FALSE,
+		'db_debug' => (ENVIRONMENT !== 'production'),
+		'cache_on' => FALSE,
+		'cachedir' => '',
+		'char_set' => 'utf8',
+		'dbcollat' => 'utf8_general_ci',
+		'swap_pre' => '',
+		'encrypt' => FALSE,
+		'compress' => FALSE,
+		'stricton' => FALSE,
+		'failover' => array(),
+		'save_queries' => TRUE
+	);
+}
 else
 {
 		$db['default'] = array(

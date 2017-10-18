@@ -41,13 +41,15 @@
                                             <select class=" form-control" id="VehicleRoute" name="VehicleRoute" type="text" >
 	                                            <option value="0">Select Route</option>
                                                 <?PHP
+												if( $Routes!='0')
+												{
 													foreach($Routes->result() as $rout)
 													{
 														?>
                                                         <option value="<?PHP echo $rout->RouteId; ?>" <?PHP if( set_value('VehicleRoute') == $rout->RouteId) { echo 'selected=selected'; }?> ><?PHP echo $rout->RouteNumber; ?></option>
                                                         <?PHP	
 													}
-												
+												}
 												?>
                                             </select>
                                           </div>
@@ -60,12 +62,15 @@
                                           <select name="Driver" class="form-control">
                                           	<option value="0">Select Driver</option>
                                             <?PHP
+											if( $Drivers!='0')
+											{
 													foreach($Drivers->result() as $driv)
 													{
 														?>
                                                         <option value="<?PHP echo $driv->StaffId; ?>"  <?PHP if( set_value('Driver') == $driv->StaffId ) { echo 'selected=selected'; }?> ><?PHP echo $driv->StaffName; ?></option>
                                                         <?PHP	
 													}
+												}
 												
 												?>
                                           </select>

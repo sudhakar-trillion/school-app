@@ -42,7 +42,19 @@
                                             <select class="form-control" name="ClassName">
                                             	<option value="0">Select Class </option>
 				
-				<?PHP foreach($classes->result() as $cls){ ?> <option value="<?PHP echo $cls->SLNO; ?>" <?PHP if($ClassName==$cls->SLNO) { echo 'selected="selected"'; }?> ><?PHP echo $cls->ClassName;?></option><?PHP	} ?>
+				<?PHP 
+				if($classes!='0')
+				{	
+					foreach($classes->result() as $cls)
+					{ 
+				?> 
+                	<option value="<?PHP echo $cls->SLNO; ?>" <?PHP if($ClassName==$cls->SLNO) { echo 'selected="selected"'; }?> >
+						<?PHP echo $cls->ClassName;?>
+                   </option>
+				   <?PHP	
+				   } 
+				}
+				  ?>
                                                 
                                             </select>
                                             

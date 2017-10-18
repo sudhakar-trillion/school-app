@@ -308,6 +308,7 @@ row+1  as DayOfMonth from( SELECT @row := @row + 1 as row FROM  (select 0 union 
 		
 		$data['TeachingStaff'] = $this->Commonmodel->getrows($table='teacher',$cond,$order_by='',$order_by_field='',$limit='');
 		
+	
 		//get the students whose birthday is today
 		
 		$birthdaycond = array();
@@ -402,7 +403,7 @@ row+1  as DayOfMonth from( SELECT @row := @row + 1 as row FROM  (select 0 union 
 			$total_rows = $this->Commonmodel->getnumRows($table,$cond);
 			$config['base_url'] = base_url('view-classes/');
 			$config['total_rows'] = $total_rows;
-			$config['per_page'] = 5;
+			$config['per_page'] = 15;
 			$config['uri_segment'] = 2;
 			$config['use_page_numbers'] = TRUE;
 		
@@ -446,7 +447,19 @@ row+1  as DayOfMonth from( SELECT @row := @row + 1 as row FROM  (select 0 union 
 		$data['classes'] = $this->Commonmodel->paginate($table,$cond,$order_by='DESC',$order_by_field='SLNO',$limit,$start );
 		$data['pagination_string'] = $this->pagination->create_links();		
 			
-		$this->load->view('Admin/view-classes',$data);
+		if($data['classes']!='0')	
+			$this->load->view('Admin/view-classes',$data);
+		else
+			{
+					$data['routeto'] = 'view-classes';
+					$data['pgeno'] = $this->uri->segment(2); 
+						
+					$requrl = str_replace("-"," ",$this->uri->segment(1));
+					$data['viewingPage'] = $requrl;	
+					
+					
+					$this->load->view('Admin/pagenotfound',$data);
+			}
 			
 			
 			$this->load->view(FOOTER);
@@ -596,7 +609,7 @@ row+1  as DayOfMonth from( SELECT @row := @row + 1 as row FROM  (select 0 union 
 			$total_rows = $this->Commonmodel->getnumRows($table,$cond);
 			$config['base_url'] = base_url('view-sections/');
 			$config['total_rows'] = $total_rows;
-			$config['per_page'] = 5;
+			$config['per_page'] = 10;
 			$config['uri_segment'] = 2;
 			$config['use_page_numbers'] = TRUE;
 		
@@ -671,7 +684,16 @@ row+1  as DayOfMonth from( SELECT @row := @row + 1 as row FROM  (select 0 union 
 		
 		$data['classes'] = $this->Commonmodel->getrows($table,$cond,$order_by='',$order_by_field='',$limit='');
 		
+		if($data['sections']!='0')
 			$this->load->view('Admin/view-sections',$data);
+		else
+			{
+					$data['routeto'] = 'view-sections';
+					$data['pgeno'] = $this->uri->segment(2); 
+					$requrl = str_replace("-"," ",$this->uri->segment(1));
+					$data['viewingPage'] = $requrl; 
+					$this->load->view('Admin/pagenotfound',$data);
+			}
 		
 		$this->load->view(FOOTER);	
 	}
@@ -773,7 +795,18 @@ row+1  as DayOfMonth from( SELECT @row := @row + 1 as row FROM  (select 0 union 
 		
 		$data['classes'] = $this->Commonmodel->getrows($table='newclass',$cond,$order_by='',$order_by_field='',$limit='');
 		$data['perpage']= $perpage;
+		
+		if($data['subject_details']!='0')
 		$this->load->view('Admin/view-subjects',$data);
+		else
+			{
+					$data['routeto'] = 'view-subjects';
+					$data['pgeno'] = $this->uri->segment(2); 
+					$requrl = str_replace("-"," ",$this->uri->segment(1));
+					$data['viewingPage'] = $requrl;
+					
+					$this->load->view('Admin/pagenotfound',$data);
+			}
 				
 		$this->load->view(FOOTER);		
 	}
@@ -801,6 +834,11 @@ row+1  as DayOfMonth from( SELECT @row := @row + 1 as row FROM  (select 0 union 
 			else
 			{
 					$data['routeto'] = 'view-subjects';
+					
+					$data['pgeno'] = $this->uri->segment(2); 
+					$requrl = str_replace("-"," ",$this->uri->segment(1));
+					$data['viewingPage'] = $requrl;
+					
 					$this->load->view('Admin/pagenotfound',$data);
 			}
 			
@@ -861,7 +899,19 @@ row+1  as DayOfMonth from( SELECT @row := @row + 1 as row FROM  (select 0 union 
 		$cond = array();
 		$data['classes'] = $this->Commonmodel->getrows($table='newclass',$cond,$order_by='',$order_by_field='',$limit='');
 		
-		$this->load->view('Admin/view-assigned-subjects',$data);	
+		if($data['assignedsubjects']!='0')
+			$this->load->view('Admin/view-assigned-subjects',$data);	
+		else
+			{
+				$data['routeto'] = 'view-assigned-subjects';
+				
+				$data['pgeno'] = $this->uri->segment(2); 
+					$requrl = str_replace("-"," ",$this->uri->segment(1));
+					$data['viewingPage'] = $requrl;
+				
+				$this->load->view('Admin/pagenotfound',$data);
+			}
+		
 		$this->load->view(FOOTER);		
 		
 	}
@@ -900,6 +950,11 @@ row+1  as DayOfMonth from( SELECT @row := @row + 1 as row FROM  (select 0 union 
 		else
 		{
 			$data['routeto'] = 'view-assigned-subjects';
+			
+			$data['pgeno'] = $this->uri->segment(2); 
+			$requrl = str_replace("-"," ",$this->uri->segment(1));
+			$data['viewingPage'] = $requrl;
+					
 			$this->load->view('Admin/pagenotfound',$data);	
 		}
 		
@@ -982,7 +1037,18 @@ row+1  as DayOfMonth from( SELECT @row := @row + 1 as row FROM  (select 0 union 
 		
 		$data = $this->tsmpaginate->singletablePaginateion($table,$cond,$baseurl,$perpage,$order_by_field,$datastring,$pagination_string);
 		
-		$this->load->view('Admin/view-teachers',$data);
+		if($data['teachers'] !='0')
+			$this->load->view('Admin/view-teachers',$data);
+		else
+			{
+				$data['routeto'] = 'view-teachers';
+				
+				$data['pgeno'] = $this->uri->segment(2); 
+				$requrl = str_replace("-"," ",$this->uri->segment(1));
+				$data['viewingPage'] = $requrl;
+				
+				$this->load->view('Admin/pagenotfound',$data);
+			}
 				
 		$this->load->view(FOOTER);	
 	}
@@ -1152,7 +1218,18 @@ row+1  as DayOfMonth from( SELECT @row := @row + 1 as row FROM  (select 0 union 
 		$data['classes'] = $this->Commonmodel->getrows($table='newclass',$cond=array(),$order_by='ASC',$order_by_field='SLNO',$limit='');
 		$data['class_sections'] = $class_sections;
 		
-		$this->load->view('Admin/viewassignteachers',$data);
+		if( $data['assignedteachers']!='0')
+			$this->load->view('Admin/viewassignteachers',$data);
+		else
+			{
+				$data['routeto'] = 'view-assign-teachers';
+				
+				$data['pgeno'] = $this->uri->segment(2); 
+				$requrl = str_replace("-"," ",$this->uri->segment(1));
+				$data['viewingPage'] = $requrl;
+				
+				$this->load->view('Admin/pagenotfound',$data);
+			}
 		
 		$this->load->view(FOOTER);	
 	}
@@ -1169,6 +1246,12 @@ row+1  as DayOfMonth from( SELECT @row := @row + 1 as row FROM  (select 0 union 
 		{
 			$data['routeto'] = 'view-assign-teachers';
 			$this->load->view(HEADER);
+			
+			$data['pgeno'] = $this->uri->segment(2); 
+			$requrl = str_replace("-"," ",$this->uri->segment(1));
+			$data['viewingPage'] = $requrl;
+			
+			
 			$this->load->view('Admin/pagenotfound',$data);
 			$this->load->view(FOOTER);	
 			//exit;
@@ -1285,7 +1368,15 @@ public function viewdepartments()
 		if($data['departments']!='0')
 		$this->load->view('Admin/view-departments',$data);	
 		else
-			$this->load->view('Admin/pagenotfound',$data['routeto']="add-department");	
+		{
+			$data['pgeno'] = $this->uri->segment(2); 
+			$requrl = str_replace("-"," ",$this->uri->segment(1));
+			$data['viewingPage'] = $requrl;
+			$data['routeto']="add-department";
+			
+			$this->load->view('Admin/pagenotfound',$data);	
+			
+		}
 		
 		$this->load->view(FOOTER);	
 		
@@ -1357,6 +1448,9 @@ public function viewdepartments()
 		else
 		{
 			$data['routeto']="view-departments";
+			$data['pgeno'] = $this->uri->segment(2); 
+			$requrl = str_replace("-"," ",$this->uri->segment(1));
+			$data['viewingPage'] = $requrl;
 			$this->load->view('Admin/pagenotfound',$data);	
 		}
 			

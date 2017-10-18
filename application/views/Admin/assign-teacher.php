@@ -37,7 +37,9 @@
                                             <?PHP
 												
 												$teacher_cnt=0;
-												foreach( $teachers->result() as $teacher)
+												if( $teachers!='0')
+												{
+												foreach( @$teachers->result() as $teacher)
 												{
 													if( $teacher_cnt == 0 )
 													{
@@ -53,8 +55,8 @@
                                                             <?PHP
 														}
 													$teacher_cnt++;
-													
 												}
+											}
 											?>
                                             
                                             </select>
@@ -69,6 +71,8 @@
                                             <?PHP
 												
 												$class_cnt=0;
+											if( $classes!='0')
+											{
 												foreach( $classes->result() as $clas)
 												{
 													if( $class_cnt == 0 )
@@ -87,6 +91,7 @@
 													$class_cnt++;
 													
 												}
+											}
 											?>
                                             
                                             </select>

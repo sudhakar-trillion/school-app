@@ -22,7 +22,7 @@ class Schedulingdispatcher extends CI_Controller
 			$requested_from =  $_SERVER['HTTP_REFERER'];
 			
 			
-		if( strpos($requested_from, 'localhost') !== false || strpos($requested_from, 'trillionit.in') !== false)
+		if( strpos($requested_from, 'localhost') !== false || strpos($requested_from, 'trillionit.in') !== false || strpos($requested_from, 'adiakshara.in') !== false)
 			//if( strpos($requested_from, 'trillionit.in') !== false)
 			{
 			//foreach($posted_data as $key=>$val) { $_POST[$key] = htmlentities( stripslashes(strip_tags($val)), ENT_QUOTES | ENT_HTML5, 'UTF-8'); }

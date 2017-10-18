@@ -466,6 +466,10 @@ class Teacher extends CI_Controller
 					$data['routeto'] = 'allocate-marks';
 				else
 					$data['routeto'] = 'view-marks';
+					
+					$data['pgeno'] = $this->uri->segment(2); 
+					$requrl = str_replace("-"," ",$this->uri->segment(1));
+					$data['viewingPage'] = $requrl;
 				$this->load->view('Admin/pagenotfound',$data);
 			}	
 				

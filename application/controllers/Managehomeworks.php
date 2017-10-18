@@ -93,7 +93,16 @@ class Managehomeworks extends CI_Controller
 		$data = $this->tsmpaginate->viewhomeworkspagination($table,$cond,$baseurl,$perpage,$order_by_field,$datastring,$pagination_string);
 
 		$data['perpage']= $perpage;
-		$this->load->view('Admin/view-homeworks',$data);
+		
+		if($data['homeworks']!='0')
+			$this->load->view('Admin/view-homeworks',$data);
+		else
+			{
+				$data['routeto'] = 'view-homework-to-student';
+				$data['pgeno'] = $this->uri->segment(2); 
+				$data['viewingPage'] = 'view homeworks to student '; 
+				$this->load->view('Admin/pagenotfound',$data);
+			}
 		
 		$this->load->view(FOOTER);
 		

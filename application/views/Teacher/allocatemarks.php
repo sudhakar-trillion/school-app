@@ -36,6 +36,8 @@
                                             <?PHP
 												
 												$class_cnt=0;
+											if( $classes!='0')
+											{	
 												foreach( $classes->result() as $clas)
 												{
 													if( $class_cnt == 0 )
@@ -52,8 +54,8 @@
                                                             <?PHP
 														}
 													$class_cnt++;
-													
 												}
+										}
 											?>
                                             
                                             </select>
@@ -108,6 +110,8 @@
 											<select class="form-control" name="Exam" id="Exam">
                                            		<option value="0">Select Exam</option>
                                                 <?PHP
+												if( $exams!='0')
+												{
 													foreach( $exams->result() as $exam)
 													{
 														
@@ -115,6 +119,7 @@
                                                         <option  value="<?PHP echo $exam->ExamId; ?>">  <?PHP echo $exam->Exam; ?> </option>
                                                         <?PHP	
 													}
+												}
 												?>
                                             </select>
                                           </div>

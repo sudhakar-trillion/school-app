@@ -119,8 +119,8 @@ class Schedulings extends CI_Controller
 	echo "<Pre>";
 	print_r($events);
 	exit; 
-*/
-	if($events!='0')
+
+*/	if($events!='0')
 	{
 		$data['events'] = $events;
 	}

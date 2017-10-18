@@ -132,40 +132,22 @@
            
            <div class="col-lg-9 col-md-6 text-right">
            
-           <!--<div class="form-group cla" style="margin-bottom:0px; margin-right:10px; ">
-
-
-							<select class="form-control  fe" name="Month" id="Month" style="margin-top:0px; width:160px;" >
-                                    <option value="0">Seclect Month</option>
-                                    <option value="01" <?PHP if($mnth=="01") echo 'selected=selected';?> >January</option>
-                                    <option value="02" <?PHP if($mnth=="02") echo 'selected=selected';?>>February</option>
-                                    <option value="03" <?PHP if($mnth=="03") echo 'selected=selected';?>>March</option>
-                                    <option value="04" <?PHP if($mnth=="04") echo 'selected=selected';?>>April</option>
-                                    <option value="05" <?PHP if($mnth=="05") echo 'selected=selected';?>>May</option>
-                                    <option value="06" <?PHP if($mnth=="06") echo 'selected=selected';?>>June</option>
-                                    <option value="07" <?PHP if($mnth=="07") echo 'selected=selected';?>>July</option>
-                                    <option value="08" <?PHP if($mnth=="08") echo 'selected=selected';?>>August</option>
-                                    <option value="09" <?PHP if($mnth=="09") echo 'selected=selected';?>>September</option>
-                                    <option value="10" <?PHP if($mnth=="10") echo 'selected=selected';?>>October</option>
-                                    <option value="11" <?PHP if($mnth=="11") echo 'selected=selected';?>>November</option>
-                                    <option value="12" <?PHP if($mnth=="12") echo 'selected=selected';?>>December</option>
-                                    
-                                    
-                                    </select>
-</div>-->
-
+          
 
   <div class="form-group cla" style="margin-bottom:5px; margin-right:0px;">
 
 <select class="form-control  fe" name="ClassName" id="ClassName" style="margin-top:0px; width:160px;" >
     								<option value="0">Select Class</option>                               
 									<?PHP
-                                    foreach( $classes->result() as $cls)
-                                    {
-                                    ?>
-                                    <option value="<?PHP echo $cls->SLNO; ?>" <?PHP if( $ClassName == $cls->SLNO  ) echo 'selected=seelcted'; ?> > <?PHP echo $cls->ClassName; ?> </option>
-                                    <?PHP	
-                                    }
+									if($classes!='0')
+									{
+										foreach( $classes->result() as $cls)
+										{
+										?>
+										<option value="<?PHP echo $cls->SLNO; ?>" <?PHP if( $ClassName == $cls->SLNO  ) echo 'selected=seelcted'; ?> > <?PHP echo $cls->ClassName; ?> </option>
+										<?PHP	
+										}
+									}
                                     
                                     ?>
                                     
@@ -235,13 +217,15 @@
 <select class="form-control  fe " name="ClassName" id="ClassNaam" style="margin-top:0px; width:160px;" >
     								<option value="0">Select Class</option>                               
 									<?PHP
-                                    foreach( $classes->result() as $cls)
-                                    {
-                                    ?>
-                                    <option value="<?PHP echo $cls->SLNO; ?>" <?PHP if( $ClassName == $cls->SLNO  ) echo 'selected=seelcted'; ?> > <?PHP echo $cls->ClassName; ?> </option>
-                                    <?PHP	
-                                    }
-                                    
+									if($classes!='0')
+									{
+										foreach( $classes->result() as $cls)
+										{
+										?>
+										<option value="<?PHP echo $cls->SLNO; ?>" <?PHP if( $ClassName == $cls->SLNO  ) echo 'selected=seelcted'; ?> > <?PHP echo $cls->ClassName; ?> </option>
+										<?PHP	
+										}
+									}
                                     ?>
                                     
                                     
@@ -306,12 +290,19 @@
                                 <ul class="dropdown-menu pull-right section-for-teacher">
                                 	<li><a class=" cursor-pointer attendance-teacher waves-effect waves-block" id="0">Select Teacher</a></li> 
                                     <?PHP
-										foreach( $TeachingStaff->result() as $teach)
+									if( $TeachingStaff =="0")
+									{
+										
+									}
+									elseif( $TeachingStaff!='0' || $TeachingStaff!=' ')
+									{
+										foreach( @$TeachingStaff->result() as $teach)
 										{
 											?>
                                             <li><a class=" cursor-pointer attendance-teacher waves-effect waves-block" id="<?PHP echo $teach->TeacherId; ?>"><?PHP echo $teach->TeacherName; ?></a></li> 
                                             <?PHP
 										}
+									}
 									?>
                                 </ul>
                                 
@@ -359,7 +350,9 @@
                                 
                                 <ul class="dropdown-menu pull-right">
                                  <?PHP
-								 	foreach( $classes->result() as $cls)
+								 if( $classes!='0')
+								 {
+								 	foreach( @$classes->result() as $cls)
 									{
 										?>
                                         <li>
@@ -367,6 +360,7 @@
                                          </li>
                                         <?PHP	
 									}
+								 }
 								 ?>	
                                  
                                 </ul>
@@ -627,6 +621,8 @@
                                 
                                  
                                  <?PHP
+								 if( $classes!='0')
+								 {
 								 	foreach( $classes->result() as $cls)
 									{
 										?>
@@ -635,6 +631,7 @@
                                          </li>
                                         <?PHP	
 									}
+								 }
 								 ?>	
                                 
                                 </ul>

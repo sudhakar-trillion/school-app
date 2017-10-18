@@ -64,25 +64,14 @@
 												
 												if($event_cnt==1) 
 													echo  $this->calendar->generate( date('Y'),$showMonth,@$schedules[$showMonth]);
-												
-												
-												/*
-													if(date('m')==$key)
-													{
-														$keys= array_keys($val);
-														$keys = array_flip($keys);
-														
-														$showMonth=$key;
-														$setEvents = $keys;
-														
-														echo  $this->calendar->generate( date('Y'),$showMonth,$val);	
-													}
-													*/
+									
 
 											}//foreach ends here
 										  }//if not empty ends here
-					  					
-										
+					  					else
+											echo  $this->calendar->generate( date('Y'),$showMonth,@$schedules[$showMonth]);
+											
+									
 										  	
 									  }
 									else

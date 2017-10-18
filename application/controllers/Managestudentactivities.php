@@ -204,7 +204,16 @@ class Managestudentactivities extends CI_Controller
 		if($data['StudentActivities']!='0')
 		$this->load->view('Admin/view-student-activities',$data);	
 		else
-			$this->load->view('Admin/pagenotfound',$data['routeto']="add-student-activity");	
+		{
+
+			$data['routeto'] = 'view student activity';
+			
+			$data['pgeno'] = $this->uri->segment(2); 
+					$requrl = str_replace("-"," ",$this->uri->segment(1));
+					$data['viewingPage'] = $requrl;
+
+			$this->load->view('Admin/pagenotfound',$data);	
+		}
 		
 		$this->load->view(FOOTER);	
 		

@@ -37,6 +37,8 @@
                                             <?PHP
 												
 												$class_cnt=0;
+												if($classes!='0')
+												{
 												foreach( $classes->result() as $clas)
 												{
 													if( $class_cnt == 0 )
@@ -55,6 +57,7 @@
 													$class_cnt++;
 													
 												}
+											}
 											?>
                                             
                                             </select>

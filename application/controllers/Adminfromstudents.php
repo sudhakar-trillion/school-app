@@ -153,7 +153,16 @@ class Adminfromstudents extends CI_Controller
 			$data['classes'] = $this->Commonmodel->getrows($table='newclass',$cond=array(),$order_by='ASC',$order_by_field='SLNO',$limit='');
 			$data['class_sections'] = $class_sections;
 			
-			$this->load->view('Admin/view-students',$data);
+			if($data['totalstudetns']!='0')
+				$this->load->view('Admin/view-students',$data);
+			else
+			{
+				$data['routeto'] = 'view-students';
+				$data['pgeno'] = $this->uri->segment(2); 
+				$requrl = str_replace("-"," ",$this->uri->segment(1));
+				$data['viewingPage'] = $requrl;
+				$this->load->view('Admin/pagenotfound',$data);
+			}
 										
 			$this->load->view(FOOTER);
 		}
@@ -191,7 +200,16 @@ public function addattendance()
 	
 	$data['classes'] = $this->Commonmodel->getrows($table='newclass',$cond=array(),$order_by='',$order_by_field='',$limit='');
 	
-	
+	if($data['classes']=='0')
+	{
+		$data['routeto'] = 'add-class';
+		$data['pgeno'] = $this->uri->segment(2); 
+		$requrl = str_replace("-"," ",$this->uri->segment(1));
+		$data['viewingPage'] = $requrl;
+		$this->load->view('Admin/pagenotfound',$data);
+	}
+	else
+	{
 	if( ( $this->uri->segment(2)!='' &&  $this->uri->segment(3)!='' ) && ( $this->uri->segment(2)>0 &&  $this->uri->segment(3)>0 ) )
 	{
 			$cls = $this->uri->segment(2);
@@ -238,6 +256,7 @@ public function addattendance()
 	
 	
 	$this->load->view('Admin/addattendance',$data);
+}
 	
 	$this->load->view(FOOTER);
 	
@@ -251,7 +270,16 @@ public function viewattendance()
 	//get the classes
 	
 	$data['classes'] = $this->Commonmodel->getrows($table='newclass',$cond=array(),$order_by='',$order_by_field='',$limit='');
-	
+	if($data['classes']=='0')
+	{
+		$data['routeto'] = 'add-class';
+		$data['pgeno'] = $this->uri->segment(2); 
+		$requrl = str_replace("-"," ",$this->uri->segment(1));
+		$data['viewingPage'] = $requrl;
+		$this->load->view('Admin/pagenotfound',$data);
+	}
+	else
+	{
 	
 	if( ( $this->uri->segment(2)!='' &&  $this->uri->segment(3)!='' ) && ( $this->uri->segment(2)>0 &&  $this->uri->segment(3)>0 ) )
 	{
@@ -314,7 +342,7 @@ public function viewattendance()
 	
 	
 	$this->load->view('Admin/view-edit-attendance',$data);
-	
+	}
 	$this->load->view(FOOTER);
 	
 	

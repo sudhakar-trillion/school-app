@@ -9,7 +9,7 @@ define('LABEL','label');
 define('UserName','user_name');
 define('TRIMREQ','trim|required');
 
-
+#echo $_SERVER['HTTP_HOST']; exit; 
 
 
 if( $_SERVER['HTTP_HOST'] == "localhost" || $_SERVER['HTTP_HOST'] == "192.168.0.9" )
@@ -18,6 +18,11 @@ if( $_SERVER['HTTP_HOST'] == "localhost" || $_SERVER['HTTP_HOST'] == "192.168.0.
 		$config['base_url'] = 'http://localhost/adi-akshara/';
 		$config['publicfolder'] = 'adi-akshara';
 	}
+elseif( $_SERVER['HTTP_HOST'] == "www.adiakshara.in"  )
+{
+	$config['base_url'] = 'http://www.adiakshara.in/school-app/';
+	$config['publicfolder'] = 'school-app';
+}
 else
 {
 	/*
