@@ -1,0 +1,534 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+   
+    <title>Hows This Company</title>
+    
+    
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/custom.css" rel="stylesheet">
+
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="https://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+</head>
+<body>
+
+<div class="navbar navbar-custom " role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse"> <i class="fa fa-bars"></i> </button>
+      <a class="navbar-brand page-scroll" href="index.html"></a> </div>
+    <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+      <ul class="nav navbar-nav">
+   <li> <a class="page-scroll" href="index.html"> Home</a> </li>
+        <li> <a class="page-scroll" href="myaccount.html" >My Account</a> </li>
+          <li> <a class="page-scroll" href="review.html" >Reviews</a> </li>
+          
+           <li> <a class="page-scroll" href="#" ><i class="fa fa-lock"></i>Logout</a> </li>
+
+       
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal -->
+
+<div class="banner-about">
+ <div class="container cust-inn">
+<div class="maincon-inn">
+<div class="box">
+ 
+  <h1>Search Customer</h1>
+  <ul>
+  <li><a href="index.html">Home &nbsp; &nbsp;/</a></li>
+    <li><a href="search.html" style="border:none; padding-left:0px;">Search Customer</a></li>
+
+  </ul>
+ 
+  </div>
+   
+  </div>
+  </div>
+
+</div>
+<div class="container">
+<div class="row searchbox">
+<div class="col-md-12 grey mb">
+
+<h1>Enter Company Name</h1>
+
+<form class="form-wrapper">
+
+    <input type="text" id="search" placeholder="Company Name" required>
+    
+    <input type="submit" value="Search" id="submit" class="button">
+    <a href="#" class="advance ad" data-toggle="modal" data-target="#myModal2">Advanced Search</a>
+
+
+</form>
+
+
+
+</div>
+
+
+<div class="searchafter">
+
+<a href="review.html" class="buttoncreate">Create a New Review</a>
+
+
+<table width="80%" border="1" style="background-color: #fff; margin: 0px;" bordercolor="#eeeeee" class=" table inner_tb table-striped text-center table-hover" cellpadding="0" cellspacing="0">
+	<tr style="background-color:#7f8080; color: #fff; text-align:center; text-transform: capitalize; text-transform: uppercase;">
+	  <th scope="col" class="th_cen text-center">Company Name</th>
+	  <th scope="col" class="th_cen th_one text-center">Location</th>
+	  <th scope="col" class="th_cen th_one text-center">Overall Rating</th>
+	  <th scope="col" class="th_cen th_one text-center">
+	  	Timely Payments	  </th>
+	  <th scope="col" class="th_cen th_one text-center">Details</th>
+	</tr>
+		<tr>
+	  <td>LnT</td>
+	  <td  >Adoni,  Andhra Pradesh, India</td>
+	  <td>3</td>
+	  <td>3</td>
+	  <td><a href="javascript:void(0)"  data-toggle="modal" data-target="#myModal">View Details</a></td>
+	  <!--clickpop-->
+	</tr>
+	<tr>
+	  <td>LnT</td>
+	  <td >Bombuflat,  Andaman and Nicobar Islands, India</td>
+	  <td>5</td>
+	  <td>5</td>
+	  <td><a href="javascript:void(0)"  onClick="openPopUpReview('6')"  class="">View Details</a></td>
+	  <!--clickpop-->
+	</tr>
+	<tr>
+	  <td>LnT</td>
+	  <td >Chennai,  Tamilnadu, India</td>
+	  <td>9</td>
+	  <td>9</td>
+	  <td><a href="javascript:void(0)"  onClick="openPopUpReview('23')"  class="">View Details</a></td>
+	  <!--clickpop-->
+	</tr>
+	<tr>
+	  <td>LnT</td>
+	  <td >Patna,  Bihar, India</td>
+	  <td>8</td>
+	  <td>9</td>
+	  <td><a href="javascript:void(0)"  onClick="openPopUpReview('4')"  class="">View Details</a></td>
+	  <!--clickpop-->
+	</tr>
+</table>
+
+</div>
+
+
+<div id="myModal" class="modal fade search-view" role="dialog">
+  <div class="modal-dialog logsearch"> 
+    
+    <!-- Modal content-->
+    <div class="modal-content bg">
+      <div class="modal-header mo">
+        <button type="button" class="close timecl" data-dismiss="modal">&times;</button>
+        <!-- <h4 class="modal-title">Modal Header</h4>--> 
+      </div>
+      <div class="modal-body pa">
+        <div class="log_in_box">
+        
+        <h1 class="seh"></h1>
+     
+        
+        <div class="search-top">
+        <ul>
+        <li><div class="com">Company Name:</div> LnT</li>
+         <li><div class="com">Industry: </div> Manufacturer</li>
+         <li><div class="com">Sub-Category: </div> MS Steel</li>
+        
+        </ul>
+        
+         <ul class="mr">
+        <li><div class="com">City:</div> Hyderabad</li>
+         <li><div class="com">Category: </div> Metals (and Metal products)</li>
+        
+        
+        </ul>
+        
+        
+        <div class="clearfix"></div>
+        
+        </div>
+        
+        
+        
+          <div class="searchafter">
+          
+          <div class="avgpay">
+          <p>AVERAGE TIMELY PAYMENTS <span>3</span></p>
+           <p>AVERAGE OVERAL RATINGS <span>3</span></p>
+
+<a href="#" class="buttoncreate" data-toggle="modal" data-target="#myModal4">Review This Company</a>
+
+
+
+</div>
+
+
+
+
+<table width="80%" border="1" style="background-color: #fff; margin: 0px;" bordercolor="#eeeeee" class=" table inner_tb table-striped text-center table-hover" cellpadding="0" cellspacing="0">
+	<tr style="background-color:#7f8080; color: #fff; text-align:center; text-transform: capitalize; text-transform: uppercase;">
+	  <th scope="col" class="th_cen text-center">Company Name</th>
+	  <th scope="col" class="th_cen th_one text-center">Location</th>
+	  <th scope="col" class="th_cen th_one text-center">Overall Rating</th>
+	  <th scope="col" class="th_cen th_one text-center">
+	  	Timely Payments	  </th>
+	  <th scope="col" class="th_cen th_one text-center">Details</th>
+	</tr>
+		<tr>
+	  <td>LnT</td>
+	  <td  >Adoni,  Andhra Pradesh, India</td>
+	  <td>3</td>
+	  <td>3</td>
+	  <td><a href="javascript:void(0)"  target="popup" onclick="window.open('search-viewdetails.html','popup','width=1000,height=500,scrollbars=no,resizable=no'); return false;">View Details</a></td>
+      
+      
+     
+      
+      
+	  <!--clickpop-->
+	</tr>
+	<tr>
+	  <td>LnT</td>
+	  <td >Bombuflat,  Andaman and Nicobar Islands, India</td>
+	  <td>5</td>
+	  <td>5</td>
+	  <td><a href="javascript:void(0)"  onClick="openPopUpReview('6')"  class="">View Details</a></td>
+	  <!--clickpop-->
+	</tr>
+	<tr>
+	  <td>LnT</td>
+	  <td >Chennai,  Tamilnadu, India</td>
+	  <td>9</td>
+	  <td>9</td>
+	  <td><a href="javascript:void(0)"  onClick="openPopUpReview('23')"  class="">View Details</a></td>
+	  <!--clickpop-->
+	</tr>
+	<tr>
+	  <td>LnT</td>
+	  <td >Patna,  Bihar, India</td>
+	  <td>8</td>
+	  <td>9</td>
+	  <td><a href="javascript:void(0)"  onClick="openPopUpReview('4')"  class="">View Details</a></td>
+	  <!--clickpop-->
+	</tr>
+</table>
+
+</div>
+        </div>
+      </div>
+      <!--<div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>--> 
+    </div>
+  </div>
+</div>
+
+</div>
+</div>
+<div id="myModal2" class="modal fade" role="dialog">
+  <div class="modal-dialog log"> 
+    
+    <!-- Modal content-->
+    <div class="modal-content bg">
+      <div class="modal-header mo">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <!-- <h4 class="modal-title">Modal Header</h4>--> 
+      </div>
+      <div class="modal-body pa">
+        <div class="log_in_box">
+          <form class="login">
+            <div class="login_title">
+              <h2 >ADNACED SEARCH</h2>
+            </div>
+            
+            <div class="adv-pop">
+            
+            
+            
+             <input type="text" class="btn btn-default  company"  placeholder="Company Name"/>
+  
+      <a class="btn btn-default btn-select city citylg">
+                <input type="hidden" class="btn-select-input" id="" name="" value="" />
+                <span class="btn-select-value selected">City</span>
+             
+
+                <span class="btn-select-arrow glyphicon glyphicon-chevron-down"></span>
+                <ul>
+                    <li>Hyderabad</li>
+                    <li>Mumbai</li>
+                    <li>Delhi</li>
+                    <li>Bengaluru</li>
+                </ul>
+            </a>
+           
+            <a class="btn btn-default btn-select city">
+                <input type="hidden" class="btn-select-input" id="" name="" value="" />
+                <span class="btn-select-value selected">Industry</span>
+             
+
+                <span class="btn-select-arrow glyphicon glyphicon-chevron-down"></span>
+                <ul>
+                    <li>Industry1</li>
+                    <li>Industry2</li>
+                    <li>Industry3</li>
+                    <li>Industry4</li>
+                </ul>
+            </a>
+            <a class="btn btn-default btn-select city">
+                <input type="hidden" class="btn-select-input" id="" name="" value="" />
+                <span class="btn-select-value selected">Category</span>
+             
+
+                <span class="btn-select-arrow glyphicon glyphicon-chevron-down"></span>
+                <ul>
+                    <li>Category1</li>
+                    <li>Category2</li>
+                    <li>Category3</li>
+                    <li>Category4</li>
+                </ul>
+            </a>
+            <a class="btn btn-default btn-select city">
+                <input type="hidden" class="btn-select-input" id="" name="" value="" />
+                <span class="btn-select-value selected">Sub Category</span>
+             
+
+                <span class="btn-select-arrow glyphicon glyphicon-chevron-down"></span>
+                <ul>
+                    <li>Sub Category1</li>
+                    <li>Sub Category2</li>
+                    <li>Sub Category3</li>
+                    <li>Sub Category4</li>
+                </ul>
+            </a>
+            
+            <button class="btn btn-login">SEARCH</button>
+            
+            
+            </div>
+                  
+          </form>  
+            
+      </div>
+      <!--<div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>--> 
+    </div>
+  </div>
+  </div>
+</div>
+<div class="footer">
+<div class="container">
+<div class="row">
+<div class="col-md-8">
+<ul>
+<li><a href="aboutus.html">About Us</a></li>
+<li><a href="faqs.html">FAQs</a></li>
+<li><a href="privacypolicy.html">Privacy Policy</a></li>
+
+
+<li><a href="disclaimer.html">Disclaimer</a></li>
+
+
+</ul>
+<p> © Copyrights Aashi IT Solutions</p>
+
+</div>
+
+<div class="col-md-2">
+
+        <div class="social">
+          <ul>
+            <li> <a href="#"><i class="fa fa-facebook"></i></a></li>
+            <li> <a href="#"><i class="fa fa-twitter"></i></a></li>
+                        <li> <a href="#"><i class="fa fa-instagram"></i></a></li>
+
+            <li> <a href="#"><i class="fa fa-google-plus"></i></a></li>
+          </ul>
+         
+        </div>
+      </div>
+
+<div class="col-md-2">
+<p>Developed by Trillion IT</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+<div id="myModal4" class="modal fade logafterreview loginclose" role="dialog">
+  <div class="modal-dialog log"> 
+    
+    <!-- Modal content-->
+    <div class="modal-content bg">
+      <div class="modal-header mo">
+        <button type="button" class="close time" id="loginmodalpopup" data-dismiss="modal">&times;</button>
+        <!-- <h4 class="modal-title">Modal Header</h4>--> 
+      </div>
+      <div class="modal-body pa">
+        <div class="log_in_box">
+          <form class="login">
+            <div class="login_title">
+              <h2>LOGIN</h2>
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="User Name or Email ID">
+            </div>
+            <div class="form-group">
+              <input type="password" class="form-control" placeholder="Password">
+            </div>
+            <div class="form-group">
+              <button class="btn btn-login">LOG IN</button>
+            </div>
+            <div class="login_social clearfix">
+              <ul class="clearfix">
+                <li><a class="fb_login" href="#"><i class="fa fa-facebook"></i>Facebook</a></li>
+                <li><a class="google_login" href="#"> <i class="fa fa-google-plus"></i>Google+</a></li>
+                <li><a class="linkedin_login" href="#"><i class="fa fa-linkedin"></i>Linked In</a></li>
+              </ul>
+            </div>
+            <div class="form-group check_login">
+              <input type="checkbox" value="remember-me" id="checkbox1">
+              <label for="checkbox1">Remember me</label>
+              <a href="forgot.html" class="pull-right"> Forgot Password?</a>
+              
+               <a class="text-center" id="register" href="#" data-toggle="modal" data-target="#myModal5" style="padding-left:20px; color:#2994db;"> New Register Here</a> 
+   
+               
+               </div>
+          </form>
+        </div>
+      </div>
+      <!--<div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>--> 
+    </div>
+  </div>
+</div>
+
+
+<div id="myModal5" class="modal fade" role="dialog">
+  <div class="modal-dialog log"> 
+    
+    <!-- Modal content-->
+    <div class="modal-content bg">
+      <div class="modal-header mo">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <!-- <h4 class="modal-title">Modal Header</h4>--> 
+      </div>
+      <div class="modal-body pa">
+        <div class="log_in_box">
+          <form class="login">
+            <div class="login_title">
+              <h2>REGISTER</h2>
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="First Name">
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Last Name">
+            </div>
+            <div class="form-group">
+              <input type="email" class="form-control" placeholder="Email ID">
+            </div>
+            <div class="form-group">
+              <input type="password" class="form-control" placeholder="Password">
+            </div>
+            <div class="form-group">
+              <input type="password" class="form-control" placeholder="Confirm Password">
+            </div>
+            <div class="form-group">
+              <button class="btn btn-login">REGISTER</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <!--<div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>--> 
+    </div>
+  </div>
+</div>
+
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  
+    <script src="js/bootstrap.min.js"></script>
+    
+    
+    <script>
+    $(document).ready(function () {
+    $(".btn-select").each(function (e) {
+        var value = $(this).find("ul li.selected").html();
+        if (value != undefined) {
+            $(this).find(".btn-select-input").val(value);
+            $(this).find(".btn-select-value").html(value);
+        }
+    });
+});
+
+$(document).on('click', '.btn-select', function (e) {
+    e.preventDefault();
+    var ul = $(this).find("ul");
+    if ($(this).hasClass("active")) {
+        if (ul.find("li").is(e.target)) {
+            var target = $(e.target);
+            target.addClass("selected").siblings().removeClass("selected");
+            var value = target.html();
+            $(this).find(".btn-select-input").val(value);
+            $(this).find(".btn-select-value").html(value);
+        }
+        ul.hide();
+        $(this).removeClass("active");
+    }
+    else {
+        $('.btn-select').not(this).each(function () {
+            $(this).removeClass("active").find("ul").hide();
+        });
+        ul.slideDown(300);
+        $(this).addClass("active");
+    }
+});
+
+$(document).on('click', function (e) {
+    var target = $(e.target).closest(".btn-select");
+    if (!target.length) {
+        $(".btn-select").removeClass("active").find("ul").hide();
+    }
+});
+</script>
+
+<script>
+$(document).ready(function() {
+	
+
+	$(document).on('click','#register',function(){
+		
+	$("#loginmodalpopup").trigger('click');	
+		
+	});
+
+	
+
+});
+
+</script>
+</body>
+</html>

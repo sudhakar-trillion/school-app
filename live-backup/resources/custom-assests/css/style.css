@@ -1,0 +1,260 @@
+@charset "utf-8";
+/* CSS Document */
+
+
+.err-msg p 
+{
+   text-align:left!important;
+    color:#F00 !important;
+}
+
+
+.TeacherName_err { color:#F00 !important;	}
+
+
+
+.ui-state-default { text-align:center!important; }
+.ui-datepicker td  { padding:5px!important;}
+.err-msg{color:red;}
+.err-border{ border:1px solid #F00;}
+.required{color:red!important;}
+
+.ui-datepicker-today
+{
+    background: rgba(255, 152, 0, 0.18) !important;
+    border-radius: 50% !important;	
+}
+
+.filtersection div
+{
+	margin:10px !important;
+
+}
+.filtersection
+{
+	margin-bottom:0px !important;
+}
+
+.doc_details
+{
+	
+	margin-top:30px;
+	border-top:2px solid rgba(167, 172, 178, 0.23);
+	padding-top:15px;
+	display:none;
+
+}
+
+.doc_details .doc_child{
+	margin-bottom:10px;
+}
+
+
+.err-border{border:1px solid #F00;}
+#ui-datepicker-div{ z-index:1111 !important;}
+.modal-back{
+	
+    font-size: 18px;
+  
+    color: #fff;
+	cursor:pointer;
+  
+}
+.close.back-close{
+	color:#fff !important;
+	background:none !important;
+	text-shadow:none !important;
+	opacity:1 !important;
+}
+.modal-header h4.modal-title.back{
+	display:inline-block;
+	margin-left:20px;
+}
+.panel-heading, .modal-header.backhe {
+    background: #007aff;
+    color: #fff;
+}
+
+.assign-err
+{
+	margin-top:6px !important;	
+	color:#F00 !important;
+}
+#Hobbies, #Extra_curr, #IdMarks{ width:90% !important;}
+.addmore, .addmore_students
+{
+	padding: 6px;
+    background: #09C;
+    border-radius: 28%;
+    color: #fff;
+	width:15%;
+	cursor:pointer;
+	text-align:center;
+}
+
+.addmore span, .addmore_students span
+{
+	margin-left:2px;	
+	font-weight:bolder;
+
+}
+
+
+.remore_subject, .remove_students, .remove_subjects, .removemoreactivities, .removemorehobbies
+{
+    padding: 6px;
+    background: #F00;
+    border-radius: 28%;
+    color: #fff;
+	width:15%;
+	cursor:pointer;
+}
+
+.remore_subject span, .remove_students span, .remove_subjects span
+{
+	margin-left:2px;	
+	font-weight:bolder;
+
+}
+
+#subjects{ height:290px !important; }
+
+#sidebar{width:210px !important; }
+
+.wrapper{ margin-left:0px !important; width:98% !important; }
+
+.car_del{
+	position:absolute;
+	right:0px;
+	cursor:pointer;
+
+	/*padding:8px;*/
+	line-height:40px;
+	text-align:center;
+	width:40px;
+	height:40px;
+	
+	font-size:25px !important;
+	border-radius:200px;
+	color:#f00;
+	font-weight:750;
+	z-index:9999999;
+    background: #fff;
+}
+
+.calendar { width:100%; }
+.months{
+	position:relative;
+}
+.next_div{
+	position:absolute;
+	top:150px;
+	right:-12px;
+	
+	background:#eee;
+}
+.next_div i{
+	padding:10px ;
+	background:#2196F3;
+	color:#fff;
+}
+.pre_div{
+	
+	position:absolute;
+	top:150px;
+	left:0px;
+	
+	background:#eee;
+}
+.pre_div i{
+	padding:10px ;
+	background:#2196F3;
+	color:#fff;
+}
+
+
+
+.calendar td { 	cursor:pointer; text-align:center; }
+.calendar th {  text-align:center; padding-bottom:10px; padding-top:10px; }
+
+.calendar th a { background:#09F; padding:5px; width:10px; color:#fff;}
+
+.calendar
+{
+	
+	padding:15px; 
+	background:#eee;	
+	text-align:center;
+	border:1px solid #fff;
+
+}	
+
+.calendar .day
+{
+	
+	padding:15px; 
+	background:#eee;	
+	text-align:center;
+	border:1px solid #fff;
+
+}	
+
+
+.calendar .day:hover
+{
+	background:#FC3;
+	color:#000;
+	font-weight:bold;	
+}	
+
+
+
+.calendar .today
+{
+	color:#000;
+	border:1px solid #fff;
+	
+	
+	padding:15px; 
+	background:rgba(255, 193, 7, 0.59);	
+	text-align:center;
+	
+}	
+
+
+.months{ float:left; margin-right:0px; }
+
+.calendar:nth-child(even) {
+{
+	width:10px; 
+	padding:15px; 
+	background:#FC3!important;	
+	text-align:center;
+	border:1px solid #fff;
+
+}	
+
+.calendar td.day a{ background:#C69!important;}
+.event_da label{
+
+	float:left !important;
+}
+.event_da .form-control{
+	width:85%;
+}
+
+.modal-body #add-exam-form label{ font-weight:bold !important; }
+
+.Editexamscheduled_datepicker{ z-index:1111!important;}
+
+.del_exam_schedule i{ cursor:pointer!important; }
+
+
+.addmorebills span
+{
+	background:#e91e63 !important;  color:#fff; cursor:pointer; font-size:13px; font-weight:bolder; border-radius:4px; width:66px; padding:6px;
+}	
+
+
+
+

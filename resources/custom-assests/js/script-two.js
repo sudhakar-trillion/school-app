@@ -1,3 +1,4 @@
+
 $(document).on('click','.clearfilter',function()
 {
 	
@@ -271,3 +272,587 @@ $(".deleteMark").on('click',function()
 				}
 	   
    });
+   
+   $(document).on('click','.attendance-cls',function()
+   {
+		var ClassName = $(this).attr('id');
+			ClassSLNO = $.trim(ClassName);
+		var Onclick = $(this);
+			$.ajax({
+						url:base_url+"Requestdispatcher/getsections",
+						type:'POST',
+						data:{"ClassSLNO":ClassSLNO},
+						sendBefore:function(){  },
+						success:function(resp)
+						{
+							resp = $.trim(resp);
+							
+							if(resp!='0')
+							{
+								resp = JSON.parse(resp);
+													
+								if( typeof(resp) == 'object' )	
+								{
+									//var section_options='<li><a class=" cursor-pointer attendance-s waves-effect waves-block">Select Seciton</a></li> ';
+									var section_options='';
+									
+									$(".attendance-cls").removeClass('Selected-Class');
+									Onclick.addClass('Selected-Class');
+									
+									$(".SelectedCls").html( Onclick.html() );
+									
+									$(".selSec").html("Section");
+									
+									$.each(resp,function(index,val)
+									{
+					section_options=section_options+'<li><a id="'+index+'" class=" cursor-pointer attendance-s waves-effect waves-block class-section">Section-'+val+'</a></li> ';
+										console.log(section_options);
+									});
+									
+									$(".section-for-class").html(section_options);
+								}
+								else
+								{
+									console.log('no');
+								}
+							}
+						}//success function ends here
+						
+						
+					});//ajax ends here
+
+		
+   });
+   
+   
+   //getting the  graph info for the class and section starts here
+   $(document).on('click',".class-section",function()
+   {
+	  if(Currentpge=="")
+	  {
+	  	 
+	  
+	   
+	   var Err_cnt='0';
+	   var Onclick = $(this);
+	   var graph = '';
+	   
+	   $(".selSec").html(Onclick.html());
+		
+		$(".class-section").removeClass('SelectedSection');
+		Onclick.addClass('SelectedSection');
+	   
+	   
+	   var SelectedSection = $(this).attr('id');
+		   	SelectedSection = $.trim(SelectedSection);
+			
+	   var SelectedClass = $(".Selected-Class").attr('id');
+		   	SelectedClass = $.trim(SelectedClass);
+		
+	
+		if(SelectedClass=="0" || SelectedClass=="")
+		{
+				Err_cnt='1';
+				$(".SelectedCls").html("Select Class").css({'color':'red'});	
+		}
+		else
+			Err_cnt='0';
+		
+		if(SelectedSection=="0" || SelectedSection =="")
+		{
+			Err_cnt='1';
+				$(".section-for-class").html("Select Section").css({'color':'red'});	
+		}
+		else
+			Err_cnt='0';
+		
+		if(Err_cnt=="0")
+		{
+			$.ajax({
+						url:base_url+'Chartsdispatcher/classattendance',
+						type:"POST",
+						data:{"Class":SelectedClass,"Seciton":SelectedClass},
+						beforeSend:function() 
+											{ 
+												graph = $("#chartone2").html();
+												var dropboxGIF = "<img style='width:80%; margin-left:37px; margin-top:-30px' src='"+base_url+"resources/custom-assests/images/jelly-fluid-loader.gif'/>";
+												$("#chartone2").html(dropboxGIF);
+											},
+						success:function(resp)
+						{
+							resp = $.trim(resp);
+							
+							var obj = JSON.parse(resp);
+							
+							
+							var result = [];
+							
+							
+							$.each(obj,function(ind,val)
+							{
+								var month = val.Month;
+							//	console.log(month);
+								var newarr = {month:val.Attendance};
+								result.push(month);
+								result.push(val.Attendance);
+							});
+							
+						//chunk the resultant arry into two element and result will be arrays with each two elements
+							
+							Array.prototype.chunk = function ( n ) 
+							{
+								if ( !this.length ) 
+								{
+									return [];
+								}
+								return [ this.slice( 0, n ) ].concat( this.slice(n).chunk(n) );
+							};
+							
+								
+								
+								var final_result = result.chunk(2);
+								
+								console.log(final_result);
+								
+								setTimeout(function(){ 
+													//$("#chartone2").html(graph);
+											Highcharts.chart('chartone2', {
+												
+											
+											
+											chart: {
+											type: 'pie',
+											options3d: {
+											enabled: true,
+											alpha: 55
+											}
+											},
+											
+											title: {
+											text: ''
+											},
+											/* subtitle: {
+											text: '3D donut in Highcharts'
+											},*/
+											plotOptions: {
+											pie: {
+											innerSize: 100,
+											depth: 55
+											}
+											},
+											series: [{
+											name: 'Attendance Percentage' ,
+											data: 
+											/*[ ['Jun', 80],
+											['Jul', 0],
+											['Aug', 98],
+											['Sep', 96],
+											['Oct', 98],
+											['Nov', 94],
+											['Dec', 89],
+											['Jan', 98],
+											['Feb', 99],
+											['Mar', 99] ] */
+											final_result
+											
+											
+											}],
+											credits: {
+											enabled: false
+											},
+											
+											
+											});
+												 }, 3000); //set time out ends here
+												 
+												 
+						}//success function ends here
+					});
+				
+		}
+	   
+	   
+	   
+   
+	  }
+   }); // getting the student attendance graph info for the class and section ends here
+   
+   
+   ///getting the teacher attendance graph info for the academic year
+   
+   $(document).on('click','.attendance-teacher',function()
+   {
+	 
+		 var ide = $(this).attr('id');
+			ide = $.trim(ide);
+			ide = parseInt(ide);
+			
+			if(ide>0)
+			{
+				var selectedTeacher = $(this).html();
+					selectedTeacher = $.trim(selectedTeacher);
+					$(".selTeacher").html(selectedTeacher);
+				
+				var teacherid = ide;
+				
+				$.ajax({
+						url:base_url+"Chartsdispatcher/getTeacherAttendance",
+						type:"POST",
+						data:{"teacherid":teacherid},
+						beforeSend:function() 
+											{ 
+												graph = $("#chartone").html();
+												var dropboxGIF = "<img style='width:80%; margin-left:37px; margin-top:-30px' src='"+base_url+"resources/custom-assests/images/jelly-fluid-loader.gif'/>";
+												$("#chartone").html(dropboxGIF);
+											},
+						success:function(resp)
+						{
+							resp = $.trim(resp);
+							
+							var obj = JSON.parse(resp);
+							
+							
+							var result = [];
+							
+							
+							$.each(obj,function(ind,val)
+							{
+								var month = val.Month;
+							//	console.log(month);
+								var newarr = {month:val.Attendance};
+								result.push(month);
+								result.push(val.Attendance);
+							});
+							
+						//chunk the resultant arry into two element and result will be arrays with each two elements
+							
+							Array.prototype.chunk = function ( n ) 
+							{
+								if ( !this.length ) 
+								{
+									return [];
+								}
+								return [ this.slice( 0, n ) ].concat( this.slice(n).chunk(n) );
+							};
+							
+								
+								
+								var final_result = result.chunk(2);
+								
+								console.log(final_result);
+								
+								setTimeout(function(){ 
+														Highcharts.chart('chartone', {
+								
+    chart: {
+        type: 'pie',
+        options3d: {
+            enabled: true,
+            alpha: 45,
+            beta: 0
+        }
+    },
+    title: {
+        text: ''
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            depth: 35,
+            dataLabels: {
+                enabled: true,
+                format: '{point.name}'
+            }
+        }
+    },
+	credits: {
+    		  enabled: false
+		  },
+    series: [{
+        type: 'pie',
+        name: 'Attendance Percentage',
+        data: final_result /*[
+            ['Firefox', 45.0],
+            ['IE', 26.8],
+            {
+                name: 'Chrome',
+                y: 12.8,
+                sliced: true,
+                selected: true
+            },
+            ['Safari', 8.5],
+            ['Opera', 6.2],
+            ['Others', 0.7]
+        ]*/
+		
+    }]
+							});
+											
+												 }, 3000); //set time out ends here
+								
+								
+								
+						}//success function ends here
+					
+					
+					});//ajax ends here
+			}
+			else
+			{
+				$(".selTeacher").html("Select Teacher");
+			}
+			
+	  
+   });
+   
+   //fee has to collect
+   $(document).on('change','#ClassName,#sections',function()
+   {
+	    if(Currentpge=="")
+		{
+			
+	   var ClassId = $("#ClassName").val();
+		ClassId = $.trim(ClassId);
+	
+		ClassId = parseInt(ClassId);
+		
+		
+		var sectionId = $("#sections").val();
+		sectionId = $.trim(sectionId);
+	
+		sectionId = parseInt(sectionId);	
+	    var FeeStatis=[];
+		var Dues = [];
+		
+		
+	   $.ajax({
+				url:base_url+'MiscellaneousRequestdispatcher/getFeeHastocollect',
+				type:"POST",
+				data:{"Cls":ClassId,"sectionId":sectionId},
+				async:true,
+				success:function(resp)
+				{
+					var FeeSta = JSON.parse(resp);
+					//FeeStatis  = JSON.stringify(resp);
+//					console.log(typeof(FeeStatis)+":"+FeeStatis);
+					
+					var totalMonths = FeeSta.Dues.length;
+						totalMonths = parseInt(totalMonths);
+						
+						//totalMonths = totalMonths-1;
+					
+					$.each(FeeSta.Academics, function(ind,val)
+					{  
+						//console.log(val);
+						FeeStatis.push(val);
+					});
+					
+					//console.log(FeeStatis);
+					
+					$.each(FeeSta.Dues, function(ind,val) {   Dues.push(val); });	
+						
+						
+					console.log(Dues);
+					
+				Highcharts.chart('chartone3', {
+				
+				
+				title: {
+				text: ''
+				},
+				yAxis: { min: 0, max: FeeSta.MonthlyFee,
+				title: 
+				{
+				enabled: true,
+				text:'Fee has to collect'
+				}
+				},
+				
+				subtitle: {
+				text: ''
+				},
+				
+				xAxis: {
+				categories: FeeStatis
+				},
+				credits: {
+				enabled: false
+				},
+				series: [{
+				type: 'column',
+				colorByPoint: true,
+				name:'Fees',
+				data: Dues,
+				showInLegend: false
+				}]
+				
+				});
+
+}//success ends here
+				
+				
+				
+				
+				
+			});//ajax of getting the feestats ends here
+	   
+	   
+   
+		}
+   });
+   
+   
+   //fee collected
+    $(document).on('change','#ClassNaam,#sects',function()
+   {
+	  	   var ClassId = $("#ClassNaam").val();
+		ClassId = $.trim(ClassId);
+	
+		ClassId = parseInt(ClassId);
+		
+		
+		var sectionId = $("#sects").val();
+		sectionId = $.trim(sectionId);
+	
+		sectionId = parseInt(sectionId);	
+		
+		var collection=[];
+		
+		
+		$.ajax({
+				url:base_url+'MiscellaneousRequestdispatcher/getFeeHastocollect',
+				type:"POST",
+				data:{"Cls":ClassId,"sectionId":sectionId,"FeeCollected":"Yes"},
+				async:true,
+				success:function(resp)
+				{
+					var FeeStas = JSON.parse(resp);
+					//FeeStatis  = JSON.stringify(resp);
+//					console.log(typeof(FeeStatis)+":"+FeeStatis);
+					
+					var totalMonths = FeeStas.Dues.length;
+						totalMonths = parseInt(totalMonths);
+						
+						//totalMonths = totalMonths-1;
+					
+					$.each(FeeStas.Academics, function(ind,val)
+					{  
+						//console.log(val);
+						FeeStatis.push(val);
+					});
+					
+					//console.log(FeeStatis);
+					
+					$.each(FeeStas.collected, function(ind,val) {   collection.push(val); });	
+					
+					
+					console.log(collection);
+					
+					
+				Highcharts.chart('chartone4', {
+				
+				
+				title: {
+				text: ''
+				},
+				yAxis: { min: 0, max: FeeStas.MonthlyFee,
+				title: 
+				{
+				enabled: true,
+				text:'Collected Fee'
+				}
+				},
+				
+				subtitle: {
+				text: ''
+				},
+				
+				xAxis: {
+				categories: FeeStatis
+				},
+				credits: {
+				enabled: false
+				},
+				series: [{
+				type: 'column',
+				colorByPoint: true,
+				name:'Fees',
+				data: collection,
+				showInLegend: false
+				}]
+				
+				});
+
+}//success ends here
+				
+				
+				
+				
+				
+			});//ajax of getting the feestats ends here
+	  });
+   
+   
+   $(document).on('click','.birthday-cls',function()
+   {
+	  
+	  var clsid = $(this).attr('id');
+	  var clsname = $(this).html();
+	  
+	  $(".selected-bday-cls").html(clsname+" ");
+	  
+	  $.ajax({
+		  		url:base_url+"Requestdispatcher/getBirthdays",
+				type:"POST",
+				data:{"clsid":clsid},
+				success:function(resp)
+	  						{	
+								$("#birthdayListing").html(resp);
+							} //success function ends here
+
+		  	}); //ajax ends here
+		
+	  
+	   
+   });
+   //get birthdays ends here
+   
+   
+   ///get notification starts here
+   
+   $(document).on('click','.notification-by',function()
+   {
+	  var bywhom = $(this).attr('id');
+	  	  bywhom = $.trim(bywhom);
+	
+	  var bywho = $(this).html();
+	  		bywho = $.trim(bywho);
+			
+			
+			$(".noti-by").html("Notifications "+bywho)	  ;
+			
+		  if( bywhom == "Admin" ||	bywhom == "Parent" )
+		  {
+			  
+			  $.ajax({
+				  		
+						url:base_url+"Requestdispatcher/getNotifications",
+						type:"POST",
+						data:{"Bywhom":bywhom},
+						success:function(resp)
+						{
+							resp= $.trim(resp);
+							
+							$(".notify-body").html(resp);
+						}
+				  
+				  });
+		  }
+   });
+   
+   //get notification ends here
+   

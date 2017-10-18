@@ -1,0 +1,13 @@
+
+
+/* WebDesignAndSuch.com Demo */
+
+/* demo page styles */
+
+
+
+
+/* demo specific styles */
+.gal {text-align:left}
+.gal img {margin:10px}
+.gal img:hover {-webkit-box-shadow: 0px 0px 5px #333;-moz-box-shadow: 0px 0px 5px #333;}
