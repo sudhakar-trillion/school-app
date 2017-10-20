@@ -28,11 +28,12 @@ class Parents extends CI_Controller
 	define('HTTP_REFERER',$requested_from);
 	
 			
-if( strpos($requested_from, 'localhost') !== false || strpos($requested_from, '192.168.0.5') !== false )
+if( strpos($requested_from, 'localhost') !== false || strpos($requested_from, '192.168.0.5') !== false || strpos(HTTP_REFERER, 'www.adiakshara.in') || strpos(HTTP_REFERER, 'adiakshara.in'))
 {
 	
 	if( $this->uri->segment(2)!='parent')
 	{
+	
 			if( $this->session->userdata('parent')==''  )
 			{
 				$parentname = $this->checkparentdetails();
@@ -52,10 +53,27 @@ if( strpos($requested_from, 'localhost') !== false || strpos($requested_from, '1
 					$StudentId = $this->session->userdata('StudentId');
 					$Status = 'Unread';
 			
-					$where = "StudentId=".$StudentId." AND status='".$Status."' AND (DATEDIFF(CURRENT_DATE(), DATE(AddedOn)) >= 2 OR DATEDIFF(CURRENT_DATE(), DATE(AddedOn)) >= 0)";
-			
-					$this->db->where($where);
+					//$where = "StudentId=".$StudentId." AND status='".$Status."' AND (DATEDIFF(CURRENT_DATE(), DATE(AddedOn)) >= 2 OR DATEDIFF(CURRENT_DATE(), DATE(AddedOn)) >= 0)";
+					
+					$this->db->group_start();
+						
+						$this->db->where("StudentId",$StudentId);
+						$this->db->where("status",$Status);
+							
+							$this->db->group_start();
+								
+								$this->db->where('DATEDIFF(CURRENT_DATE(), DATE(AddedOn)) >=',2);
+								$this->db->or_where('DATEDIFF(CURRENT_DATE(), DATE(AddedOn)) >=',0);
+							
+							$this->db->group_end();
+							
+				        $this->db->group_end();
+
 					$New_Notifications = $this->db->get($table);
+					
+#echo $this->db->last_query(); exit; 
+					
+			
 			
 					if($New_Notifications!='0')
 						define("New_Notifications",$New_Notifications->num_rows() );
@@ -67,7 +85,7 @@ if( strpos($requested_from, 'localhost') !== false || strpos($requested_from, '1
 	}
 	
 }
-else if(strpos(HTTP_REFERER, 'trillionit.in') !== false)
+else if( strpos(HTTP_REFERER, 'trillionit.in') !== false || strpos(HTTP_REFERER, 'www.trillionit.in'))
 {
 	if( $this->uri->segment(1)!='parent')
 	{
@@ -134,7 +152,7 @@ else if(strpos(HTTP_REFERER, 'trillionit.in') !== false)
 	public function dashboard()
 	{
 		$data = array();
-		$data['New_Notifications'] = New_Notifications;	
+		$data['New_Notifications'] = @New_Notifications;	
 		
 		
 		$this->load->view(HEADER,$data);
@@ -144,7 +162,7 @@ else if(strpos(HTTP_REFERER, 'trillionit.in') !== false)
 	public function vieweditprofile()
 	{
 		$data = array();
-		$data['New_Notifications'] = New_Notifications;	
+		$data['New_Notifications'] = @New_Notifications;	
 		$this->load->view(HEADER,$data);
 		
 		$cond = array();
@@ -258,12 +276,10 @@ else if(strpos(HTTP_REFERER, 'trillionit.in') !== false)
 
 	public function vieweditchildprofile()
 	{
-		/*
-		echo "<pre>";
-		print_r($_SERVER);
-		exit;
-		*/
+		
 		$data = array();
+		
+		
 		$data['New_Notifications'] = @New_Notifications;	
 		$this->load->view(HEADER,$data);
 		

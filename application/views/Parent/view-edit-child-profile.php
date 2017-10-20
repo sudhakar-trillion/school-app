@@ -23,6 +23,10 @@
                              View child profile
                           </header>
                           <div class="form col-lg-12" style="margin-top:20px">
+                          
+                          <?PHP
+						  		echo @$this->session->flashdata('ProfilePicuploadMsg');
+						  ?>
                             
                             <?PHP
 									foreach($student_details->result() as $student)
@@ -55,8 +59,8 @@
                                  <img src="<?PHP echo $ProfileIPic."?".time();?>" class="img-responsive" />
                                 <form id="uploadimage" action="" method="post" enctype="multipart/form-data">
                                     <label for="imageUpload" class="btn btn-primary btn-block btn-outlined">Select Picture</label>
-                                    <input type="file" id="imageUpload"  name="file" style="display: none" accept="image/*" />
-                                    <input type="submit" value="upload" class="btn btn-primary btn-block btn-outlined up_submit" />
+                                    <input type="file" id="imageUpload"  name="stdprofilepic" style="display: none" accept="image/*" />
+                                    <input type="submit" value="upload" name="Stdpicbtn" class="btn btn-primary btn-block btn-outlined up_submit" />
                                  </form>
                                  
                                  <p style="margin-top:40px; color:red" id="message"></p>

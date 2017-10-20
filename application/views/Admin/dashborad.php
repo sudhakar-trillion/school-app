@@ -458,7 +458,7 @@
 											?>
                                                 <tr>
                                                 <td>
-												<?PHP if( strlen($noti->Notification)>33) { echo '<a href="'.base_url('view-notification-to-student').'" target="_blank">'.substr($noti->Notification,0,33)."...</a>"; } else echo $noti->Notification; ?> </td>
+												<?PHP if( strlen(strip_tags($noti->Notification))>33) { echo '<a href="'.base_url('view-notification-to-student').'" target="_blank">'.substr(strip_tags($noti->Notification),0,33)."...</a>"; } else echo strip_tags($noti->Notification); ?> </td>
                                                 </tr>
                                             
                                             <?PHP	

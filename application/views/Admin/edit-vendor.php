@@ -7,7 +7,7 @@
                 <ol class="breadcrumb">
 						<li><i class="fa fa-home"></i> <a href="<?PHP echo base_url('dashboard');?> ">Dashboard </a></li>
                         <li><i class="fa fa-plus"></i> <a href="<?PHP echo base_url('add-vendor');?> ">Add vendor </a></li>
-                        <li><i class="fa fa-laptop"></i> <a href="<?PHP echo base_url('view-vendor');?> ">View vendors </a></li>
+                        <li><i class="fa fa-laptop"></i> <a href="<?PHP echo base_url('view-vendors');?> ">View vendors </a></li>
 						<li><i class="fa fa-edit"></i> Edit vendor</li>						  	
 					</ol>
                 

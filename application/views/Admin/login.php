@@ -92,7 +92,7 @@ body{
    <!-- <button type="submit"  name="adminlogin">Login</button>-->
    <input name="adminlogin" type="submit" value="Login">
     
-   <div class="psw">Forgot <a href="#">password?</a></div>
+   <div class="psw">Forgot <a style="cursor:pointer" data-toggle="modal" data-target="#forgetpwd">password?</a></div>
     <div class="clearfix"></div>
    </div>
    <div class="clearfix"></div>
@@ -107,8 +107,114 @@ body{
 
 </div>
 
+
+<div id="forgetpwd" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+      </div>
+      <div class="modal-body">
+        <input type="text" name="userid" id="userid" placeholder="Enter User Id">
+        <p style="color:red" class="errmsg"></p>
+      </div>
+      <div class="modal-footer">
+      <span class="forget-pwd-msg pull-left"></span>
+        <button type="button" class="btn btn-primary resetadminpwd" >Reset Password</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> 
 <script src="resources/index-page/js/bootstrap.min.js"></script> 
 
+
+<script>
+	$(document).ready(function()
+	{
+		$(document).on('click','.resetadminpwd',function()
+		{
+			
+			var Onclick = $(this);
+			var err_cnt='0';
+			
+			var userid = $("#userid").val();
+				userid = $.trim(userid);
+				
+				if(userid=='')
+				{
+					$(".errmsg").html("Enter User Id");
+					err_cnt='1';
+				}
+				else
+					$(".errmsg").html("");
+					
+				if( err_cnt=='0')
+				{
+					$.ajax({
+								url:"<?PHP echo base_url()?>Requestdispatcher/resetadminpwd",
+								type:"POST",
+								data:{"userid":userid},
+								beforeSend:function(){  Onclick.val('Resetting Pwd......'); Onclick.prop('disabled',true); },
+								success:function(resp)
+								{
+									resp = $.trim(resp);
+									if(resp=="0")
+									{
+										
+											
+										setTimeout(function()
+															{ 
+																Onclick.prop('disabled',false);  
+																Onclick.val('Reset Password');   
+																$(".forget-pwd-msg").html("<span class='alert alert-danger'>User Id is not registered with us</span>");
+																
+															},2000);
+									}
+									else if( resp=="-1")
+									{
+										
+										setTimeout(function()
+															{ 
+																Onclick.prop('disabled',false);  
+																Onclick.val('Reset Password');   
+																$(".forget-pwd-msg").html("<span class='alert alert-danger'>Failed to reset and send email</span>");
+																
+															},2000);
+									}
+									else
+									{
+										
+										
+										setTimeout(function()
+															{ 
+																Onclick.prop('disabled',false);  
+																Onclick.val('Reset Password');   
+																$(".forget-pwd-msg").html("<span class='alert alert-success'>Successfully resets password, kindly check your inbox</span>");
+																
+															},2000);
+										
+									}
+					
+									
+								}// success function ends here
+								
+							});	
+				}
+					
+			
+			
+			
+			
+		});
+	});
+</script>
 </body>
 </html>

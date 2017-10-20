@@ -3,10 +3,10 @@
 $logo ='';
 $schoolname='';
 
-
-if( $Schoolinfo!='0')
+$schoolinfo = $this->Commonmodel->getschoolinfo();
+if( $schoolinfo!='0')
 {
-	foreach( $Schoolinfo->result() as $headerinfo )
+	foreach( $schoolinfo->result() as $headerinfo )
 	{
 		$logo = "resources/school-logo/".$headerinfo->SchoolLogo;
 		$schoolname=$headerinfo->SchoolName;

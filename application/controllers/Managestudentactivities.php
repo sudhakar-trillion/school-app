@@ -44,7 +44,7 @@ class Managestudentactivities extends CI_Controller
 				$pathdetails = $this->getSingleColumn($field='Path',$table='uploadpaths',$cond);
 				
 				$this->eventpicspath = $pathdetails;
-				
+			#echo 	$this->db->last_query(); $this->eventpicspath; exit; 
 			
 			
 		}
@@ -65,6 +65,7 @@ class Managestudentactivities extends CI_Controller
 	public function getSingleColumn($field,$table,$cond)
 	{
 		$Field = $this->Commonmodel->getAfield($table,$cond,$field,$order_by='',$order_by_field='',$limit='');
+
 		return 	$Field;
 	}
 	
@@ -108,10 +109,14 @@ class Managestudentactivities extends CI_Controller
 				
 					if ( $_FILES['ActivityPics']['tmp_name'][$i]!='' ) 
 					{
-						$destination = $this->eventpicspath."/".time()."_".str_replace(" ","-",$_FILES['ActivityPics']['name'][$i]);
+						$serverpath = $_SERVER['DOCUMENT_ROOT']."/".$this->config->item('publicfolder');
+						$filepath = "resources/".$this->eventpicspath."/".time()."_".str_replace(" ","-",$_FILES['ActivityPics']['name'][$i]);
+						
+						$destination =  $serverpath.$filepath;
 						
 						if(move_uploaded_file($_FILES['ActivityPics']['tmp_name'][$i],$destination))
-							$eventimgpaths[] = $destination;
+							$eventimgpaths[] = $filepath;
+						
 						
 					}
 				

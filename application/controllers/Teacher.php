@@ -127,7 +127,7 @@ class Teacher extends CI_Controller
 							//check whether teacher has profile pic already or not
 							
 							$this->db->select('ProfilePic');
-							$this->db->from('TeacherPersonalDetails');
+							$this->db->from('teacherpersonaldetails');
 							$this->db->where('TeacherId',$teacher);
 							$qry = $this->db->get();
 							
@@ -182,7 +182,7 @@ class Teacher extends CI_Controller
 							
 							$insertdata = array();
 							
-							$table = "TeacherPersonalDetails";	
+							$table = "teacherpersonaldetails";	
 							
 							$insertdata['TeacherId'] = $teacher;
 							$insertdata['ProfilePic'] = $picpath;
@@ -258,7 +258,10 @@ class Teacher extends CI_Controller
 			//get the teacher list with contact details
 			
 			$teachers = $this->Commonmodel->getteacherforattandance();
-
+			
+			#echo $this->db->last_query(); exit;
+			
+			
 			if($teachers!='0')
 				$data['teachers'] = $teachers;
 			else

@@ -45,9 +45,6 @@ class Admin extends CI_Controller
 		}
 		
 		
-		$this->schoolinfo = $this->Commonmodel->getschoolinfo();
-		
-		
 		}
 		
 	public function pagenotfound()
@@ -349,9 +346,9 @@ row+1  as DayOfMonth from( SELECT @row := @row + 1 as row FROM  (select 0 union 
 		else
 				$data['SectionIDE']= 0;
 		
-		$schoolinfo['Schoolinfo'] = $this->schoolinfo;
+
 		
-		$this->load->view(HEADER,$schoolinfo);	
+		$this->load->view(HEADER);	
 			$this->load->view('Admin/dashborad',$data);	
 		$this->load->view(FOOTER);	
 		
@@ -383,7 +380,7 @@ row+1  as DayOfMonth from( SELECT @row := @row + 1 as row FROM  (select 0 union 
 						if( $this->Commonmodel->insertdata($table,$insertdata))
 						{
 							$msg = '<div class="alert alert-success">A new class added successfully</div>';
-							$this->session->set_flashdata('failedtocreateClass',$msg);
+							$this->session->set_flashdata('classadded',$msg);
 						}
 						else
 						{	

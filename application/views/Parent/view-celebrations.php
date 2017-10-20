@@ -104,12 +104,12 @@
 														$setEvents = $keys;
 															
 													}
-													
+													echo  $this->calendar->generate( date('Y'),$showMonth,$nextMONTH);
 
 											}//foreach ends here
 										  }//if not empty ends here
-										
-										echo  $this->calendar->generate( date('Y'),$showMonth,$events[$showMonth]);
+										else
+										echo  $this->calendar->generate( date('Y'),$showMonth,$val);
 									}
 									}
 									else

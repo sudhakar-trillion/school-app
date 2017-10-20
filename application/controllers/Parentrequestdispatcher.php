@@ -605,6 +605,7 @@ class Parentrequestdispatcher extends CI_Controller
 		$insertdata['AddedOn']				=	date('Y-m-d H:i:s'); 
 		$insertdata['AddedBy']				=	'Parent'; 
 		$insertdata['LastUpdated']			=	time();	 
+		$insertdata['AcademicYear'] 		=  $this->schedulinglib->getAcademicyear();
 		
 		$insertdata['Status']				= 	'Unread';
 		
@@ -671,7 +672,7 @@ $dir1="resources/studentspics/".$AcademicYear;
 				if(is_dir($dir3))
 				{
 					
-					$extr = explode(".",$_FILES['file']['name']);
+					$extr = explode(".",$_FILES['stdprofilepic']['name']);
 					
 					if(strpos($requested_from, 'trillionit.in') !== false)
 					{
@@ -682,7 +683,9 @@ $dir1="resources/studentspics/".$AcademicYear;
 						
 					else
 					$targetPath = $dir3."/Student-".$this->session->userdata('StudentId').".".end($extr);
-					$sourcePath = $_FILES['file']['tmp_name'];       // Storing source path of the file in a variable
+					$sourcePath = $_FILES['stdprofilepic']['tmp_name'];       // Storing source path of the file in a variable
+					
+					
 					
 					if( move_uploaded_file($sourcePath,$targetPath) )
 					{

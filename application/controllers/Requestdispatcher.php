@@ -10,6 +10,9 @@ class Requestdispatcher extends CI_Controller
 			date_default_timezone_set("Asia/Kolkata");
 			
 			$this->load->model('Commonmodel');
+
+			$this->smtp_user_name = 'setupemail@trillionit.com';
+			$this->smtp_password = 'Newcust@17';
 			
 		}//constructor stARTS HERE
 		
@@ -1029,7 +1032,7 @@ public function getNotifications()
 		$table = 'notifications';
 		$fields='Notification';
 		$qry = $this->Commonmodel->getRows_fields($table,$cond,$fields,$order_by='DESC',$order_by_field='NotificationId',$limit=5);
-		//echo $this->db->last_query(); exit;
+		#echo $this->db->last_query(); exit;
 		
 		if($qry!='0')
 		{
@@ -1053,5 +1056,102 @@ public function getNotifications()
 		echo "<tr><td>Invalid Request</td></tr>";
 		
 }
+
+//resetadminpwd statrs here
+	
+	public function resetadminpwd()
+	{
+		$posted_data = $this->striptags($_POST);		
+		
+		extract( $posted_data );
+		
+		$cond = array();
+		$table ='admins';
+		
+		$cond['UserId'] = $userid;
+		$cond['Role'] = 'Admin';
+		
+		if( $this->Commonmodel->checkexists($table,$cond) )
+		{
+			$email = $this->Commonmodel->getAfield($table,$cond,$field='AdminEmail',$order_by='',$order_by_field='',$limit='');
+			
+			$resetpwd = $this->generatepwd();
+			
+			$cond = array();
+			$table ='admins';
+			
+			$cond['UserId'] = $userid;
+			$cond['AdminEmail'] = $email;
+			$cond['Role'] = 'Admin';
+			
+			$setdata = array();
+			
+			$setdata['Password'] = md5($resetpwd);
+			$setdata['Status'] = "Active";
+			$setdata['Lastupdated'] = time();
+			
+			if( $this->Commonmodel->updatedata($table,$setdata,$cond))
+			{
+				if( $this->sendEmail( $email,"Reset Password", "Your Password is $resetpwd")) 
+				echo "1";
+			else 
+				echo "-1";
+					//echo $this->email->print_debugger();
+			}
+			else
+				echo "-1";
+			
+		}
+		else
+			echo "0";
+	}
+
+//resetadminpwd ends here
+		
+		
+		public function generatepwd()
+		{
+			$characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789';
+			$shuffled = str_shuffle($characters);
+			return substr($shuffled,1,7); // return the generated password
+		}	
+	
+		
+public function sendEmail($toemail,$subject,$template)
+{
+		
+	$sender_email  = $this->smtp_user_name;
+	$user_password = $this->smtp_password;
+	
+	$username = 'School-App';
+	
+	// Configure email library
+	$config['protocol'] = 'smtp';
+	$config['smtp_host'] = 'ssl://smtp.googlemail.com';
+	$config['smtp_port'] = 465;
+	$config['smtp_user'] = $sender_email;
+	$config['smtp_pass'] = $user_password;
+	
+	// Load email library and passing configured values to email library
+	$this->load->library('email', $config);
+	$this->email->set_newline("\r\n");
+	
+	// Sender email address
+	$this->email->from($sender_email, 'Test User');
+	// Receiver email address
+	$this->email->to($toemail);
+	// Subject of email
+	$this->email->subject($subject);
+	// Message in email
+	$this->email->message($template);
+	
+	if ($this->email->send()) 
+	{
+		return true;	
+	}
+	else
+		return false;
+}
+
 		
 }//class ends here		
