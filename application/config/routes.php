@@ -53,6 +53,8 @@ $route['default_controller'] 				= 'admin';
 $route['404_override'] 						= 'admin/pagenotfound';
 $route['translate_uri_dashes'] 				= FALSE;
 
+$route['configure-your-school'] 			= 'Installation/index';
+
 $route['logout'] 							= 'admin/logout';
 
 $route['dashboard']							= 'admin/dashboard';

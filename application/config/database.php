@@ -80,7 +80,8 @@ if( $_SERVER['HTTP_HOST'] == "localhost" || $_SERVER['HTTP_HOST'] == "192.168.0.
 		'hostname' => 'localhost',
 		'username' => 'root',
 		'password' => '',
-		'database' => 'adiaksharadb',
+		//'database' => 'adiaksharadb',
+		'database' => 'schoolappdbtesting',
 		'dbdriver' => 'mysqli',
 		'dbprefix' => '',
 		'pconnect' => FALSE,
@@ -97,7 +98,7 @@ if( $_SERVER['HTTP_HOST'] == "localhost" || $_SERVER['HTTP_HOST'] == "192.168.0.
 		'save_queries' => TRUE
 	);
 }
-elseif( $_SERVER['HTTP_HOST'] == "www.adiakshara.in"  )
+elseif( $_SERVER['HTTP_HOST'] == "adiakshara.in" || $_SERVER['HTTP_HOST'] == "www.adiakshara.in"  )
 {
 	$db['default'] = array(
 		'dsn'	=> '',

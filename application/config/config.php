@@ -18,7 +18,7 @@ if( $_SERVER['HTTP_HOST'] == "localhost" || $_SERVER['HTTP_HOST'] == "192.168.0.
 		$config['base_url'] = 'http://localhost/adi-akshara/';
 		$config['publicfolder'] = 'adi-akshara';
 	}
-elseif( $_SERVER['HTTP_HOST'] == "www.adiakshara.in"  )
+elseif( $_SERVER['HTTP_HOST'] == "adiakshara.in" || $_SERVER['HTTP_HOST'] == "www.adiakshara.in"  )
 {
 	$config['base_url'] = 'http://www.adiakshara.in/school-app/';
 	$config['publicfolder'] = 'school-app';

@@ -62,6 +62,15 @@ class Admin extends CI_Controller
 	public function index()
 	{
 		
+		if( $this->Commonmodel->checkexists('admins',array("Role"=>'Admin')) )
+		{
+			
+		}
+		else
+		{
+			redirect( base_url('configure-your-school') );
+		}
+		
 		if( $this->input->post('adminlogin'))
 		{
 			//locad the config item
