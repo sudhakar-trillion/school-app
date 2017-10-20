@@ -12,6 +12,20 @@ class Commonmodel extends CI_Model
 		
 	}
 	
+	public function getschoolinfo()
+	{
+		
+		$this->db->select('SchoolName, SchoolLogo')	;
+		$this->db->from('schoolinfo');
+		$qry = $this->db->get();
+		
+		if( $qry->num_rows()>0)
+			return $qry;
+		else
+			return "0";
+			
+	}
+	
 	
 	public function getnumRows($table,$cond)	
 	{

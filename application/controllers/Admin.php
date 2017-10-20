@@ -45,6 +45,9 @@ class Admin extends CI_Controller
 		}
 		
 		
+		$this->schoolinfo = $this->Commonmodel->getschoolinfo();
+		
+		
 		}
 		
 	public function pagenotfound()
@@ -62,7 +65,7 @@ class Admin extends CI_Controller
 	public function index()
 	{
 		
-		if( $this->Commonmodel->checkexists('admins',array("Role"=>'Admin')) )
+		if( $this->Commonmodel->checkexists('admins',array("Role"=>'Admin',"Status"=>"Active")) )
 		{
 			
 		}
@@ -346,7 +349,9 @@ row+1  as DayOfMonth from( SELECT @row := @row + 1 as row FROM  (select 0 union 
 		else
 				$data['SectionIDE']= 0;
 		
-		$this->load->view(HEADER);	
+		$schoolinfo['Schoolinfo'] = $this->schoolinfo;
+		
+		$this->load->view(HEADER,$schoolinfo);	
 			$this->load->view('Admin/dashborad',$data);	
 		$this->load->view(FOOTER);	
 		

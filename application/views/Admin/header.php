@@ -1,3 +1,19 @@
+<?PHP
+
+$logo ='';
+$schoolname='';
+
+
+if( $Schoolinfo!='0')
+{
+	foreach( $Schoolinfo->result() as $headerinfo )
+	{
+		$logo = "resources/school-logo/".$headerinfo->SchoolLogo;
+		$schoolname=$headerinfo->SchoolName;
+	}
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -9,7 +25,7 @@
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
     <link rel="shortcut icon" href="img/favicon.png">
 
-    <title>Adi Akshara</title>
+    <title><?PHP echo $schoolname; ?></title>
 
     <!-- Bootstrap CSS -->    
     <link href="resources/template-assets/css/bootstrap.min.css" rel="stylesheet">
@@ -38,6 +54,7 @@
     
         <link rel="stylesheet" href="resources/custom-assests/css/jquery-ui.css" />
 <link rel="stylesheet" href="resources/custom-assests/css/jquery.timepicker.css" />
+
 <style>
 .dashboard-heading {
     font-size: 50px;
@@ -886,7 +903,7 @@ padding:15px;
             </div>-->
 
             <!--logo start-->
-            <a class="logo" style=" margin-top:2px;"  >   <img src="resources/index-page/images/logo.png" style="width:65px;float:left;background: #fff;padding: 7px;border-radius: 50%; margin-right: 10px;     box-shadow: 0 1px 5px 1px rgba(0,0,0,0.14), 0 3px 14px 2px rgba(0,0,0,0.12), 0 5px 5px -3px rgba(0,0,0,0.2);" /><div style="width:500px; padding-top:12px;" class="img-circle" > School <span class="lite">Application</span></div></a>
+            <a class="logo" style=" margin-top:2px;"  >   <img src="<?PHP echo $logo; ?>" style="width:45px;float:left;background: #fff;padding: 7px;border-radius: 50%; margin-right: 10px;     box-shadow: 0 1px 5px 1px rgba(0,0,0,0.14), 0 3px 14px 2px rgba(0,0,0,0.12), 0 5px 5px -3px rgba(0,0,0,0.2);" /><div style="width:500px; padding-top:12px;" class="img-circle" ><?PHP echo $schoolname?></span></div></a>
             <!--logo end-->
 
             

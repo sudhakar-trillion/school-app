@@ -169,6 +169,16 @@
 {
 	font-size:14px;
 }
+
+
+.err-msg
+{
+	text-align: left;
+    margin-left: 0px;
+    color: red;
+	margin-top: -8px;
+    margin-bottom: 4px;
+}
 </style>
 
 </head>
@@ -177,7 +187,7 @@
 
 
 
-<form method="post" novalidate>
+<form method="post" novalidate action="" enctype="multipart/form-data">
   <div id="msform">
     <!-- progressbar -->
     <ul id="progressbar">
@@ -226,28 +236,36 @@ to create and register a username and password in order to verify they are membe
       <!--<input type="text" name="email" placeholder="Email" />
       <input type="password" name="pass" placeholder="Password" />
       <input type="password" name="cpass" placeholder="Confirm Password" />-->
-      <input type="button" name="next" class="next action-button" value="I Agree" />
+      <input type="button" name="next" class="next action-button iagree" value="I Agree" />
     </fieldset>
     <fieldset>
       <h2 class="fs-title">Admin Configurations</h2>
       <h3 class="fs-subtitle">Use them for admin login</h3>
-      
-      <input type="text" name="email" placeholder="Email" />
-         <input type="text" name="loginId" placeholder="LoginId" />
-      <input type="password" name="pass" placeholder="Password" />
-      <input type="password" name="cpass" placeholder="Confirm Password" />
+     
+      <input type="text" name="email" id="Adminemail" placeholder="Email" />
+      <p class="err-msg" id="Adminemail_err"></p>
+         <input type="text" name="loginId" id="loginId" placeholder="LoginId" />
+       <p class="err-msg" id="loginId_err"></p>   
+      <input type="password" name="pass" id="Password" placeholder="Password" />
+      <p class="err-msg" id="Password_err"></p> 
+      <input type="password" name="cpass" id="confirmpwd" placeholder="Confirm Password" />
+       <p class="err-msg" id="confirmpwd_err"></p>
       
       <input type="button" name="previous" class="previous action-button" value="Previous" />
-      <input type="button" name="next" class="next action-button" value="Next" />
+      <input type="button" name="next" class="next action-button save-admin-config" value="Next" />
     </fieldset>
     <fieldset>
       <h2 class="fs-title">School Details</h2>
       <h3 class="fs-subtitle">Choose logo and mame</h3>
-      <input type="text" name="schoolname" placeholder="School Name" />
-	
-    <input type="file" name="Schoollogo" value="Select Logo" />
-      <input type="button" name="previous" class="previous action-button" value="Previous" />
-      <input type="submit" name="submit" class="submit action-button" value="Submit" />
+      <input type="text" name="schoolname" id="schoolname" placeholder="School Name" />
+	 <p class="err-msg" id="schoolname_err"></p>   
+     
+    <input type="file" name="Schoollogo" id="Schoollogo" value="Select Logo" />
+     <p class="err-msg" id="Schoollogo_err"></p>   
+     
+     
+      <input type="button" name="previous" class="previous action-button admin-conf" value="Previous" />
+      <input type="submit" name="submit" class="submit action-button action-submit" value="Submit" />
     </fieldset>
   </div>
 </form>
@@ -266,14 +284,152 @@ to create and register a username and password in order to verify they are membe
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" ></script>
 
 <script>
-
+var base_url = "<?PHP echo base_url();?>";
 //jQuery time
 (function($) {
   var current_fs, next_fs, previous_fs; //fieldsets
   var left, opacity, scale; //fieldset properties which we will animate
   var animating; //flag to prevent quick multi-click glitches
-
+	
+	
   $(".next").click(function() {
+	  
+	var err_cnt='0';  
+	var OnClick = $(this);
+	
+	  if( $(this).hasClass('iagree') )
+	  {
+			
+			$.ajax({
+					
+					url:base_url+'Installation/getAdminConfig',
+					type:"POST",
+					data:{"QueryFrom":"IAgree"},
+					async:false,
+					success:function(resp)
+					{
+						resp = $.trim(resp);
+						if(resp=='0')
+						{
+							
+						}
+						else
+						{
+							resp = JSON.parse(resp);
+							
+							$.each(resp,function(ind,val)
+							{
+								// Adminemail,loginId
+								
+								$("#Adminemail").val(val.AdminEmail);
+								$("#loginId").val(val.UserId);
+								$("#Password").val('');
+								$("#confirmpwd").val('');
+								
+							});//each ends here
+						}
+		
+						
+					}//success function ends here
+				
+				}); // ajax ends here
+			
+			
+	  }
+	  else if ($(this).hasClass('save-admin-config'))
+	  {
+			
+			var Adminemail = $("#Adminemail").val();
+				Adminemail = $.trim(Adminemail);
+			
+			if(Adminemail=="")
+			{
+				$("#Adminemail_err").html("Please enter admin email id");
+				err_cnt='1';
+			}
+			else
+			{
+				var filter = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+				
+				if (filter.test(Adminemail)) 
+					$("#Adminemail_err").html("");
+				else
+				{
+					$("#Adminemail_err").html("Please enter correct email format");
+					err_cnt='1';	
+				}
+			}
+			
+			var loginId = $("#loginId").val();
+				loginId = $.trim(loginId);
+			
+			if(loginId=='')
+			{
+				err_cnt='1';
+				$("#loginId_err").html('Enter login Id');
+			}
+			else
+				$("#loginId_err").html('');
+				
+			var Password = $("#Password").val();
+				Password = $.trim(Password);
+				
+				if(Password.length>6)
+					$("#Password_err").html("");	
+				else
+					{
+						err_cnt='1';
+						$("#Password_err").html("Password should be min of 6 characters");	
+					}
+			
+			var confirmpwd = $("#confirmpwd").val();
+				confirmpwd = $.trim(confirmpwd);
+				
+				if(confirmpwd.length>6)
+				{
+					
+					if( confirmpwd== Password)
+						$("#confirmpwd_err").html("");	
+					else
+					{
+						err_cnt='1';
+						$("#confirmpwd_err").html("Password & Confirm Password should be same");	
+					}
+				}
+				else
+					{
+						err_cnt='1';
+						$("#confirmpwd_err").html("Password should be min of 6 characters");	
+					}
+			
+			if(err_cnt!='0')	
+				return false;
+			else
+			{
+				$.ajax({
+							url:base_url+'Installation/saveadminconfig',
+							type:"POST",
+							async:false,
+							data:{"Adminemail":Adminemail,"loginId":loginId,"Password":Password},
+							beforeSend:function(){  OnClick.prop('disabled',true); OnClick.val('Configuring ...........'); },
+							success:function(resp)
+							{
+								setTimeout(function(){ OnClick.prop('disabled',false); OnClick.val('Next'); },3000);
+								resp = $.trim(resp);
+								if(resp=='0')
+								{
+									$("#confirmpwd_err").html("Unable to configure admin info please contact Admin");	
+									err_cnt='1';
+								}
+							}//success function ends here					
+						});
+			}
+			
+			if(err_cnt!='0')	
+				return false;
+		
+	  } //if it is for admin configurations
+	  
     if (animating) return false;
     animating = true;
 
@@ -312,10 +468,55 @@ to create and register a username and password in order to verify they are membe
       },
       //this comes from the custom easing plugin
       easing: 'easeInOutBack'
-    });
+    }); //animation ends here
+	
+
+	
   });
 
   $(".previous").click(function() {
+	  
+	  if( $(this).hasClass('admin-conf') )
+	  {
+		  $.ajax({
+					
+					url:base_url+'Installation/getAdminConfig',
+					type:"POST",
+					async:false,
+					success:function(resp)
+					{
+						resp = $.trim(resp);
+						if(resp=='0')
+						{
+							
+						}
+						else
+						{
+							resp = JSON.parse(resp);
+							
+							$.each(resp,function(ind,val)
+							{
+								// Adminemail,loginId
+								
+								$("#Adminemail").val(val.AdminEmail);
+								$("#loginId").val(val.UserId);
+								
+								$("#Password").val('');
+								$("#confirmpwd").val('');
+								
+							});//each ends here
+						}
+		
+						
+					}//success function ends here
+				
+				}); // ajax ends here
+	  }
+		 
+	  
+	  
+	  
+	  
     if (animating) return false;
     animating = true;
 
@@ -360,5 +561,49 @@ to create and register a username and password in order to verify they are membe
 })(jQuery);
 
 </script>
+
+<script>
+$(document).on('submit','form',function(e)
+{
+	var schoolname = $("#schoolname").val();
+		schoolname = $.trim(schoolname);
+		
+		if(schoolname=="")
+		{
+			err_cnt='0';
+			$("#schoolname_err").html("Enter School Name");
+		}
+		else
+			$("#schoolname_err").html("");
+			
+		var Schoollogo = $("#Schoollogo").val();
+			Schoollogo = $.trim(Schoollogo);
+			
+			if(Schoollogo=='')
+			{
+				$("#Schoollogo_err").html("Select School Logo");	
+				err_cnt='1';
+			}
+			else
+			{
+				var ext = $('#Schoollogo').val().split('.').pop().toLowerCase();
+				if($.inArray(ext, ['gif','png','jpg','jpeg']) == -1) 
+				{
+					$("#Schoollogo_err").html("Select logo of image type");	
+					err_cnt='1';
+				}
+				else
+					$("#Schoollogo_err").html("");	
+			}
+	
+
+	if(err_cnt!='0')	
+		e.preventDefault();
+	
+});
+
+
+</script>
+
 </body>
 </html>
