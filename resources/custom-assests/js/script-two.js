@@ -856,3 +856,143 @@ $(".deleteMark").on('click',function()
    
    //get notification ends here
    
+   
+   //get the students of the class and section
+   
+   $(".absentees-section").on('change',function()
+   {
+		var Section	=	$(this).val();
+			Section	=	$.trim(Section);
+			Section =	parseInt(Section);
+			
+		var ClassName	=	$("#ClassName").val();
+			ClassName	=	$.trim(ClassName);
+			ClassName	=	parseInt(ClassName);
+			
+		if(Section>0 && ClassName>0)		
+		{
+			$.ajax({
+						url:base_url+'Managesms/getstudents',
+						type:"POST",
+						data:{"ClassName":ClassName,"Section":Section},
+						success:function(resp)
+						{
+							resp = $.trim(resp);
+							var stds = "<option value=0>Select Students</option>";
+							if(resp!='0')
+							{
+								resp = JSON.parse(resp);
+								var students = resp.std_details;
+								
+								if(resp.Nodata == "No")
+								{
+									var cnt=0;
+									$.each(students,function(ind,val)
+									{
+										cnt=parseInt(cnt);
+										stds=stds+"<option value='"+val.StudentId+"'>"+val.Student+" "+val.LastName +"</option>";
+										cnt=(cnt)+1;	
+									});//each ends here	
+								}
+								
+								
+							}
+							
+							$("#students").html(stds);
+							if(cnt<10)
+								$("#students").css({"height":"auto"});
+							else
+								$("#students").css({"height":"200px"});
+								
+						}
+					
+					
+					});	
+		}
+   });
+   
+   
+   
+   ///AbsentSMS_btn starts here
+   
+   $("#AbsentSMS_btn").on("click",function()
+   {
+	   
+	   var err_cnt = '0';
+	   var Onclick = $(this);
+	   
+	   
+		var ClassName	=	$("#ClassName").val();
+			ClassName	=	$.trim(ClassName);
+			ClassName	=	parseInt(ClassName);
+			
+		var sections	=	$("#sections").val();
+			sections	=	$.trim(sections);
+			sections	=	parseInt(sections);
+			
+			
+		var AbsentSMS	=	$("#AbsentSMS").val();
+			AbsentSMS	=	$.trim(AbsentSMS);
+		
+		if(ClassName>0)	
+			$(".ClassName_err").html("");
+		else
+		{
+			err_cnt='1';
+			$(".ClassName_err").html("Select Class");	
+		}
+		
+		if( sections>0)
+			$(".section_err").html("");
+		else
+		{
+			$(".section_err").html("Select Section");
+			err_cnt='1';
+		}
+		
+		
+		
+	var selectedStudents= [];
+			
+	$(".absentees").each(function() 
+		{ 
+		
+			
+			if( $.trim( $(this).val() )=='0' || $.trim( $(this).val() )=='' )
+			{
+				err_cnt='1';
+				$('.absentees_err').html('Select Students');
+			}
+			else
+			{
+				
+				var newarr = {'absentees':$(this).val()};
+				selectedStudents.push(newarr);
+			}
+			
+		});
+		
+			
+		 if( err_cnt=='0')
+		 {
+				
+				$.ajax({
+							url:base_url+'Managesms/sentsms',
+							type:"POST",
+							data:{"SMSTYPE":"Absent","ClassName":ClassName,"sections":sections,"Absentees":selectedStudents},
+							async:false,
+							sendBefore:function(){  },
+							success:function(resp)
+							{
+								resp = $.trim(resp);
+								
+								
+							}//success function ends here
+							
+						});
+				 
+		 }
+		 
+   });
+   
+   ////AbsentSMS_btn ends here

@@ -255,7 +255,15 @@ $route['view-departments/:num']				= 'Admin/viewdepartments';
 $route['edit-department/:num'] 				= 'Admin/editdepartment';
 
 
+/*  Manage SMS routes starts here */
 
+$route['send-absent-sms'] 					=	'Managesms/absentsms';
+$route['send-fee-due-sms'] 					=	'Managesms/feeduesms';
+$route['send-activity-sms'] 				=	'Managesms/activitysms';
+$route['send-bulk-sms'] 					=	'Managesms/bulksms';
+
+
+/*  Manage SMS routes ends here */
 
 
 
