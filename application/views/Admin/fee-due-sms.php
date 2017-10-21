@@ -6,7 +6,7 @@
                 
                 <ol class="breadcrumb">
 					<li><i class="fa fa-home"></i> <a href="<?PHP echo base_url('dashboard');?> ">Dashboard</a></li>
-                    <li>Sent Absent SMS</li>
+                    <li>Fee Due SMS</li>
 					</ol>
                 
                 </div>
@@ -18,7 +18,7 @@
                  
                       <section class="panel">
                           <header class="panel-heading">
-                             Send SMS
+                             Send Fee Due SMS
                           </header>
                           <div class="panel-body">
                         
@@ -75,18 +75,26 @@
                                         <div class="form-group ">
                                           <label for="sections" class="control-label col-lg-4">Select Students<span class="required">*</span></label>
                                           <div class="col-lg-6">
-											<select class="form-control absentees" name="absentees[]" id="students"  multiple="multiple" style="height:200px">
+											<select class="form-control feedues" name="feedues[]" id="students"  multiple="multiple" style="height:200px">
                                             <option value=0>Select Students</option>
                                             </select>
                                           </div>
                                            <div class="col-lg-2 err-msg assign-err"><span class="absentees_err"></span> </div>
                                       </div>
                                       
+                                       <div class="form-group ">
+                                          <label for="sections" class="control-label col-lg-4">SMS Due Content<span class="required">*</span></label>
+                                          <div class="col-lg-6">
+											<textarea class="form-control duesmscontent" id="duesmscontent" name="duesmscontent"></textarea>
+                                          </div>
+                                           <div class="col-lg-2 err-msg assign-err"><span class="duesmscontent_err"></span> </div>
+                                      </div>
+                                      
                                       
                                       <div class="form-group">
                                           <div class="col-lg-offset-4 col-lg-8">
                                              
-                                             <input type="button" class="btn btn-primary "  name="AbsentSMS_btn" id="AbsentSMS_btn" value="Send SMS" />
+                                             <input type="button" class="btn btn-primary "  name="FeedueSMS_btn" id="FeedueSMS_btn" value="Send SMS" />
                                              <span style="margin-left:20px" class="sms-message-resp" ></span>
                                            
                                           </div>

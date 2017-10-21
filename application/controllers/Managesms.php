@@ -97,6 +97,27 @@ class Managesms extends CI_Controller
 		$this->load->view(FOOTER);
 	}
 	
+	
+	//feeduesms starts here
+	
+	public function feeduesms()
+	{
+		$this->load->view(HEADER);
+		$cond=array();
+	$data['classes'] = $this->Commonmodel->getrows($table='newclass',$cond,$order_by='',$order_by_field='',$limit='');
+		
+		
+		$this->load->view('Admin/fee-due-sms',$data);
+		$this->load->view(FOOTER);
+		
+	}
+	
+	
+	//feeduesms ends here
+	
+	
+	
+	
 	//this methid will get the students of a class and section
 	
 	public function getstudents()
@@ -143,6 +164,7 @@ class Managesms extends CI_Controller
 		
 	}
 	
+	
 	//this method is used to sent sms
 	
 	
@@ -154,66 +176,72 @@ class Managesms extends CI_Controller
 		$url = "http://onlinebulksmslogin.com/spanelv2/api.php"; 
 		$from='AdiAks';
 		
-			if( $SMSTYPE=="Absent")
+		$selected_students = $Students[0]['stds'];
+		$table = 'parentdetails';
+		
+		$totalstds = sizeof($selected_students);
+		$smssent=0;
+		
+		foreach( $selected_students as $stdid)
+		{
+			
+			$cond = array();
+			$cond['StudentId'] = $stdid;
+			$cond['AcademicYear'] = $this->schedulinglib->getAcademicyear();
+			
+			$field="ContactNumber2";
+			
+			$contactNumber = $this->Commonmodel->getAfield($table,$cond,$field,$order_by='',$order_by_field='',$limit='');
+
+			$cond = array();
+			$cond['StudentId'] = $stdid;
+			$cond['AcademicYear'] = $this->schedulinglib->getAcademicyear();
+		
+			$field='Student';
+
+			$Student = $this->Commonmodel->getAfield('students',$cond,$field,$order_by='',$order_by_field='',$limit='');
+			
+			if($Student!='0' && $contactNumber!='0')
 			{
-					$absentee_students = $Absentees[0]['absentees'];
-					$table = 'parentdetails';
-					
-					$totalAbsentees = sizeof($absentee_students);
-					$smssent=0;
-					
-					foreach( $absentee_students as $stdid)
-					{
-						
-						$cond = array();
-						$cond['StudentId'] = $stdid;
-						$cond['AcademicYear'] = $this->schedulinglib->getAcademicyear();
-						
-						$field="ContactNumber2";
-						
-						$contactNumber = $this->Commonmodel->getAfield($table,$cond,$field,$order_by='',$order_by_field='',$limit='');
-
-						$cond = array();
-						$cond['StudentId'] = $stdid;
-						$cond['AcademicYear'] = $this->schedulinglib->getAcademicyear();
-					
-						$field='Student';
-
-						$Student = $this->Commonmodel->getAfield('students',$cond,$field,$order_by='',$order_by_field='',$limit='');
-						
-						if($Student!='0' && $contactNumber!='0')
-						{
-							$message = " Dear Parent, your child ".$Student." is absent today, Thank you. Adi Akashara ";
-							
-							$request="username=adiakshara&password=preschool123&to=".$contactNumber."&from=$from&message=".urlencode($message);	
-											
-							$ch = curl_init($url);
-							curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-							curl_setopt($ch, CURLOPT_POST, true);
-							curl_setopt($ch, CURLOPT_POSTFIELDS, $request);
-							
-							$response=curl_exec($ch);
-							if($response!='')
-							{
-								$smssent++;
-							}
-							curl_close($ch);
-						}
-						
-					}
-							
-					if( $smssent == $totalAbsentees)
-						echo "1";
-					else
-					{
-						if( $smssent<$totalAbsentees && $smssent>0)
-							echo "-1";
-						else if( $smssent==0)
-							echo "0";
-							
-					}
-					
+				if( $SMSTYPE=="Absent")
+					$message = " Dear Parent, your child ".$Student." is absent today, Thank you. Adi Akashara ";
+				else if( $SMSTYPE=="Feedue" )
+					$message = $duesmscontent;
+				
+				$request="username=adiakshara&password=preschool123&to=".$contactNumber."&from=$from&message=".urlencode($message);	
+								
+				$ch = curl_init($url);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				curl_setopt($ch, CURLOPT_POST, true);
+				curl_setopt($ch, CURLOPT_POSTFIELDS, $request);
+				
+				$response=curl_exec($ch);
+				if($response!='')
+				{
+					$smssent++;
+				}
+				curl_close($ch);
 			}
-	} //sentsms ends here
+			
+		}//foreach ends here
+				
+		if( $smssent == $totalstds)
+			echo "1";
+		else
+		{
+			if( $smssent<$totalstds && $smssent>0)
+				echo "-1";
+			else if( $smssent==0)
+				echo "0";
+				
+		}
+					
+				
+			
+		
+		
+	} 
+	//sentsms ends here
+	
 	
 }//class ends here

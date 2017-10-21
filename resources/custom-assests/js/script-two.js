@@ -966,7 +966,7 @@ $(".deleteMark").on('click',function()
 			else
 			{
 				
-				var newarr = {'absentees':$(this).val()};
+				var newarr = {'stds':$(this).val()};
 				selectedStudents.push(newarr);
 			}
 			
@@ -979,12 +979,26 @@ $(".deleteMark").on('click',function()
 				$.ajax({
 							url:base_url+'Managesms/sentsms',
 							type:"POST",
-							data:{"SMSTYPE":"Absent","ClassName":ClassName,"sections":sections,"Absentees":selectedStudents},
+							data:{"SMSTYPE":"Absent","ClassName":ClassName,"sections":sections,"Students":selectedStudents},
 							async:false,
 							sendBefore:function(){  },
 							success:function(resp)
 							{
 								resp = $.trim(resp);
+								if(resp=="0")
+								{
+									$(".sms-message-resp").html("<span class='alert alert-danger'>Unable to sent sms </span>");
+								}
+								else if(resp=="-1")
+								{
+									$(".sms-message-resp").html("<span class='alert alert-danger'>SMS Sent to only few parents</span>");
+								}
+								else if(resp=="1")
+								{
+									$(".sms-message-resp").html("<span class='alert alert-success'>SMS Sent Successfully</span>");
+									$("form#sms_form")[0].reset();
+									$(".absentees").html("<option value=0>Select Students</option>");
+								}
 								
 								
 							}//success function ends here
@@ -996,3 +1010,112 @@ $(".deleteMark").on('click',function()
    });
    
    ////AbsentSMS_btn ends here
+   
+   //fee due send sms starts here
+   
+   $("#FeedueSMS_btn").on("click",function()
+   {
+	   
+	   var err_cnt = '0';
+	   var Onclick = $(this);
+	   
+	   
+		var ClassName	=	$("#ClassName").val();
+			ClassName	=	$.trim(ClassName);
+			ClassName	=	parseInt(ClassName);
+			
+		var sections	=	$("#sections").val();
+			sections	=	$.trim(sections);
+			sections	=	parseInt(sections);
+			
+			
+		var AbsentSMS	=	$("#AbsentSMS").val();
+			AbsentSMS	=	$.trim(AbsentSMS);
+		
+		if(ClassName>0)	
+			$(".ClassName_err").html("");
+		else
+		{
+			err_cnt='1';
+			$(".ClassName_err").html("Select Class");	
+		}
+		
+		if( sections>0)
+			$(".section_err").html("");
+		else
+		{
+			$(".section_err").html("Select Section");
+			err_cnt='1';
+		}
+		
+	var duesmscontent = $("#duesmscontent").val();
+		duesmscontent = $.trim(duesmscontent);
+		
+		if(duesmscontent=='')
+		{
+			err_cnt='1';
+			$(".duesmscontent_err").html('Enter SMS Due Content');
+		}
+		else
+			$(".duesmscontent_err").html('');
+			
+			
+		
+	var selectedStudents= [];
+			
+	$(".feedues").each(function() 
+		{ 
+		
+			
+			if( $.trim( $(this).val() )=='0' || $.trim( $(this).val() )=='' )
+			{
+				err_cnt='1';
+				$('.absentees_err').html('Select Students');
+			}
+			else
+			{
+				
+				var newarr = {'stds':$(this).val()};
+				selectedStudents.push(newarr);
+			}
+			
+		});
+		
+			
+		 if( err_cnt=='0')
+		 {
+				
+				$.ajax({
+							url:base_url+'Managesms/sentsms',
+							type:"POST",
+							data:{"SMSTYPE":"Feedue","duesmscontent":duesmscontent,"ClassName":ClassName,"sections":sections,"Students":selectedStudents},
+							async:false,
+							sendBefore:function(){  },
+							success:function(resp)
+							{
+								resp = $.trim(resp);
+								if(resp=="0")
+								{
+									$(".sms-message-resp").html("<span class='alert alert-danger'>Unable to sent sms </span>");
+								}
+								else if(resp=="-1")
+								{
+									$(".sms-message-resp").html("<span class='alert alert-danger'>SMS Sent to only few parents</span>");
+								}
+								else if(resp=="1")
+								{
+									$(".sms-message-resp").html("<span class='alert alert-success'>SMS Sent Successfully</span>");
+									$("form#sms_form")[0].reset();
+								}
+								
+								
+							}//success function ends here
+							
+						});
+				 
+		 }
+		 
+   });
+   
+      //fee due send sms ends here
+   

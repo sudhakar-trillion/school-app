@@ -209,6 +209,7 @@ else if( strpos(HTTP_REFERER, 'trillionit.in') !== false || strpos(HTTP_REFERER,
 					$insertdata['ContactNumber2'] = $ContactNumber2;
 					
 					$insertdata['Address'] = $Address;
+					$insertdata['AcademicYear'] = $this->schedulinglib->getAcademicyear();
 					$insertdata['Lastupdated'] = time();
 					
 					if( $this->Commonmodel->insertdata($table,$insertdata))
@@ -247,6 +248,7 @@ else if( strpos(HTTP_REFERER, 'trillionit.in') !== false || strpos(HTTP_REFERER,
 					$setdata['ContactNumber2'] = $ContactNumber2;
 					
 					$setdata['Address'] = $Address;
+					$setdata['AcademicYear'] = $this->schedulinglib->getAcademicyear();
 					$setdata['Lastupdated'] = time();
 					
 					if( $this->Commonmodel->updatedata($table,$setdata,$cond))
