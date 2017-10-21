@@ -915,7 +915,7 @@ $(".deleteMark").on('click',function()
    
    ///AbsentSMS_btn starts here
    
-   $("#AbsentSMS_btn").on("click",function()
+   $("#AbsentSMS_btn, #ActivitySMS_btn").on("click",function()
    {
 	   
 	   var err_cnt = '0';
@@ -930,9 +930,8 @@ $(".deleteMark").on('click',function()
 			sections	=	$.trim(sections);
 			sections	=	parseInt(sections);
 			
-			
-		var AbsentSMS	=	$("#AbsentSMS").val();
-			AbsentSMS	=	$.trim(AbsentSMS);
+		var SMSTYPE		=	$(this).attr("name");
+		
 		
 		if(ClassName>0)	
 			$(".ClassName_err").html("");
@@ -950,36 +949,64 @@ $(".deleteMark").on('click',function()
 			err_cnt='1';
 		}
 		
+		var selectedStudents= [];
+	if( SMSTYPE == "AbsentSMS_btn" )
+	{
 		
-		
-	var selectedStudents= [];
+				
+		$(".absentees").each(function() 
+			{ 
 			
-	$(".absentees").each(function() 
-		{ 
-		
+				
+				if( $.trim( $(this).val() )=='0' || $.trim( $(this).val() )=='' )
+				{
+					err_cnt='1';
+					$('.absentees_err').html('Select Students');
+				}
+				else
+				{
+					
+					var newarr = {'stds':$(this).val()};
+					selectedStudents.push(newarr);
+				}
+				
+			});
 			
-			if( $.trim( $(this).val() )=='0' || $.trim( $(this).val() )=='' )
+			SMSTYPE="Absent";
+				var senddata ={"SMSTYPE":SMSTYPE,"ClassName":ClassName,"sections":sections,"Students":selectedStudents};
+		
+   }
+   
+   else if(SMSTYPE == "ActivitySMS_btn")
+   {
+	   	SMSTYPE="Activity";
+		
+		
+		var activitycontent = $("#activitycontent").val();
+			activitycontent = $.trim(activitycontent);
+			
+			if(activitycontent=="")
 			{
 				err_cnt='1';
-				$('.absentees_err').html('Select Students');
+				$(".activitycontent_err").html("Enter Activity Content");
+				
 			}
 			else
-			{
+				$(".activitycontent_err").html("");
 				
-				var newarr = {'stds':$(this).val()};
-				selectedStudents.push(newarr);
-			}
-			
-		});
-		
-			
+			var senddata ={"SMSTYPE":SMSTYPE,"ClassName":ClassName,"sections":sections,"Students":'All',"activitycontent":activitycontent};	
+   }
+   
+   
+   
+   
 		 if( err_cnt=='0')
 		 {
 				
 				$.ajax({
 							url:base_url+'Managesms/sentsms',
 							type:"POST",
-							data:{"SMSTYPE":"Absent","ClassName":ClassName,"sections":sections,"Students":selectedStudents},
+							data:senddata,
 							async:false,
 							sendBefore:function(){  },
 							success:function(resp)
@@ -1118,4 +1145,9 @@ $(".deleteMark").on('click',function()
    });
    
       //fee due send sms ends here
+	  
+	  
+	 //fee due send sms starts here
+   
+    
    

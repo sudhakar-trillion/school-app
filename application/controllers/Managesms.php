@@ -115,7 +115,20 @@ class Managesms extends CI_Controller
 	
 	//feeduesms ends here
 	
+	//activitysms starts here
 	
+	public function activitysms()
+	{
+			$this->load->view(HEADER);
+		$cond=array();
+	$data['classes'] = $this->Commonmodel->getrows($table='newclass',$cond,$order_by='',$order_by_field='',$limit='');
+		
+		
+		$this->load->view('Admin/send-activity-sms',$data);
+		$this->load->view(FOOTER);
+	}
+	
+	//activitysms starts here
 	
 	
 	//this methid will get the students of a class and section
@@ -176,15 +189,28 @@ class Managesms extends CI_Controller
 		$url = "http://onlinebulksmslogin.com/spanelv2/api.php"; 
 		$from='AdiAks';
 		
-		$selected_students = $Students[0]['stds'];
+		
+		if($SMSTYPE=="Activity")
+		{
+			$SelectedStudents = $this->Commonmodel->getRows_fields('students',array("ClassName"=>$ClassName,"ClassSection"=>$sections),$fields='StudentId',$order_by='',$order_by_field='',$limit='');
+			$selected_students=array();
+			
+			foreach($SelectedStudents->result() as $std)
+			{
+				$selected_students[]=  $std->StudentId;	
+			}
+		}
+		else
+		{
+			$selected_students = $Students[0]['stds'];
+		}
+
 		$table = 'parentdetails';
-		
 		$totalstds = sizeof($selected_students);
-		$smssent=0;
-		
+		$smssent=0;	
+	
 		foreach( $selected_students as $stdid)
 		{
-			
 			$cond = array();
 			$cond['StudentId'] = $stdid;
 			$cond['AcademicYear'] = $this->schedulinglib->getAcademicyear();
@@ -207,6 +233,8 @@ class Managesms extends CI_Controller
 					$message = " Dear Parent, your child ".$Student." is absent today, Thank you. Adi Akashara ";
 				else if( $SMSTYPE=="Feedue" )
 					$message = $duesmscontent;
+				else if( $SMSTYPE=="Activity" )
+					$message = $activitycontent;	
 				
 				$request="username=adiakshara&password=preschool123&to=".$contactNumber."&from=$from&message=".urlencode($message);	
 								
@@ -222,7 +250,6 @@ class Managesms extends CI_Controller
 				}
 				curl_close($ch);
 			}
-			
 		}//foreach ends here
 				
 		if( $smssent == $totalstds)
