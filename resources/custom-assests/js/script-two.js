@@ -915,22 +915,43 @@ $(".deleteMark").on('click',function()
    
    ///AbsentSMS_btn starts here
    
-   $("#AbsentSMS_btn, #ActivitySMS_btn").on("click",function()
+   $("#AbsentSMS_btn, #ActivitySMS_btn, #BulkSMS_btn").on("click",function()
    {
 	   
 	   var err_cnt = '0';
 	   var Onclick = $(this);
-	   
-	   
-		var ClassName	=	$("#ClassName").val();
-			ClassName	=	$.trim(ClassName);
-			ClassName	=	parseInt(ClassName);
+		var SMSTYPE		=	$(this).attr("name");	   
+		
+		if(SMSTYPE == "BulkSMS_btn")
+		{
 			
-		var sections	=	$("#sections").val();
-			sections	=	$.trim(sections);
-			sections	=	parseInt(sections);
+			var bulksmscontent = $("#bulksmscontent").val();
+				bulksmscontent = $.trim(bulksmscontent);
+				
+			if(bulksmscontent=="")
+			{
+				err_cnt='1';	
+				$(".bulksmscontent_err").html("Enter Bulk SMS Content");
+			}
+			else
+				$(".bulksmscontent_err").html("");
 			
-		var SMSTYPE		=	$(this).attr("name");
+			SMSTYPE = 'BulkSMS';
+			
+			var senddata ={"SMSTYPE":SMSTYPE,"bulksmscontent":bulksmscontent};	
+		}
+		else
+		{
+	   
+			var ClassName	=	$("#ClassName").val();
+				ClassName	=	$.trim(ClassName);
+				ClassName	=	parseInt(ClassName);
+			
+			var sections	=	$("#sections").val();
+				sections	=	$.trim(sections);
+				sections	=	parseInt(sections);
+			
+		
 		
 		
 		if(ClassName>0)	
@@ -997,7 +1018,7 @@ $(".deleteMark").on('click',function()
 			var senddata ={"SMSTYPE":SMSTYPE,"ClassName":ClassName,"sections":sections,"Students":'All',"activitycontent":activitycontent};	
    }
    
-   
+   }
    
    
 		 if( err_cnt=='0')

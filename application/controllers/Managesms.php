@@ -119,7 +119,7 @@ class Managesms extends CI_Controller
 	
 	public function activitysms()
 	{
-			$this->load->view(HEADER);
+		$this->load->view(HEADER);
 		$cond=array();
 	$data['classes'] = $this->Commonmodel->getrows($table='newclass',$cond,$order_by='',$order_by_field='',$limit='');
 		
@@ -130,6 +130,19 @@ class Managesms extends CI_Controller
 	
 	//activitysms starts here
 	
+	
+	//bulksms starts here
+	
+	public function bulksms()
+	{
+		$this->load->view(HEADER);
+		//$cond=array();
+	//	$data['classes'] = $this->Commonmodel->getrows($table='newclass',$cond,$order_by='',$order_by_field='',$limit='');
+		$this->load->view('Admin/send-bulk-sms');
+		$this->load->view(FOOTER);
+	}
+	
+	//bulksms ends here
 	
 	//this methid will get the students of a class and section
 	
@@ -192,7 +205,17 @@ class Managesms extends CI_Controller
 		
 		if($SMSTYPE=="Activity")
 		{
-			$SelectedStudents = $this->Commonmodel->getRows_fields('students',array("ClassName"=>$ClassName,"ClassSection"=>$sections),$fields='StudentId',$order_by='',$order_by_field='',$limit='');
+			$SelectedStudents = $this->Commonmodel->getRows_fields('students',array("ClassName"=>$ClassName,"ClassSection"=>$sections,"AcademicYear"=>$this->schedulinglib->getAcademicyear()),$fields='StudentId',$order_by='',$order_by_field='',$limit='');
+			$selected_students=array();
+			
+			foreach($SelectedStudents->result() as $std)
+			{
+				$selected_students[]=  $std->StudentId;	
+			}
+		}
+		elseif($SMSTYPE=="BulkSMS")
+		{
+			$SelectedStudents = $this->Commonmodel->getRows_fields('students',array("AcademicYear"=>$this->schedulinglib->getAcademicyear()),$fields='StudentId',$order_by='',$order_by_field='',$limit='');
 			$selected_students=array();
 			
 			foreach($SelectedStudents->result() as $std)
@@ -235,6 +258,9 @@ class Managesms extends CI_Controller
 					$message = $duesmscontent;
 				else if( $SMSTYPE=="Activity" )
 					$message = $activitycontent;	
+				else if($SMSTYPE=="BulkSMS")
+					$message = $bulksmscontent;
+			
 				
 				$request="username=adiakshara&password=preschool123&to=".$contactNumber."&from=$from&message=".urlencode($message);	
 								
