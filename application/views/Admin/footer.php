@@ -394,6 +394,7 @@ $(document).ready(function()
 {
 	
 	$.ajax({
+			
 						url:base_url+'Chartsdispatcher/classattendance',
 						type:"POST",
 						data:{"Class":'',"Seciton":''},
@@ -492,7 +493,111 @@ $(document).ready(function()
 												 
 												 
 						}//success function ends here
-					});
+					
+			});
+					
+	$.ajax({
+			
+						url:base_url+'Chartsdispatcher/staffpresentabsent',
+						type:"POST",
+						data:{"Class":'',"Seciton":''},
+						beforeSend:function() 
+											{ 
+												graph = $("#chartone2").html();
+												var dropboxGIF = "<img style='width:80%; margin-left:37px; margin-top:-30px' src='"+base_url+"resources/custom-assests/images/jelly-fluid-loader.gif'/>";
+												$("#chartone2").html(dropboxGIF);
+											},
+						success:function(resp)
+						{
+							resp = $.trim(resp);
+							
+							var obj = JSON.parse(resp);
+							
+							
+							var result = [];
+							
+							
+							$.each(obj,function(ind,val)
+							{
+								var month = val.Month;
+							//	console.log(month);
+								var newarr = {month:val.Attendance};
+								result.push(month);
+								result.push(val.Attendance);
+							});
+							
+						//chunk the resultant arry into two element and result will be arrays with each two elements
+							
+							Array.prototype.chunk = function ( n ) 
+							{
+								if ( !this.length ) 
+								{
+									return [];
+								}
+								return [ this.slice( 0, n ) ].concat( this.slice(n).chunk(n) );
+							};
+							
+								
+								
+								var final_result = result.chunk(2);
+								
+								console.log(final_result);
+								
+								setTimeout(function(){ 
+													//$("#chartone2").html(graph);
+											Highcharts.chart('chartone2', {
+												
+											
+											
+											chart: {
+											type: 'pie',
+											options3d: {
+											enabled: true,
+											alpha: 55
+											}
+											},
+											
+											title: {
+											text: ''
+											},
+											/* subtitle: {
+											text: '3D donut in Highcharts'
+											},*/
+											plotOptions: {
+											pie: {
+											innerSize: 100,
+											depth: 55
+											}
+											},
+											series: [{
+											name: 'Attendance Percentage' ,
+											data: 
+											/*[ ['Jun', 80],
+											['Jul', 0],
+											['Aug', 98],
+											['Sep', 96],
+											['Oct', 98],
+											['Nov', 94],
+											['Dec', 89],
+											['Jan', 98],
+											['Feb', 99],
+											['Mar', 99] ] */
+											final_result
+											
+											
+											}],
+											credits: {
+											enabled: false
+											},
+											
+											
+											});
+												 }, 3000); //set time out ends here
+												 
+												 
+						}//success function ends here
+					
+			});
 		
 /*	Highcharts.chart('chartone2', {
 										

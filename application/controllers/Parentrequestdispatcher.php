@@ -52,7 +52,7 @@ class Parentrequestdispatcher extends CI_Controller
 		$cond['ClassName']  = $ClassSlno;
 		$cond['ClassSection']  = $section;
 		$cond['Roll']  = $RollNo;
-		$cond['ParentPassword']  = md5($Password);
+		//$cond['ParentPassword']  = md5($Password);
 		
 		if( $this->Commonmodel->checkexists($table,$cond))
 		{

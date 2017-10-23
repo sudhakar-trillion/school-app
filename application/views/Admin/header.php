@@ -883,6 +883,25 @@ padding:15px;
 	right:100px !important;
 }
 
+span.present-label
+{
+	color:#00F;
+	font-weight:bolder;
+}
+
+span.absent-label
+{
+	color:#F00;
+	font-weight:bolder;	
+}
+
+
+.Present-today
+{
+	color:#00F;
+	font-weight:bolder;
+	margin-left:5px;
+}
 </style>
 
 <link rel="stylesheet" href="resources/datepicker/daterangepicker.css"/>

@@ -904,6 +904,8 @@ $this->db->order_by($order_by_field,$order_by);
 		else
 		{
 			$qry = $this->db->query("select MONTHNAME(mnt.MNTHnaam) as MonthName,mnt.MonthNumber,  IFNULL(res.presents,0) as present  from monthsname as mnt left join ( select MONTHNAME(AttendanceOn) AS MNTH, COUNT(PresentAbsent) as presents FROM studentattendance WHERE  AcademicYear='".$Academicyear."' AND PresentAbsent='Present' group by MNTH  ) as res on MONTHNAME(mnt.MNTHnaam)=res.MNTH");
+		
+		#echo $this->db->last_query(); exit;
 		}
 	return $qry;
 	

@@ -113,14 +113,14 @@ body{
      <p class="error RollNo_err"><?PHP echo form_error('password');?></p>
      
 </div>
-<div class="form-group">
+<!--<div class="form-group">
     <label></label>
     <input type="password" name="Password" id="Password" placeholder="Enter password">
     <i class="fa fa-lock"></i>
   <p class="error pwd_err"><?PHP echo form_error('password');?></p>
 
   
-</div>
+</div>-->
    <div class="clearfix"></div>
 <div class="form-group">
    <!-- <button type="submit"  name="adminlogin">Login</button>-->

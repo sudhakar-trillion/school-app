@@ -283,10 +283,9 @@ public function passwordgenerator($len)
 				$insertdata['AcademicYear']  = $AcademicYear;
 				$insertdata['Lastupdated']  = time();
 				
-				$password = $this->passwordgenerator(6);	
+				$password = md5('password'); //$this->passwordgenerator(6);	
 				
-				
-				$insertdata['ParentPassword'] = md5($password);
+				$insertdata['ParentPassword'] = $password;
 				
 				if( $this->Commonmodel->insertdata($table,$insertdata))
 				{
