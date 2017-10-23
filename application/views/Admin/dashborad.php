@@ -347,7 +347,7 @@
                        <!-- sections -->
                         
                         <ul class="header-dropdown m-r--5">
-                            <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="selSec">Section</span>&nbsp;<i class="fa fa-caret-down"></i></a>
+                            <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="selSec" id="0">Section</span>&nbsp;<i class="fa fa-caret-down"></i></a>
                                 
                                 <ul class="dropdown-menu pull-right section-for-class">
                                 	<li><a class=" cursor-pointer attendance-s waves-effect waves-block">Select Seciton</a></li> 
@@ -368,7 +368,7 @@
 									{
 										?>
                                         <li>
-                                         <a class=" cursor-pointer attendance-cls waves-effect waves-block" id="<?PHP echo $cls->SLNO?>" ><?PHP echo $cls->ClassName; ?></a>
+                                         <a class=" cursor-pointer attendance-cls waves-effect waves-block" id="<?PHP echo $cls->SLNO?>" classSection="class" ><?PHP echo $cls->ClassName; ?></a>
                                          </li>
                                         <?PHP	
 									}

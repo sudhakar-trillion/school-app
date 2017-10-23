@@ -1,3 +1,18 @@
+$(window).load(function()
+{
+	
+	 if(Currentpge=="view-staff-attendance")
+	  {
+		 
+		 var totalpresents = $(".text-default").length;
+		 var totalabsents = $(".text-danger").length;
+		 
+		 $("#TotalAbsents").html("  "+totalabsents);
+		  $("#TotalPresents").html("  "+totalpresents);
+	  }
+		
+});
+
 
 $(document).on('click','.clearfilter',function()
 {
@@ -273,7 +288,7 @@ $(".deleteMark").on('click',function()
 	   
    });
    
-   $(document).on('click','.attendance-cls',function()
+   $(document).on('click','a.attendance-cls',function()
    {
 		var ClassName = $(this).attr('id');
 			ClassSLNO = $.trim(ClassName);
@@ -282,7 +297,9 @@ $(".deleteMark").on('click',function()
 						url:base_url+"Requestdispatcher/getsections",
 						type:'POST',
 						data:{"ClassSLNO":ClassSLNO},
+						async:false,
 						sendBefore:function(){  },
+						
 						success:function(resp)
 						{
 							resp = $.trim(resp);
@@ -299,13 +316,13 @@ $(".deleteMark").on('click',function()
 									$(".attendance-cls").removeClass('Selected-Class');
 									Onclick.addClass('Selected-Class');
 									
-									$(".SelectedCls").html( Onclick.html() );
+									$(".SelectedCls").html( $(".Selected-Class").html() );
 									
 									$(".selSec").html("Section");
 									
 									$.each(resp,function(index,val)
 									{
-					section_options=section_options+'<li><a id="'+index+'" class=" cursor-pointer attendance-s waves-effect waves-block class-section">Section-'+val+'</a></li> ';
+					section_options=section_options+'<li><a id="'+index+'" class=" cursor-pointer attendance-s waves-effect waves-block class-section" classSection="section" ">Section-'+val+'</a></li> ';
 										console.log(section_options);
 									});
 									
@@ -326,29 +343,42 @@ $(".deleteMark").on('click',function()
    
    
    //getting the  graph info for the class and section starts here
-   $(document).on('click',".class-section",function()
+   $(document).on('click',".attendance-cls,.class-section",function()
    {
-	  if(Currentpge=="")
+	  if(Currentpge=="dashboard")
 	  {
 	  	 
-	  
+	  console.log('hey');
 	   
 	   var Err_cnt='0';
 	   var Onclick = $(this);
 	   var graph = '';
 	   
-	   $(".selSec").html(Onclick.html());
+	  
 		
 		$(".class-section").removeClass('SelectedSection');
 		Onclick.addClass('SelectedSection');
 	   
-	   
-	   var SelectedSection = $(this).attr('id');
+	   if( $(this).attr('classSection')=="section")
+	   {
+	    $(".selSec").html(Onclick.html());
+	   	var SelectedSection = $(this).attr('id');
 		   	SelectedSection = $.trim(SelectedSection);
+		if(SelectedSection=="0" || SelectedSection =="")
+		{
+			Err_cnt='1';
+				$(".section-for-class").html("Select Section").css({'color':'red'});	
+		}
+		else
+			Err_cnt='0';	
 			
-	   var SelectedClass = $(".Selected-Class").attr('id');
-		   	SelectedClass = $.trim(SelectedClass);
+	   }
+	   else
+	   	var SelectedSection ='0';
 		
+		
+		var SelectedClass = $(".Selected-Class").attr('id');
+		   	SelectedClass = $.trim(SelectedClass);
 	
 		if(SelectedClass=="0" || SelectedClass=="")
 		{
@@ -358,20 +388,14 @@ $(".deleteMark").on('click',function()
 		else
 			Err_cnt='0';
 		
-		if(SelectedSection=="0" || SelectedSection =="")
-		{
-			Err_cnt='1';
-				$(".section-for-class").html("Select Section").css({'color':'red'});	
-		}
-		else
-			Err_cnt='0';
+		
 		
 		if(Err_cnt=="0")
 		{
 			$.ajax({
 						url:base_url+'Chartsdispatcher/classattendance',
 						type:"POST",
-						data:{"Class":SelectedClass,"Seciton":SelectedClass},
+						data:{"Class":SelectedClass,"Seciton":SelectedSection},
 						beforeSend:function() 
 											{ 
 												graph = $("#chartone2").html();
@@ -387,84 +411,87 @@ $(".deleteMark").on('click',function()
 							
 							var result = [];
 							
+							console.log(resp);
 							
-							$.each(obj,function(ind,val)
+							if(resp!='0')
 							{
-								var month = val.Month;
-							//	console.log(month);
-								var newarr = {month:val.Attendance};
-								result.push(month);
-								result.push(val.Attendance);
-							});
-							
-						//chunk the resultant arry into two element and result will be arrays with each two elements
-							
-							Array.prototype.chunk = function ( n ) 
-							{
-								if ( !this.length ) 
+								$.each(obj,function(ind,val)
 								{
-									return [];
-								}
-								return [ this.slice( 0, n ) ].concat( this.slice(n).chunk(n) );
-							};
-							
+									var month = val.Month;
+								//	console.log(month);
+									var newarr = {month:val.Attendance};
+									result.push(month);
+									result.push(val.Attendance);
+								});
 								
+							//chunk the resultant arry into two element and result will be arrays with each two elements
 								
-								var final_result = result.chunk(2);
+								Array.prototype.chunk = function ( n ) 
+								{
+									if ( !this.length ) 
+									{
+										return [];
+									}
+									return [ this.slice( 0, n ) ].concat( this.slice(n).chunk(n) );
+								};
 								
-								console.log(final_result);
-								
-								setTimeout(function(){ 
-													//$("#chartone2").html(graph);
-											Highcharts.chart('chartone2', {
+									
+									
+									var final_result = result.chunk(2);
+									
+									//console.log(final_result);
+									
+									setTimeout(function(){ 
+														//$("#chartone2").html(graph);
+												Highcharts.chart('chartone2', {
 												
-											
-											
-											chart: {
-											type: 'pie',
-											options3d: {
-											enabled: true,
-											alpha: 55
-											}
-											},
-											
-											title: {
-											text: ''
-											},
-											/* subtitle: {
-											text: '3D donut in Highcharts'
-											},*/
-											plotOptions: {
-											pie: {
-											innerSize: 100,
-											depth: 55
-											}
-											},
-											series: [{
-											name: 'Attendance Percentage' ,
-											data: 
-											/*[ ['Jun', 80],
-											['Jul', 0],
-											['Aug', 98],
-											['Sep', 96],
-											['Oct', 98],
-											['Nov', 94],
-											['Dec', 89],
-											['Jan', 98],
-											['Feb', 99],
-											['Mar', 99] ] */
-											final_result
-											
-											
-											}],
-											credits: {
-											enabled: false
-											},
-											
-											
-											});
-												 }, 3000); //set time out ends here
-												 
+												chart: {
+												type: 'pie',
+												options3d: {
+												enabled: true,
+												alpha: 55
+												}
+												},
+												
+												title: {
+												text: ''
+												},
+												/* subtitle: {
+												text: '3D donut in Highcharts'
+												},*/
+												plotOptions: {
+												pie: {
+												innerSize: 100,
+												depth: 55
+												}
+												},
+												series: [{
+												name: 'Attendance Percentage' ,
+												data: 
+												/*[ ['Jun', 80],
+												['Jul', 0],
+												['Aug', 98],
+												['Sep', 96],
+												['Oct', 98],
+												['Nov', 94],
+												['Dec', 89],
+												['Jan', 98],
+												['Feb', 99],
+												['Mar', 99] ] */
+												final_result
+												
+												
+												}],
+												credits: {
+												enabled: false
+												},
+												
+												
+												});
+													 }, 3000); //set time out ends here
+							}
+							else
+								$("#chartone2").html("Data Not Available");
 												 
 						}//success function ends here
 					});

@@ -277,7 +277,9 @@ class Teacher extends CI_Controller
 		
 		public function showStaffattendance()
 		{
-			$isert = "INSERT INTO `vsksamsu_schoolaap`.`teacherattendance` (`AttendanceId`, `TeacherId`, `Present`, `AttendanceFor`, `AcademicYear`, `LastUpdated`) VALUES";
+		
+			/*
+				$isert = "INSERT INTO `vsksamsu_schoolaap`.`teacherattendance` (`AttendanceId`, `TeacherId`, `Present`, `AttendanceFor`, `AcademicYear`, `LastUpdated`) VALUES";
 			
 			$atend=array("Y","N");
 			
@@ -297,32 +299,52 @@ class Teacher extends CI_Controller
 #			echo rtrim($isert,','); exit;
 			}
 			echo rtrim($isert,','); exit;
-			
+			*/
 			
 			$this->load->view(HEADER);
 	
 				$data['Totalteachers'] = $this->Commonmodel->getrows($table='teacher',$cond=array(),$order_by='DESC',$order_by_field='TeacherId',$limit='');
-			
+				$cond = array();
+				$table = 'teacherattendance';
+				
+				$cond['att.AcademicYear'] = $this->schedulinglib->getAcademicyear();
 			
 			//get the month attendance of a teacher if user selectes a teacher and a month, if not then show the attendance of all teacher on this day.
 			
 			
+			$data['selectedteacher'] = 0;
+			$data['month']=0;
+			
 			if( $this->input->post('attendance_filter') )
 			{
+				extract($_POST);
+				
+				if( $TeacherName>0 && $Month>0)
+					{
+						$cond['att.TeacherId']=$TeacherName;
+						$cond['MONTH(att.AttendanceFor)']=$Month;
+						$teacher = $TeacherName;
+						$month=$Month;
+						
+						$data['selectedteacher'] = $teacher;
+						$data['month']=$month;
+						
+						$showattendance = $this->Commonmodel->viewTeacherAttendances($table,$cond,$month,$teacher);
+					}
+					else
+					{
+						$cond['att.AttendanceFor'] = date('Y-m-d');
+						$teacher = "All";
+						$showattendance = $this->Commonmodel->viewTeacherAttendances($table,$cond,$month='',$teacher);		
+					}
 				
 			}
 			else
 			{
-				$cond = array();
-				$table = 'teacherattendance';
-				
 				$cond['att.AttendanceFor'] = date('Y-m-d');
-				$cond['att.AcademicYear'] = $this->schedulinglib->getAcademicyear();
-				
 				$teacher = "All";
-				
 				$showattendance = $this->Commonmodel->viewTeacherAttendances($table,$cond,$month='',$teacher);
-				
+			}	
 				if( $showattendance!='0')
 					$data['showattendance'] = $showattendance;	
 				else
@@ -334,8 +356,6 @@ class Teacher extends CI_Controller
 					$data['viewingPage'] = $requrl; 
 					$this->load->view('Admin/pagenotfound',$data);
 				}
-					
-			}
 				
 			$this->load->view('Teacher/showStaffattendance',$data);
 			$this->load->view(FOOTER);		

@@ -7,7 +7,10 @@
                 <ol class="breadcrumb">
 						<li><i class="fa fa-home"></i> <a href="<?PHP echo base_url('dashboard');?> ">Dashboard </a></li>
                         <li><i class="fa fa-plus"></i> <a href="<?PHP echo base_url('teacher-attandance');?> ">Add Attendance </a></li>
-						<li><i class="fa fa-laptop"></i>View Teacher Attandance</li>						  	
+						<li><i class="fa fa-laptop"></i>View Teacher Attandance</li>	
+                        
+                        <li class="pull-right">Total Presents:<span class="present-label" id="TotalPresents"></span></li>					  	
+                        <li class="pull-right">Total Absents:<span class="absent-label" id="TotalAbsents"></span></li>					  	
 					</ol>
                 
                 </div>
@@ -36,11 +39,11 @@
 								if($tec_cnt==0)
 								{
 									?>
-                                    <option value="0" <?PHP if( @$TeacherName =='0' ) echo 'selected="selected"';?> >Select Teacher</option>
+                                    <option value="0" <?PHP if( @$selectedteacher =='0' ) echo 'selected="selected"';?> >Select Teacher</option>
                                     <?PHP	
 								}
 								?>
-                                <option value="<?PHP echo $teacher->TeacherId?>"  <?PHP if( @$TeacherName == $teacher->TeacherId ) echo 'selected="selected"';?> ><?PHP echo ucwords($teacher->TeacherName);?></option>
+                                <option value="<?PHP echo $teacher->TeacherId?>"  <?PHP if( @$selectedteacher == $teacher->TeacherId ) echo 'selected="selected"';?> ><?PHP echo ucwords($teacher->TeacherName);?></option>
                                 <?PHP
 								$tec_cnt++;
 								
@@ -57,21 +60,21 @@
                          <option value="0">Select month</option>
 
                         
-                         <option value="06">June</option>
-                         <option value="07">July</option>
-                         <option value="08">August</option>
+                         <option value="06" <?PHP if( $month=="06") echo 'selected="selected"';?>  >June</option>
+                         <option value="07" <?PHP if( $month=="07") echo 'selected="selected"';?>>July</option>
+                         <option value="08" <?PHP if( $month=="08") echo 'selected="selected"';?>>August</option>
                          
-                         <option value="09">September</option>
-                         <option value="10">October</option>
-                         <option value="11">November</option>
-                         <option value="12">December</option>
+                         <option value="09" <?PHP if( $month=="09") echo 'selected="selected"';?>>September</option>
+                         <option value="10" <?PHP if( $month=="10") echo 'selected="selected"';?>>October</option>
+                         <option value="11" <?PHP if( $month=="11") echo 'selected="selected"';?>>November</option>
+                         <option value="12" <?PHP if( $month=="12") echo 'selected="selected"';?>>December</option>
                          
-                          <option value="01">January</option>
-                         <option value="02">February</option>
-                         <option value="03">March</option>
-                         <option value="04">April</option>
+                          <option value="01" <?PHP if( $month=="01") echo 'selected="selected"';?>>January</option>
+                         <option value="02" <?PHP if( $month=="02") echo 'selected="selected"';?>>February</option>
+                         <option value="03" <?PHP if( $month=="03") echo 'selected="selected"';?>>March</option>
+                         <option value="04" <?PHP if( $month=="04") echo 'selected="selected"';?>>April</option>
                          
-                         <option value="05">May</option>
+                         <option value="05" <?PHP if( $month=="05") echo 'selected="selected"';?>>May</option>
                          
                          
 						 
@@ -105,7 +108,7 @@
 									{
 										$cnt++;
 										?>
-                                        <tr>
+                                        <tr class="<?PHP if($data->Attendance =="Absent") echo 'text-danger'; else echo "text-default"; ?>">
                                         	<td><?PHP echo $cnt?></td>
                                             <td><?PHP echo $data->TeacherName ?></td>
                                             <td><?PHP echo $data->Month ?></td>

@@ -105,8 +105,10 @@ row+1  as DayOfMonth from( SELECT @row := @row + 1 as row FROM  (select 0 union 
 										);	
 			}
 		}
-		
-	echo json_encode($outputarr);
+	if( sizeof($outputarr)>0)
+		echo json_encode($outputarr);
+	else
+		echo "0";
 	
 	
 		
@@ -202,12 +204,13 @@ row+1  as DayOfMonth from( SELECT @row := @row + 1 as row FROM  (select 0 union 
 		
 		$AcademicYear = $this->schedulinglib->getAcademicyear();
 		
-		$this->db->select('sum(TeacherId) as Presents');
+		$this->db->select('count(TeacherId) as Presents');
 		$this->db->from('teacherattendance');
 		$this->db->where('Present','Y');
 		$this->db->where('AttendanceFor',date('Y-m-d'));
 		$this->db->where('AcademicYear',$AcademicYear);
 		$qry = $this->db->get();
+		
 		
 		if($qry->num_rows()>0)
 		{
@@ -222,7 +225,7 @@ row+1  as DayOfMonth from( SELECT @row := @row + 1 as row FROM  (select 0 union 
 		else
 			$output['Presents'] = 0;
 
-		$this->db->select('sum(TeacherId) as Absents');
+		$this->db->select('count(TeacherId) as Absents');
 		$this->db->from('teacherattendance');
 		$this->db->where('Present','N');
 		$this->db->where('AttendanceFor',date('Y-m-d'));
