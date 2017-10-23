@@ -283,12 +283,19 @@
                     <h2>Staff Attendance</h2>
                        <!-- sections -->
                         <span> 
-                        	<span class="present-label">Today's Present:</span><span class="Present-today">5</span> <a href="">View More</a>
+                        	<span class="present-label">Today's Present:</span><span class="Present-today" id="TotalPresents"></span>
                         </span>
                         
+                        
+                        <span style="margin-left:50px"> 
+                        	<span class="absent-label">Today's Absent:</span><span class="Present-today" id="TotalAbsents" ></span>
+                          </span>
+                        
+                        
                         <span class="pull-right"> 
-                        	<span class="absent-label">Today's Absent:</span><span class="Present-today">2</span> <a href="">View More</a>
+                        	 <a href="<?PHP echo base_url('view-staff-attendance')?>">View Attendance</a>
                         </span>
+                        
                         <ul class="header-dropdown m-r--5">
                             <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="selTeacher">Select Teacher</span>&nbsp;<i class="fa fa-caret-down"></i></a>
                                 

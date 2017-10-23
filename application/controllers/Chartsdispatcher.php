@@ -96,12 +96,14 @@ row+1  as DayOfMonth from( SELECT @row := @row + 1 as row FROM  (select 0 union 
 				$attendancePercentage = (($TotalPresents)/$totalRows)*100;	
 			else
 				$attendancePercentage=0;
-
+			
+			if($attendancePercentage>0)
+			{
 				$outputarr[] = array(
 										"Month"=>$data->MonthName,
 										"Attendance" =>$attendancePercentage
 										);	
-			
+			}
 		}
 		
 	echo json_encode($outputarr);
@@ -148,18 +150,33 @@ row+1  as DayOfMonth from( SELECT @row := @row + 1 as row FROM  (select 0 union 
 		
 			$totalworkingdays = ($totaldays)-$numsundays;
 			
+			//get the total
+			if( $teacherid<1)
+			 {
+					$this->db->select('count(TeacherId) as Totalteachers' );
+					$this->db->from('teacher');
+					$Totalteachers = $this->db->get()->row('Totalteachers');
+					
+			 }
+			 else
+			 	$Totalteachers=1;
+				
 			$TotalPresents = $data->present;
+			
+			$TotalPresents = $TotalPresents/$Totalteachers;
 			
 			if( $TotalPresents>0)
 				$attendancePercentage = (($TotalPresents)/$totalworkingdays)*100;	
 			else
 				$attendancePercentage=0;
 				
+				if($attendancePercentage>0)
+				{
 					$outputarr[] = array(
 										"Month"=>$data->MonthName,
 										"Attendance" =>$attendancePercentage
 										);	
-				
+				}
 			}
 		
 	echo json_encode($outputarr);
@@ -175,7 +192,60 @@ row+1  as DayOfMonth from( SELECT @row := @row + 1 as row FROM  (select 0 union 
 		
 	
 	}// Getting teacher attendance ends here
+
+
+	//staffpresentabsent starts here
 	
+	public function staffpresentabsent()
+	{
+		$output=array();
+		
+		$AcademicYear = $this->schedulinglib->getAcademicyear();
+		
+		$this->db->select('sum(TeacherId) as Presents');
+		$this->db->from('teacherattendance');
+		$this->db->where('Present','Y');
+		$this->db->where('AttendanceFor',date('Y-m-d'));
+		$this->db->where('AcademicYear',$AcademicYear);
+		$qry = $this->db->get();
+		
+		if($qry->num_rows()>0)
+		{
+			foreach($qry->result() as $data)
+			{
+				if(  $data->Presents==null)
+					$output['Presents'] = 0;
+				else
+					$output['Presents'] = $data->Presents;	
+			}
+		}
+		else
+			$output['Presents'] = 0;
+
+		$this->db->select('sum(TeacherId) as Absents');
+		$this->db->from('teacherattendance');
+		$this->db->where('Present','N');
+		$this->db->where('AttendanceFor',date('Y-m-d'));
+		$this->db->where('AcademicYear',$AcademicYear);
+		$qry = $this->db->get();
+		
+		if($qry->num_rows()>0)
+		{
+			foreach($qry->result() as $data)
+			{
+				if($data->Absents==null)
+					$output['Absents'] = 0;
+				else
+					$output['Absents'] = $data->Absents;	
+			}
+		}
+		else
+			$output['Absents'] = 0;
+		
+		echo json_encode($output);
+	}
+	
+	//staffpresentabsentends here	
 			
 
 }//class ends here		

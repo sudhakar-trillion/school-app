@@ -325,57 +325,43 @@ $.ajax({
 								console.log(final_result);
 								
 								setTimeout(function(){ 
-														Highcharts.chart('chartone', {
 								
-    chart: {
-        type: 'pie',
-        options3d: {
-            enabled: true,
-            alpha: 45,
-            beta: 0
-        }
-    },
-    title: {
-        text: ''
-    },
-    tooltip: {
-        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-    },
-    plotOptions: {
-        pie: {
-            allowPointSelect: true,
-            cursor: 'pointer',
-            depth: 35,
-            dataLabels: {
-                enabled: true,
-                format: '{point.name}'
-            }
-        }
-    },
-	credits: {
-    		  enabled: false
-		  },
-    series: [{
-        type: 'pie',
-        name: 'Attendance Percentage',
-        data: final_result /*[
-            ['Firefox', 45.0],
-            ['IE', 26.8],
-            {
-                name: 'Chrome',
-                y: 12.8,
-                sliced: true,
-                selected: true
-            },
-            ['Safari', 8.5],
-            ['Opera', 6.2],
-            ['Others', 0.7]
-        ]*/
-		
-    }]
-							});
+								Highcharts.chart('chartone', {
+												
 											
-												 }, 3000); //set time out ends here
+											
+											chart: {
+											type: 'pie',
+											options3d: {
+											enabled: true,
+											alpha: 55
+											}
+											},
+											
+											title: {
+											text: ''
+											},
+											/* subtitle: {
+											text: '3D donut in Highcharts'
+											},*/
+											plotOptions: {
+											pie: {
+											innerSize: 100,
+											depth: 55
+											}
+											},
+											series: [{
+														name: 'Attendance Percentage' ,
+														data:final_result
+													}],
+											credits: {
+											enabled: false
+											},
+											
+											
+											});
+												
+								}, 3000); //set time out ends here
 								
 								
 								
@@ -497,105 +483,24 @@ $(document).ready(function()
 			});
 					
 	$.ajax({
-			
-						url:base_url+'Chartsdispatcher/staffpresentabsent',
-						type:"POST",
-						data:{"Class":'',"Seciton":''},
-						beforeSend:function() 
-											{ 
-												graph = $("#chartone2").html();
-												var dropboxGIF = "<img style='width:80%; margin-left:37px; margin-top:-30px' src='"+base_url+"resources/custom-assests/images/jelly-fluid-loader.gif'/>";
-												$("#chartone2").html(dropboxGIF);
-											},
-						success:function(resp)
-						{
-							resp = $.trim(resp);
-							
-							var obj = JSON.parse(resp);
-							
-							
-							var result = [];
-							
-							
-							$.each(obj,function(ind,val)
-							{
-								var month = val.Month;
-							//	console.log(month);
-								var newarr = {month:val.Attendance};
-								result.push(month);
-								result.push(val.Attendance);
-							});
-							
-						//chunk the resultant arry into two element and result will be arrays with each two elements
-							
-							Array.prototype.chunk = function ( n ) 
-							{
-								if ( !this.length ) 
+				url:base_url+'Chartsdispatcher/staffpresentabsent',
+				type:"POST",
+				async:false,
+				beforeSend:function() {},
+				success:function(resp)
 								{
-									return [];
-								}
-								return [ this.slice( 0, n ) ].concat( this.slice(n).chunk(n) );
-							};
-							
+									resp=$.trim(resp);
+									resp = JSON.parse(resp);
+									
+									$.each(resp,function(ind,val)
+									{
+										if(ind=="Presents")
+											$("#TotalPresents").html(val);
+										else if(ind=="Absents")
+											$("#TotalAbsents").html(val);
+									});
 								
-								
-								var final_result = result.chunk(2);
-								
-								console.log(final_result);
-								
-								setTimeout(function(){ 
-													//$("#chartone2").html(graph);
-											Highcharts.chart('chartone2', {
-												
-											
-											
-											chart: {
-											type: 'pie',
-											options3d: {
-											enabled: true,
-											alpha: 55
-											}
-											},
-											
-											title: {
-											text: ''
-											},
-											/* subtitle: {
-											text: '3D donut in Highcharts'
-											},*/
-											plotOptions: {
-											pie: {
-											innerSize: 100,
-											depth: 55
-											}
-											},
-											series: [{
-											name: 'Attendance Percentage' ,
-											data: 
-											/*[ ['Jun', 80],
-											['Jul', 0],
-											['Aug', 98],
-											['Sep', 96],
-											['Oct', 98],
-											['Nov', 94],
-											['Dec', 89],
-											['Jan', 98],
-											['Feb', 99],
-											['Mar', 99] ] */
-											final_result
-											
-											
-											}],
-											credits: {
-											enabled: false
-											},
-											
-											
-											});
-												 }, 3000); //set time out ends here
-												 
-												 
-						}//success function ends here
+								}//success function ends here
 					
 			});
 		

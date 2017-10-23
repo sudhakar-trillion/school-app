@@ -720,14 +720,14 @@ $("#RollNo").keyup(function(event){
 		else
 			$(".RollNo_err").html('');
 			
-		var Password = $("#Password").val();
+		/*var Password = $("#Password").val();
 			Password = $.trim(Password);
 		
 		if(Password=='')
 		{
 			err_cnt='1';
 			$(".pwd_err").html("Enter password");
-		}
+		}*/
 				
 		if(err_cnt=='0')
 		{
@@ -735,7 +735,8 @@ $("#RollNo").keyup(function(event){
 						url:base_url+"Parentrequestdispatcher/parentloginvalidation",
 						type:"POST",
 
-						data:{"ClassSlno":ClassSlno,"section":section,"RollNo":RollNo,"Password":Password},
+						//data:{"ClassSlno":ClassSlno,"section":section,"RollNo":RollNo,"Password":Password},
+						data:{"ClassSlno":ClassSlno,"section":section,"RollNo":RollNo},
 						beforeSend:function() { OnClick.prop('disabled',true); OnClick.val('Validating.....');   },
 						success:function(resp)
 						{

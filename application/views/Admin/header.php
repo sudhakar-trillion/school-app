@@ -922,7 +922,12 @@ span.absent-label
             </div>-->
 
             <!--logo start-->
-            <a class="logo" style=" margin-top:2px;"  >   <img src="<?PHP echo $logo; ?>" style="width:45px;float:left;background: #fff;padding: 7px;border-radius: 50%; margin-right: 10px;     box-shadow: 0 1px 5px 1px rgba(0,0,0,0.14), 0 3px 14px 2px rgba(0,0,0,0.12), 0 5px 5px -3px rgba(0,0,0,0.2);" /><div style="width:500px; padding-top:12px;" class="img-circle" ><?PHP echo $schoolname?></span></div></a>
+            <a class="logo" style=" margin-top:2px;"  >
+			<?PHP 
+				if( $_SERVER['HTTP_HOST'] == "adiakshara.in" || $_SERVER['HTTP_HOST'] == "www.adiakshara.in"  )
+				$logo = 'resources/index-page/images/logo.png';
+				
+			?>   <img src="<?PHP echo $logo; ?>" style="width:45px;float:left;background: #fff;padding: 7px;border-radius: 50%; margin-right: 10px;     box-shadow: 0 1px 5px 1px rgba(0,0,0,0.14), 0 3px 14px 2px rgba(0,0,0,0.12), 0 5px 5px -3px rgba(0,0,0,0.2);" /><div style="width:500px; padding-top:12px;" class="img-circle" ><?PHP echo $schoolname?></span></div></a>
             <!--logo end-->
 
             

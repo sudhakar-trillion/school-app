@@ -851,6 +851,9 @@ $this->db->order_by($order_by_field,$order_by);
 		$this->db->order_by("tea.TeacherName",'ASC');
 		$qrey = $this->db->get();
 		
+		#echo $this->db->last_query(); exit;
+		
+		
 		if( $qrey->num_rows()>0)
 			return $qrey;
 		else
@@ -967,6 +970,36 @@ $this->db->order_by($order_by_field,$order_by);
 		else
 			return "0";
 	}
+	
+	
+	//viewTeacherAttendances starts here
+	
+	public function viewTeacherAttendances($table,$cond,$month='',$teacher)
+	{
+		if($teacher=="All")
+		{
+			$this->db->select("MONTHNAME(att.AttendanceFor) as Month, date_format(att.AttendanceFor,'%d-%m-%Y') as AttendanceFor, tea.TeacherName, ( CASE WHEN att.Present='Y' THEN 'Present' ELSE 'Absent' END) as Attendance");
+			$this->db->from('teacherattendance att');
+			$this->db->join('teacher as tea','tea.TeacherId=att.TeacherId','inner');
+			$this->db->where($cond);
+			$qry = $this->db->get('');
+			
+			#echo $this->db->last_query(); exit;
+			
+			if( $qry->num_rows()>0)
+				return $qry;
+			else
+				return "0";	
+			
+		}
+		else
+		{
+			
+		}
+		
+	}
+	
+	//viewTeacherAttendances ends here
 	
 }//class ends here
 

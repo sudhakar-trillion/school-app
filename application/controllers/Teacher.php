@@ -270,6 +270,80 @@ class Teacher extends CI_Controller
 			$this->load->view('Teacher/addattandance',$data);
 			$this->load->view(FOOTER);		
 		}
+		
+		
+		
+		//showStaffattendance starts here
+		
+		public function showStaffattendance()
+		{
+			$isert = "INSERT INTO `vsksamsu_schoolaap`.`teacherattendance` (`AttendanceId`, `TeacherId`, `Present`, `AttendanceFor`, `AcademicYear`, `LastUpdated`) VALUES";
+			
+			$atend=array("Y","N");
+			
+
+			for($i=29;$i<=31;$i++)
+			{
+				
+				for($j=0;$j<=2;$j++)
+				{
+					if($j==0)	
+						$f1 = $atend[array_rand($atend)];
+					else if ($j==1)	
+						$f2 = $atend[array_rand($atend)];
+				}
+				
+				$isert.= " (NULL, '1', '".$f1."', '2017-05-".$i."', '2017-2018', '12121211'), (NULL, '2', '".$f2."', '2017-05-".$i."', '2017-2018', '32322'),";	
+#			echo rtrim($isert,','); exit;
+			}
+			echo rtrim($isert,','); exit;
+			
+			
+			$this->load->view(HEADER);
+	
+				$data['Totalteachers'] = $this->Commonmodel->getrows($table='teacher',$cond=array(),$order_by='DESC',$order_by_field='TeacherId',$limit='');
+			
+			
+			//get the month attendance of a teacher if user selectes a teacher and a month, if not then show the attendance of all teacher on this day.
+			
+			
+			if( $this->input->post('attendance_filter') )
+			{
+				
+			}
+			else
+			{
+				$cond = array();
+				$table = 'teacherattendance';
+				
+				$cond['att.AttendanceFor'] = date('Y-m-d');
+				$cond['att.AcademicYear'] = $this->schedulinglib->getAcademicyear();
+				
+				$teacher = "All";
+				
+				$showattendance = $this->Commonmodel->viewTeacherAttendances($table,$cond,$month='',$teacher);
+				
+				if( $showattendance!='0')
+					$data['showattendance'] = $showattendance;	
+				else
+				{
+					
+					$data['routeto'] = 'view-staff-attendance';
+					$data['pgeno'] = $this->uri->segment(2); 
+					$requrl = str_replace("-"," ",$this->uri->segment(1));
+					$data['viewingPage'] = $requrl; 
+					$this->load->view('Admin/pagenotfound',$data);
+				}
+					
+			}
+				
+			$this->load->view('Teacher/showStaffattendance',$data);
+			$this->load->view(FOOTER);		
+			
+		}
+		
+		//showStaffattendance ends here
+		
 	
 	
 	//addattandance ends here

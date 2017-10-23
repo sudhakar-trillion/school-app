@@ -95,6 +95,10 @@ $route['edit-assigned-teacher/:num'] 		= 'Admin/editassignedteacher';
 
 $route['manage-teacher-profile'] 			= 'Teacher/manageprofile';
 $route['teacher-attandance']				= 'Teacher/addattandance';
+$route['view-staff-attendance']				=  'Teacher/showStaffattendance';
+
+
+
 $route['allocate-marks']					= 'Teacher/allocatemarks';
 $route['view-marks']						= 'Teacher/viewmarks';
 $route['view-marks/:num']					= 'Teacher/viewmarks';
