@@ -656,12 +656,9 @@ class Parentrequestdispatcher extends CI_Controller
 
 
 if(strpos($requested_from, 'trillionit.in') !== false)
-{
-	$dir1="/home/adiakshara/public_html/school-app/resources/studentspics/".$AcademicYear;
-//	$dir1="/tsm/resources/studentspics/".$AcademicYear;		
-}
+	$dir1="/home3/vsksamsu/public_html/school-app/resources/studentspics/".$AcademicYear;
 else
-$dir1="resources/studentspics/".$AcademicYear;
+	$dir1="resources/studentspics/".$AcademicYear;
 
 		if(is_dir($dir1))
 		{

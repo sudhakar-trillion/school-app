@@ -113,14 +113,15 @@ class Schedulings extends CI_Controller
 	if($this->uri->segment(3)!='')
 		$mnth = $this->uri->segment(3);
 	
-	$events = $this->schedulinglib->getcelebevents($yr,$mnth);
+	$events = $this->schedulinglib->getholidaylist($yr,$mnth);
 
 /*
 	echo "<Pre>";
 	print_r($events);
 	exit; 
+*/
 
-*/	if($events!='0')
+	if($events!='0')
 	{
 		$data['events'] = $events;
 	}

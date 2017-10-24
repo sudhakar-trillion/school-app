@@ -348,4 +348,207 @@ public function viewattendance()
 	
 }
 
+//viewstudentattendance starts here
+
+public function viewstudentattendance()
+{
+	$this->load->view(HEADER);
+	
+	$data=array();
+	
+	$months=array("05"=>"May","06"=>"Jun","07"=>"Jul","08"=>"Aug","09"=>"Sep","10"=>"Oct","11"=>"Nov","12"=>"Dec","01"=>"Jan","02"=>"Feb","03"=>"Mar","04"=>"Apr");
+	
+	$data['month'] = "0";
+	$data['Attendance_selected_Month']= 0;
+	$data['Attendance_selected_Class'] = 0;
+	$data['Attendance_selected_Section'] = 0;
+	
+	
+	$data['classes'] = $this->Commonmodel->getrows($table='newclass',array(),$order_by='',$order_by_field='',$limit='');
+
+/*
+				$isert = "INSERT INTO `studentattendance` (`AttendanceId`, `ClassId`, `SectionId`, `StudentId`, `PresentAbsent`, `AttendanceOn`, `AcademicYear`, `LastUpdated`) VALUES ";
+			
+			$atend=array("Present","Absent");
+			
+
+			for($i=1;$i<=31;$i++)
+			{
+				
+				for($j=0;$j<=3;$j++)
+				{
+					if($j==0)	
+						$f1 = $atend[array_rand($atend)];
+					else if ($j==1)	
+						$f2 = $atend[array_rand($atend)];
+					else if ($j==2)	
+						$f3 = $atend[array_rand($atend)];	
+					else if ($j==3)	
+						$f4 = $atend[array_rand($atend)];
+						
+				}
+				$m = '05';
+				
+				$excludeArray = array("7","14","21","28");
+								
+				if( in_array($i,$excludeArray) )
+				{
+					
+				}
+				else
+				{
+				$isert.= " (NULL, '1', '2', '4', '".$f1."', '2017-".$m."-".$i."', '2017-2018', '12345646'), (NULL, '1', '2', '5', '".$f2."', '2017-".$m."-".$i."', '2017-2018', '12345646'), (NULL, '1', '2', '6', '".$f3."', '2017-".$m."-".$i."', '2017-2018', '12345646'),(NULL, '1', '2', '7', '".$f4."', '2017-".$m."-".$i."', '2017-2018', '12345646'),";	
+				}
+		
+			}
+			echo rtrim($isert,','); exit;
+*/
+	$cond = array();
+	$AcademicYear = $this->schedulinglib->getAcademicyear();
+	
+	$cond['att.AcademicYear'] = $AcademicYear;
+	
+	
+	$table='studentattendance as att';
+	$baseurl='view-attendance';
+	$perpage=15;
+	$order_by_field='';
+	$datastring='attendancelist';
+	$pagination_string = 'pagination_string';
+	
+	
+	if( $this->input->post('studentattendance_filter') )
+	{
+		if( $this->input->post('Month')>0 )
+		{
+			$Attendance_selected_Month = $this->input->post('Month');
+			$cond['MONTH(att.AttendanceOn)'] = $Attendance_selected_Month;
+			$this->session->set_userdata('Attendance_selected_Month',$Attendance_selected_Month);
+			$data['Attendance_selected_Month']= $Attendance_selected_Month;
+			
+			$data['SelectedMonth']  = $months[$Attendance_selected_Month];
+		}
+		
+		if( $this->input->post('ClassName')>0)
+		{
+			$Attendance_selected_Class = $this->input->post('ClassName');
+			$cond['att.ClassId'] = $Attendance_selected_Class;
+			$this->session->set_userdata('Attendance_selected_Class',$Attendance_selected_Class);
+			$data['Attendance_selected_Class']= $Attendance_selected_Class;
+			
+			$data['SelectedClass']  = $this->Commonmodel->getAfield('newclass',array("SLNO"=>$Attendance_selected_Class),'ClassName',$order_by='',$order_by_field='',$limit='');
+			
+			$data['relatedsections'] = $this->Commonmodel->getrows('sections',array("ClassSlno"=>$Attendance_selected_Class),$order_by='',$order_by_field='',$limit='');
+			
+		}
+		
+		if( $this->input->post('sections')>0 )
+		{
+			$Attendance_selected_Section = $this->input->post('sections');
+			$cond['att.SectionId'] = $Attendance_selected_Section;
+			$this->session->set_userdata('Attendance_selected_Section',$Attendance_selected_Section);
+			$data['Attendance_selected_Section']= $Attendance_selected_Section;
+			
+			$data['SelectedSection']  = $this->Commonmodel->getAfield('sections',array("ClassSlno"=>$Attendance_selected_Class),'Section',$order_by='',$order_by_field='',$limit='');
+			
+			
+			$data['relatedstudents'] = $this->Commonmodel->getrows('students',array("ClassName"=>$Attendance_selected_Class,"ClassSection"=>$Attendance_selected_Section,"AcademicYear"=>$AcademicYear),$order_by='',$order_by_field='',$limit='');
+			
+		}
+		
+		if( $this->input->post('Rollno')>0 )
+		{
+			$Attendance_selected_Rollno = $this->input->post('Rollno');
+			$cond['att.StudentId'] = $Attendance_selected_Rollno;
+			$this->session->set_userdata('Attendance_selected_Rollno',$Attendance_selected_Rollno);
+			$data['Attendance_selected_Rollno']= $Attendance_selected_Rollno;
+			
+		//	$data['SelectedSection']  = $this->Commonmodel->getAfield('sections',array("ClassSlno"=>$Attendance_selected_Class),'Section',$order_by='',$order_by_field='',$limit='');
+		}
+		
+	}
+	else
+	{
+		if( $this->session->userdata('Attendance_selected_Month')>0 )
+		{
+			$Attendance_selected_Month = $this->session->userdata('Attendance_selected_Month');
+			$cond['MONTH(att.AttendanceOn)'] = $Attendance_selected_Month;
+			$this->session->set_userdata('Attendance_selected_Month',$Attendance_selected_Month);
+			$data['Attendance_selected_Month']= $Attendance_selected_Month;
+			$data['SelectedMonth']  = $months[$Attendance_selected_Month];
+		}
+		
+		if( $this->session->userdata('Attendance_selected_Class')>0)
+		{
+			$Attendance_selected_Class = $this->session->userdata('Attendance_selected_Class');
+			$cond['att.ClassId'] = $Attendance_selected_Class;
+			$this->session->set_userdata('Attendance_selected_Class',$Attendance_selected_Class);
+			$data['Attendance_selected_Class']= $Attendance_selected_Class;
+			
+			$data['SelectedClass']  = $this->Commonmodel->getAfield('newclass',array("SLNO"=>$Attendance_selected_Class),'ClassName',$order_by='',$order_by_field='',$limit='');
+			$data['relatedsections'] = $this->Commonmodel->getrows('sections',array("ClassSlno"=>$Attendance_selected_Class),$order_by='',$order_by_field='',$limit='');
+		}
+		
+		if( $this->session->userdata('Attendance_selected_Section')>0)
+		{
+			$Attendance_selected_Section = $this->session->userdata('Attendance_selected_Section');
+			$cond['att.SectionId'] = $Attendance_selected_Section;
+			$this->session->set_userdata('Attendance_selected_Section',$Attendance_selected_Section);
+			$data['Attendance_selected_Section']= $Attendance_selected_Section;
+			
+			$data['SelectedSection']  = $this->Commonmodel->getAfield('sections',array("ClassSlno"=>$Attendance_selected_Class),'Section',$order_by='',$order_by_field='',$limit='');
+			
+			$data['relatedstudents'] = $this->Commonmodel->getrows('students',array("ClassName"=>$Attendance_selected_Class,"ClassSection"=>$Attendance_selected_Section,"AcademicYear"=>$AcademicYear),$order_by='',$order_by_field='',$limit='');
+		}
+		
+		if( $this->session->userdata('Attendance_selected_Rollno')>0 )
+		{
+			$Attendance_selected_Rollno = $this->session->userdata('Attendance_selected_Rollno');
+			$cond['att.StudentId'] = $Attendance_selected_Rollno;
+			$this->session->set_userdata('Attendance_selected_Rollno',$Attendance_selected_Rollno);
+			$data['Attendance_selected_Rollno']= $Attendance_selected_Rollno;
+			
+		//	$data['SelectedSection']  = $this->Commonmodel->getAfield('sections',array("ClassSlno"=>$Attendance_selected_Class),'Section',$order_by='',$order_by_field='',$limit='');
+		}
+		
+		else
+			$cond['att.AttendanceOn'] = date('Y-m-d');
+		
+	}
+		
+	
+	$qery = $this->tsmpaginate->getstudentattendancelist($table,$cond,$baseurl,$perpage,$order_by_field='',$datastring,$pagination_string);
+	
+	#echo $qery['markslist']; exit;
+	
+		
+	
+	if( $this->input->post('studentattendance_filter') )
+	{
+		
+	}
+	else
+	{
+		$cond['att.AttendanceOn'] = date('Y-m-d');
+			
+		
+	}
+				
+if( $qery['attendancelist']!='0')
+	{
+		$data['perpage']= $perpage;
+		$data['attendancelist'] = $qery['attendancelist'];
+		$data['pagination_string'] = $qery['pagination_string'];
+	}
+	
+/*	echo "<pre>";
+	print_r($data['pagination_string']);
+	exit;
+	*/
+	$this->load->view("Admin/showStudentattendance",$data);
+	$this->load->view(FOOTER);
+}
+
+//viewstudentattendance ends her
+
 }//class ends here

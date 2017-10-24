@@ -332,12 +332,24 @@
        <div id="chartone" style="height:300px;"></div>
        
        </div>
-           
-           </div>
-          
-          
-          
-          </div>
+       <?PHP
+	   if( $TeacherAttendancePrincipal==0)
+	   {
+		   $send_display="notsend";
+		   $sent_display = "sent";
+	   }
+	   else
+	   {
+		    $send_display="sent";
+		   $sent_display = "notsend";
+	   }
+	   ?>
+       <span class="pull-left teacher-attendancve-sms-resp"></span>
+ <span class="pull-right btn btn-sm btn-primary <?PHP echo $send_display?>" id="SendTodaysattendanceSMS" >Send SMS </span>
+<span class="pull-right btn btn-sm btn-danger messagesent <?PHP echo $sent_display; ?>">SMS Sent</span> 
+  </div>
+
+</div>
           
           
         <div class="col-lg-6 col-md-6">
@@ -400,7 +412,8 @@
           
           
           </div>
-                        
+
+<div style="clear:both"></div>                        
                         
                         
                         <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">

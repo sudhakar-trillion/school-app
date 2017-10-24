@@ -522,5 +522,127 @@ public function getexamschedules()
 	}
 
 //deleteexamschedule ends here
+
+
+//adding an holiday to the calendar starts here
+
+	public function addholidaytocalendar()
+	{
+		$postdata = $this->striptags($_POST);
+		extract($postdata);
+		
+		$AcademicYear = $this->schedulinglib->getAcademicyear();
+		
+		$table ='holidaylist';
+		
+		if($addUpdate=="add")
+		{
+			$insertdata = array();
+			
+			$cel_date = date_create($cel_date);
+			$cel_date = date_format($cel_date,"Y-m-d");
+			
+			$insertdata['HolidayFor'] =  $Occassion;
+			$insertdata['HolidayOn'] =  $cel_date;
+			
+			$insertdata['AcademicYear'] =  $AcademicYear;
+			$insertdata['LastUpdated'] =  time();
+			
+			if( $this->Commonmodel->insertdata($table,$insertdata) )
+				echo "1";
+			else
+				echo "0";
+				
+		}
+		else
+		{
+			$cond = array();
+			
+			$cond['HolidayId'] = $HolidayId;
+			
+			$cel_date = date_create($cel_date);
+			$cel_date = date_format($cel_date,"Y-m-d");
+			
+			$setdata = array();
+			
+			$setdata['HolidayFor'] =  $Occassion;
+			$setdata['HolidayOn'] =  $cel_date;
+			
+			$setdata['AcademicYear'] =  $AcademicYear;
+			$setdata['LastUpdated'] =  time();
+			
+			if( $this->Commonmodel->updatedata($table,$setdata,$cond)	)
+				echo "1";
+			else
+				echo "0";
+			
+		}
+	}
+
+// ading an holiday to the calendar ends here
+
+
+//deleteholiday starts here
+
+	public function deleteholiday()
+	{
+		$postdata = $this->striptags($_POST);
+		extract($postdata);	
+		
+		$cond = array();
+		$table = 'holidaylist';
+		
+		$cond['HolidayId'] = $HolidayId;
+		
+		if( $this->Commonmodel->deleterow($table,$cond) )
+			echo "1";
+		else
+			echo "0";
+		
+		
+		
+	}
+
+///deleteholiday ends here
+
+//get the holiday of a date
+
+	public function getholiday()
+	{
+		
+			$postdata = $this->striptags($_POST);
+			extract($postdata);
+			
+			$cond = array();
+			$table ='holidaylist';
+			
+			$cond['HolidayId'] = $CelebId;
+			$fields='date_format(HolidayOn,"%d-%m-%Y") as HolidayOn,HolidayFor';
+			$order_by='';
+			$order_by_field='';
+			$limit='';
+			
+			$data = $this->Commonmodel->getRows_fields($table,$cond,$fields,$order_by,$order_by_field,$limit);
+			
+			$output = array();
+			
+			if($data!='0')
+			{
+				foreach($data->result() as $res)
+				{
+					$output[] = array("HolidayOn"=>$res->HolidayOn,"HolidayFor"=>$res->HolidayFor,"HolidayId"=>$CelebId);
+				}
+				echo json_encode($output);
+			}
+			else
+			echo "0";
+			
+			
+			
+		
+	}
+
+//get the holiday of a date ends here
+
 					
 }//class ends here		

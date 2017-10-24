@@ -2192,13 +2192,12 @@ $.ajax({
 
 			$('#loading').hide();
 			$("#message").html(data);
-			return false;
+			//return false;
 		
 		}
 });
 
 //e.preventDefault();
-
 });
 
 // profile image uplod for studnet ends here
@@ -2263,6 +2262,7 @@ $(document).on('click','.day a',function()
 $(document).on('click',".calendar .day",function()
 {
 
+
 	prev_dated = $(this);
 
 	$(".del_exam_schedule i").css({'cursor':'pointer'});
@@ -2280,7 +2280,7 @@ $(document).on('click',".calendar .day",function()
 	var pathname = pathname.split("/");
 	
 	
-	if( pathname[2] =="view-celebrations" || pathname[2] =="view-events" )
+	if( pathname[2] =="view-holidays" || pathname[2] =="view-events" )
 	{
 		if( pathname[2] =="view-celebrations" )
 		$('#examscheduletime').timepicker('setTime', new Date());
@@ -2305,7 +2305,7 @@ $(document).on('click',".calendar .day",function()
 				
 				$.ajax({
 							
-							url:'Schedulingdispatcher/getcelebratation',
+							url:'Schedulingdispatcher/getholiday',
 							type:"POST",
 							data:{"CelebId":CelebId},
 							beforeSend:function() { $(".loader").css('display','block');   },
@@ -2332,9 +2332,9 @@ $(document).on('click',".calendar .day",function()
 									{ 
 									//	console.log(resp[0].Celebration_Date);
 										
-										$(".cel_date").val(resp[0].Celebration_Date);
-										$(".celebration").val(resp[0].Celebration_Text);
-										$("#CelebId").val(resp[0].CelebId);
+										$(".cel_date").val(resp[0].HolidayOn);
+										$(".celebration").val(resp[0].HolidayFor);
+										$("#CelebId").val(resp[0].HolidayId);
 										
 									});
 									
@@ -2348,7 +2348,8 @@ $(document).on('click',".calendar .day",function()
 	}
 	else
 	{
-		if( pathname[2] == "add-celebration" ||  pathname[2] == "add-exam")
+		//if( pathname[2] == "add-celebration" ||  pathname[2] == "add-exam")
+		if( pathname[2] == "add-holiday" ||  pathname[2] == "add-exam")
 		{
 			$('#examscheduletime').timepicker('setTime', new Date());
 			
@@ -2488,10 +2489,9 @@ $(document).on('click','.close',function()
 	$("#myModal").removeClass('in');
 });
 
-
-
-$(document).on('click','.celebrationbtn, .updatecelebrationbtn',function()
+$(document).on('click','.addholidaybtn,.updateholidaybtn',function()
 {
+	
 	var addedit = $(this).attr('addedit');
 	
 	
@@ -2511,7 +2511,7 @@ $(document).on('click','.celebrationbtn, .updatecelebrationbtn',function()
 	if(celebration=='')
 	{
 		err_cnt='1';
-		$(".err-msg").html('Enter Celebration');
+		$(".err-msg").html('Enter Occassion Name');
 		$(".celebration").focus();
 	}
 	
@@ -2519,34 +2519,36 @@ $(document).on('click','.celebrationbtn, .updatecelebrationbtn',function()
 	{
 		if(addedit=="add")
 		{
-				$.ajax({
-							url:base_url+'Schedulingdispatcher/addCelebration',
-							type:"POST",
-							data:{"celebration":celebration,"cel_date":cel_date},
-							success:function(resp)
-							{
-								resp=$.trim(resp);
+			$.ajax({
+					url:base_url+"Schedulingdispatcher/addholidaytocalendar",
+					type:"POST",
+					data:{"Occassion":celebration,"cel_date":cel_date,"addUpdate":addedit},
+					success:function(resp)
+					{
+						resp=$.trim(resp);
+						
+						if(resp=='1')
+						{
+							$(".addceleb_resp").html("<span class='text-success'><b>Holiday added successfuly</b></span>");
+							$("form#add-celebrationform")[0].reset();
+						}
+						else
+						{
+							$(".addceleb_resp").html("<span class='text-danger'><b>unable to add new holiday</b></span>");
+						}
+					}
 								
-								if(resp=='1')
-								{
-									$(".addceleb_resp").html("<span class='text-success'><b>New celebration added successfuly</b></span>");
-									$("form#add-celebrationform")[0].reset();
-								}
-								else
-								{
-									$(".addceleb_resp").html("<span class='text-danger'><b>unable to add new celebration</b></span>");
-								}
-							}
-						});
+					});//ajax ends here
 		}
 		else
 		{
-			var CelebId = $("#CelebId").val();
+			
+			var HolidayId = $("#CelebId").val();
 			
 			$.ajax({
-							url:base_url+'Schedulingdispatcher/updateCelebration',
+							url:base_url+'Schedulingdispatcher/addholidaytocalendar',
 							type:"POST",
-							data:{"CelebId":CelebId,"celebration":celebration,"cel_date":cel_date},
+							data:{"HolidayId":HolidayId,"Occassion":celebration,"cel_date":cel_date,"addUpdate":addedit},
 							success:function(resp)
 							{
 								resp=$.trim(resp);
@@ -2562,12 +2564,50 @@ $(document).on('click','.celebrationbtn, .updatecelebrationbtn',function()
 							}
 						});
 			
+			
 		}
 	}
-			
+	
 });
 
+//delete holiday
 
+$(document).on('click','.delete-holiday',function()
+{
+
+if( confirm("Do you want to delete this holiday") )
+{
+	var HolidayId = $(".HolidayId").val();
+		HolidayId = $.trim(HolidayId);
+		HolidayId = parseInt(HolidayId);
+		
+	if(HolidayId>0)
+	{
+		
+		$.ajax({
+					url:base_url+"Schedulingdispatcher/deleteholiday",
+					type:"POST",
+					data:{"HolidayId":HolidayId},
+					success:function(resp)
+					{
+						resp = $.trim(resp);
+						
+						if(resp=="1")
+						{
+							$(".addceleb_resp").html("<span class='text-success'><b>Holiday Deleted successfully</b></span>");
+							prev_dated.css({"background":"none"});
+							prev_dated.find('a').css({"color":"#838383"});
+						}
+						else
+							$(".addceleb_resp").html("<span class='text-danger'><b>Unableto delete holiday</b></span>");
+					}
+				});	
+	}
+}
+	
+});
+
+//delete holiday ends here
 
 // addexamBtn validation starts here
 

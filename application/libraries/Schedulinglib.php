@@ -165,6 +165,110 @@
 			
 		}
 		
+		public function getholidaylist($yr,$mnth)
+		{
+			#echo $mnth; exit;
+			
+			
+			$yr1=date('Y');
+			$yr2=date('Y');
+					
+			if( $mnth>=6 && $mnth<=12 )
+				{
+
+					$mtn = $mnth;
+					
+					$curmnth  = $mnth;
+					
+					if( $mnth==9 || $mnth==10  )
+					{
+							if( $mnth==9)
+								$curmnth = "09";
+							$nextmnth =	$mnth+1;
+							$nextmnth = $nextmnth;
+						
+							$onemoremonth = $mnth+2;
+							$onemoremonth = $onemoremonth;	
+					}
+					elseif( $mnth == 11 || $mnth == 12 )
+					{
+							if($mnth == 12)
+							{
+								$nextmnth =	"01";
+								$nextmnth = "01";
+								$onemoremonth ="02";
+							}
+							else
+							{
+								$nextmnth =	$mnth+1;
+								$nextmnth = $nextmnth;
+								$onemoremonth ="01";
+							}
+								$yr1=date('Y');
+								$yr2=date('Y')+1;
+							
+								
+								$this->CI->db->like('HolidayOn', $yr1."-".$curmnth );
+								$this->CI->db->or_like('HolidayOn', $yr2."-".$nextmnth );
+								$this->CI->db->or_like('HolidayOn', $yr2."-".$onemoremonth );
+						
+								
+					}
+					else
+					{
+						$nextmnth =	$mnth+1;
+						$nextmnth = "0".$nextmnth;
+						
+						$onemoremonth = $mnth+2;
+						$onemoremonth = "0".$onemoremonth;
+					}
+					$this->CI->db->like('AcademicYear', $this->getAcademicyear() );
+					$this->CI->db->like('HolidayOn', $yr1."-".$curmnth );
+					$this->CI->db->or_like('HolidayOn', $yr1."-".$nextmnth );
+					$this->CI->db->or_like('HolidayOn', $yr1."-".$onemoremonth ); 
+
+				}
+			else
+			{
+				
+				$curmnth  = "03";
+				$nextmnth =	"04";
+
+				
+				$yr1=date('Y')+1;
+				$yr2=date('Y')+1;
+		
+				$this->CI->db->like('AcademicYear', $this->getAcademicyear() );
+				$this->CI->db->like('HolidayOn', $yr1."-".$curmnth );
+				$this->CI->db->or_like('HolidayOn', $yr2."-".$nextmnth );
+				
+			
+			}//else ends here
+			
+			$this->CI->db->select("month(HolidayOn) as mnth, day(HolidayOn) as day, HolidayId, HolidayFor ");
+			$this->CI->db->order_by("month(HolidayOn)","ASC");
+//			$this->CI->db->order_by("year(Celebration_Date)","ASC");
+
+			$qry = $this->CI->db->get('holidaylist');
+			#return $this->CI->db->last_query();
+			
+			$ourput_arr = array();
+			$prevMonth = "0";
+			if($qry->num_rows()>0)
+			{
+				foreach($qry->result() as $hoidays)
+				{
+					$ourput_arr[$hoidays->mnth][$hoidays->day] =$hoidays->HolidayFor."/||||".$hoidays->HolidayId;
+				}
+				return $ourput_arr;
+			}
+			else
+				return "0";
+			
+			
+		}
+		
+		
 		public function getscheduledexams($yr,$mnth)
 		{
 			
@@ -387,6 +491,7 @@
 			
 			
 		}
+	
 		
 	}//class ends here
 ?>

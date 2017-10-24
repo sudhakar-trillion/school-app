@@ -301,13 +301,15 @@ class Teacher extends CI_Controller
 			echo rtrim($isert,','); exit;
 			*/
 			
+			$AcademicYear = $this->schedulinglib->getAcademicyear();
+			
 			$this->load->view(HEADER);
 	
 				$data['Totalteachers'] = $this->Commonmodel->getrows($table='teacher',$cond=array(),$order_by='DESC',$order_by_field='TeacherId',$limit='');
 				$cond = array();
 				$table = 'teacherattendance';
 				
-				$cond['att.AcademicYear'] = $this->schedulinglib->getAcademicyear();
+				$cond['att.AcademicYear'] = $AcademicYear;
 			
 			//get the month attendance of a teacher if user selectes a teacher and a month, if not then show the attendance of all teacher on this day.
 			
@@ -329,7 +331,32 @@ class Teacher extends CI_Controller
 						$data['selectedteacher'] = $teacher;
 						$data['month']=$month;
 						
+						
+						$startDate = date('Y-m-01',strtotime(date('Y-'.$month)));
+						$endDate = date('Y-m-t',strtotime(date('Y-'.$month)));
+		
+						$totaldays = explode("-",$endDate);
+
+						$totalsundays = $this->db->query("select DATE_ADD('".$startDate."', INTERVAL ROW DAY) as Date, row+1  as DayOfMonth from( SELECT @row := @row + 1 as row FROM  (select 0 union all select 1 union all select 3  union all select 4 union all select 5 union all select 6) t1, (select 0 union all select 1 union all select 3 union all select 4 union all select 5 union all select 6) t2,  (SELECT @row:=-1) t3 limit 31 ) b where  DATE_ADD('".$startDate."', INTERVAL ROW DAY) between '".$startDate."' and '".$endDate."' and DAYOFWEEK(DATE_ADD('".$startDate."', INTERVAL ROW DAY))=1"); 		
+		
+						$numsundays = $totalsundays->num_rows();
+						
+						$totalworkingdays = (end($totaldays))-$numsundays;
+						
+						$workingdayacond = array();
+						
+						$workingdayacond['MONTH(HolidayOn)'] = $month;
+						$workingdayacond['AcademicYear'] = $AcademicYear;
+
+						$Numberofholidays = $this->Commonmodel->getnumRows('holidaylist',$workingdayacond);
+						
+						
+						
+						$data['Totalworkingdays'] =  ($totalworkingdays)-($Numberofholidays);
+						
+						
 						$showattendance = $this->Commonmodel->viewTeacherAttendances($table,$cond,$month,$teacher);
+						
 					}
 					else
 					{

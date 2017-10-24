@@ -714,11 +714,12 @@ ul.sidebar-menu li.active a{
 
                       <a href="javascript:;" <?PHP if( $uri_segm== 'view-events' ){  echo 'style=""';  }?>  >
                           <i class="icon_document_alt"></i>
-                          <span>Celebrations </span>
+                          <span>Holidays List </span>
                           <span class="menu-arrow  <?PHP if(  $uri_segm== 'view-events' ){ echo 'arrow_carrot-down'; }else echo 'arrow_carrot-right'; ?>"></span>
                       </a>
                       <ul class="sub"  <?PHP if( $uri_segm == 'view-events' ){  echo 'style="overflow: hidden; display: block;"'; } ?> >
-        <li><a href="<?PHP echo base_url('view-events')?>" <?PHP if( $uri_segm== 'view-events' ){echo 'style=""'; } ?> >view celebrations</a> </li>
+       <!--  <li><a href="<?PHP echo base_url('view-events')?>" <?PHP if( $uri_segm== 'view-events' ){echo 'style=""'; } ?> >view celebrations</a> </li> -->
+       <li><a style="cursor:pointer" >view holidays</a> </li>
                       </ul>
                   </li>
                   

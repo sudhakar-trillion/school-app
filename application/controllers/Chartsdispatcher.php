@@ -45,13 +45,19 @@ class Chartsdispatcher extends CI_Controller
 	public function classattendance()
 	{
 		
+		$AcademicYear = $this->schedulinglib->getAcademicyear();
 		$postedData = $this->striptags($_POST);
-		$postedData['Academicyear'] = $this->schedulinglib->getAcademicyear();
+		$postedData['Academicyear'] = $AcademicYear;
 		extract($postedData);
 		
 		
 		$relset = $this->Commonmodel->getMonthwiseStudentattendance($postedData);
 		
+		/*
+		echo "<pre>";
+		print_r($relset->result());
+		exit;
+		*/
 		$outputarr = array();
 		
 		foreach( $relset->result() as $data )
@@ -74,8 +80,13 @@ row+1  as DayOfMonth from( SELECT @row := @row + 1 as row FROM  (select 0 union 
 		
 			$totalworkingdays = ($totaldays)-$numsundays;
 			
-			//get number of students in the class of a section
+			$workingdayacond['MONTH(HolidayOn)'] = $data->MonthNumber;
+			$workingdayacond['AcademicYear'] = $AcademicYear;
 			
+			$Numberofholidays = $this->Commonmodel->getnumRows('holidaylist',$workingdayacond);
+			$totalworkingdays = ($totalworkingdays)-($Numberofholidays);
+
+			//get number of students in the class of a section
 			if($Seciton>0 && $Class>0 ) // is for whole school
 				$TotalStudents = $this->Commonmodel->getnumRows('students',array("ClassName"=>$Class,"ClassSection"=>$Seciton,"AcademicYear"=>$Academicyear) );
 			else //is for the a class and section
@@ -105,6 +116,7 @@ row+1  as DayOfMonth from( SELECT @row := @row + 1 as row FROM  (select 0 union 
 										);	
 			}
 		}
+	
 	if( sizeof($outputarr)>0)
 		echo json_encode($outputarr);
 	else
@@ -249,7 +261,8 @@ row+1  as DayOfMonth from( SELECT @row := @row + 1 as row FROM  (select 0 union 
 	}
 	
 	//staffpresentabsentends here	
-			
+	
+	
 
 }//class ends here		
 

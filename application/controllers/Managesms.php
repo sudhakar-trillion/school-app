@@ -295,6 +295,99 @@ class Managesms extends CI_Controller
 		
 	} 
 	//sentsms ends here
+
+
+	//	send sms to the principal about the attendance of theachers
+	
+	public function sendTeacherAttendanceSMS()
+	{
+		$url = "http://onlinebulksmslogin.com/spanelv2/api.php"; 
+		$from='AdiAks';	
+		$message='';
+		
+		$output=array();
+		
+		$AcademicYear = $this->schedulinglib->getAcademicyear();
+		
+		$this->db->select('count(TeacherId) as Presents');
+		$this->db->from('teacherattendance');
+		$this->db->where('Present','Y');
+		$this->db->where('AttendanceFor',date('Y-m-d'));
+		$this->db->where('AcademicYear',$AcademicYear);
+		$qry = $this->db->get();
+		
+		
+		if($qry->num_rows()>0)
+		{
+			foreach($qry->result() as $data)
+			{
+				if(  $data->Presents==null)
+					$output['Presents'] = 0;
+				else
+					$output['Presents'] = $data->Presents;	
+			}
+		}
+		else
+			$output['Presents'] = 0;
+
+		$this->db->select('count(TeacherId) as Absents');
+		$this->db->from('teacherattendance');
+		$this->db->where('Present','N');
+		$this->db->where('AttendanceFor',date('Y-m-d'));
+		$this->db->where('AcademicYear',$AcademicYear);
+		$qry = $this->db->get();
+		
+		if($qry->num_rows()>0)
+		{
+			foreach($qry->result() as $data)
+			{
+				if($data->Absents==null)
+					$output['Absents'] = 0;
+				else
+					$output['Absents'] = $data->Absents;	
+			}
+		}
+		else
+			$output['Absents'] = 0;
+			
+			$message.= "Teacher Attendance of ".date("d-m-Y")." ";
+			$message.= "Total Teachers Present ".$output['Presents']." ";
+			$message.= "Total Teachers Absent ".$output['Absents'];
+		
+		
+		$contactNumber = "8499032661";
+		
+		$request="username=adiakshara&password=preschool123&to=".$contactNumber."&from=$from&message=".urlencode($message);	
+		
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $request);
+		
+		$response=curl_exec($ch);
+		
+		if( $response!='' )
+		{	
+			$table = 'TeacherAttendancePrincipal';
+			$insertdata = array();
+			
+			$insertdata['AttendanceFor'] = date('Y-m-d');
+			$insertdata['Academicyear'] = $AcademicYear;
+			$insertdata['Lastupdated'] = time();
+			
+			if( $this->Commonmodel->insertdata($table,$insertdata))
+				echo "1";
+			else
+				echo "-1";
+			
+			
+		}
+		else
+			echo "0";
+		
+		curl_close($ch);
+	}
+	//	send sms to the principal about the attendance of theachers ends here
 	
 	
 }//class ends here

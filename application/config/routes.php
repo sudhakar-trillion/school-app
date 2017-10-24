@@ -109,6 +109,11 @@ $route['edit-allocated-marks/:num'] 		= 'Teacher/editallocatedmarks';
 $route['add-student'] 						= 'Adminfromstudents/addstudent';
 $route['view-students'] 					= 'Adminfromstudents/viewstudents';
 $route['view-students/:any'] 				= 'Adminfromstudents/viewstudents';
+
+$route['view-attendance']					= 'Adminfromstudents/viewstudentattendance';
+$route['view-attendance/:num']					= 'Adminfromstudents/viewstudentattendance';
+
+
 $route['edit-student/:any'] 				= 'Adminfromstudents/editstucent';
 
 $route['add-student-attendance']			= 'Adminfromstudents/addattendance';
@@ -160,20 +165,29 @@ $route['edit-student-activity/:num'] 		= 'managestudentactivities/editstudentact
 
 
 
+/* Manage Holidays starts here*/
+
+$route['add-holiday'] 					 = 'schedulings/addcelebration';
+$route['add-holiday/:num/:num'] 		 = 'schedulings/addcelebration';
+
+$route['view-holidays'] 				 = 'schedulings/viewcelebration';
+$route['view-holidays/:num/:num'] 		 = 'schedulings/viewcelebration';
+/* Manage Holidays ends here */
+
 
 /*  Scheduling Celebrations, exams events and more starts here */
 
 
-$route['add-celebration'] 					 = 'schedulings/addcelebration';
-$route['add-celebration/:num/:num'] 		 = 'schedulings/addcelebration';
+#$route['add-celebration'] 					 = 'schedulings/addcelebration';
+#$route['add-celebration/:num/:num'] 		 = 'schedulings/addcelebration';
 
-$route['view-celebrations'] 				 = 'schedulings/viewcelebration';
-$route['view-celebrations/:num/:num'] 		 = 'schedulings/viewcelebration';
+#$route['view-celebrations'] 				 = 'schedulings/viewcelebration';
+#$route['view-celebrations/:num/:num'] 		 = 'schedulings/viewcelebration';
 
-$route['add-celebration/:num/:num'] 		 = 'schedulings/addcelebration';
+#$route['add-celebration/:num/:num'] 		 = 'schedulings/addcelebration';
 
-$route['view-celebrations']  				 = 'schedulings/viewcelebration';
-$route['view-celebrations/:num/:num'] 		 = 'schedulings/viewcelebration';
+#$route['view-celebrations']  				 = 'schedulings/viewcelebration';
+#$route['view-celebrations/:num/:num'] 		 = 'schedulings/viewcelebration';
 
 
 

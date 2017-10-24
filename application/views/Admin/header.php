@@ -902,6 +902,15 @@ span.absent-label
 	font-weight:bolder;
 	margin-left:5px;
 }
+
+.notsend
+{
+	display:block;
+}
+.sent
+{
+	display:none;
+}
 </style>
 
 <link rel="stylesheet" href="resources/datepicker/daterangepicker.css"/>
@@ -1337,15 +1346,16 @@ span.absent-label
                   
                   
                   
-                      <a href="javascript:;" <?PHP if( $uri_segm== 'add-student' ||  $uri_segm== 'view-students' || $uri_segm== 'edit-student' ){  echo 'class=active';  }?>  >
+                      <a href="javascript:;" <?PHP if( $uri_segm== 'add-student' ||  $uri_segm== 'view-students' || $uri_segm== 'edit-student'){  echo 'class=active';  }?>  >
                           <i class="icon_document_alt"></i>
                           <span>Manage Student </span>
                           <span class="menu-arrow  <?PHP if( $uri_segm== 'add-student' ||  $uri_segm== 'view-students' || $uri_segm== 'edit-student' ){ echo 'arrow_carrot-down'; }else echo 'arrow_carrot-right'; ?>"></span>
                       </a>
-                      <ul class="sub"  <?PHP if( $uri_segm== 'add-student' ||  $uri_segm== 'view-students' || $uri_segm== 'edit-student' ){  echo 'style="overflow: hidden; display: block;"'; } ?> >
+                      <ul class="sub"  <?PHP if( $uri_segm== 'add-student' ||  $uri_segm== 'view-students' || $uri_segm== 'edit-student'  ){  echo 'style="overflow: hidden; display: block;"'; } ?> >
 	
     <li><a class="" href="add-student" <?PHP if( $uri_segm== 'add-student' ){ echo 'class=active';  } ?> >Add student </a></li>
 	<li><a class="" href="view-students" <?PHP if( $uri_segm== 'view-students' || $uri_segm=='edit-student' ){ echo 'style="background:#24303b"';  } ?>>View students</a></li>
+    
                           
                           
                       </ul>
@@ -1357,16 +1367,16 @@ span.absent-label
                   
                   
                   
-                      <a href="javascript:;" <?PHP if( $uri_segm== 'add-student-attendance' ||  $uri_segm== 'view-student-attendance' || $uri_segm== 'edit-student-attendance' ){  echo 'class=active';  }?>  >
+                      <a href="javascript:;" <?PHP if( $uri_segm== 'add-student-attendance' ||  $uri_segm== 'view-student-attendance' || $uri_segm== 'edit-student-attendance' || $uri_segm=="view-attendance" ){  echo 'class=active';  }?>  >
                           <i class="icon_document_alt"></i>
                           <span>Manage Attendance </span>
-                          <span class="menu-arrow  <?PHP if( $uri_segm== 'add-student-attendance' ||  $uri_segm== 'view-student-attendance' || $uri_segm== 'edit-student-attendance' ){ echo 'arrow_carrot-down'; }else echo 'arrow_carrot-right'; ?>"></span>
+                          <span class="menu-arrow  <?PHP if( $uri_segm== 'add-student-attendance' ||  $uri_segm== 'view-student-attendance' || $uri_segm== 'edit-student-attendance' || $uri_segm=="view-attendance" ){ echo 'arrow_carrot-down'; }else echo 'arrow_carrot-right'; ?>"></span>
                       </a>
-                      <ul class="sub"  <?PHP if( $uri_segm== 'add-student-attendance' ||  $uri_segm== 'view-student-attendance' || $uri_segm== 'edit-student-attendance' ){  echo 'style="overflow: hidden; display: block;"'; } ?> >
+                      <ul class="sub"  <?PHP if( $uri_segm== 'add-student-attendance' ||  $uri_segm== 'view-student-attendance' || $uri_segm== 'edit-student-attendance'  || $uri_segm=="view-attendance"){  echo 'style="overflow: hidden; display: block;"'; } ?> >
 	
     <li><a class="" href="add-student-attendance" <?PHP if( $uri_segm== 'add-student-attendance' ){ echo 'class=active';  } ?> >Add Attendance</a></li>
-	<li><a class="" href="view-student-attendance" <?PHP if( $uri_segm== 'view-student-attendance' || $uri_segm=='edit-student-attendance' ){ echo 'class=active';  } ?>>View attendances</a></li>
-                          
+	<li><a class="" href="view-student-attendance" <?PHP if( $uri_segm== 'view-student-attendance' || $uri_segm=='edit-student-attendance' ){ echo 'class=active';  } ?>>View todays attendances</a></li>
+<li><a class="" href="view-attendance" <?PHP if( $uri_segm== 'view-attendance'  ){ echo 'style="background:#24303b"';  } ?>>View student attendance</a></li>                          
                           
                       </ul>
                   </li>
@@ -1480,23 +1490,22 @@ span.absent-label
                       </ul>
                   </li>
                    
-                  <!-- Manage Celebrations -->
-                  <!-- 
+                  <!-- Manage holidays -->
+                  
 	                  <li class="sub-menu">
-                      <a href="javascript:;" <?PHP if( $uri_segm== 'add-celebration' ||  $uri_segm== 'view-celebrations' || $uri_segm== 'edit-celebration' ){  echo 'class=active';  }?>  >
+                      <a href="javascript:;" <?PHP if( $uri_segm== 'add-holiday' ||  $uri_segm== 'view-holidays' || $uri_segm== 'edit-holiday' ){  echo 'class=active';  }?>  >
                           <i class="icon_document_alt"></i>
-                          <span>Manage Celebrations</span>
-                          <span class="menu-arrow  <?PHP if( $uri_segm== 'add-celebration' ||  $uri_segm== 'view-celebrations' || $uri_segm== 'edit-celebration' ){ echo 'arrow_carrot-down'; }else echo 'arrow_carrot-right'; ?>"></span>
+                          <span>Manage Holidays</span>
+                          <span class="menu-arrow  <?PHP if( $uri_segm== 'add-holiday' ||  $uri_segm== 'view-holidayss' || $uri_segm== 'edit-holiday' ){ echo 'arrow_carrot-down'; }else echo 'arrow_carrot-right'; ?>"></span>
                       </a>
-                      <ul class="sub"  <?PHP if( $uri_segm== 'add-celebration' ||  $uri_segm== 'view-celebrations' || $uri_segm== 'edit-celebration' ){  echo 'style="overflow: hidden; display: block;"'; } ?> >
+                      <ul class="sub"  <?PHP if( $uri_segm== 'add-holiday' ||  $uri_segm== 'view-holidays' || $uri_segm== 'edit-holiday' ){  echo 'style="overflow: hidden; display: block;"'; } ?> >
 	
-    <li><a class="" href="add-celebration" <?PHP if( $uri_segm== 'add-celebration' ){ echo 'class=active';  } ?> >Add a celebration</a></li>
-	<li><a class="" href="view-celebrations" <?PHP if($uri_segm== 'view-celebrations' || $uri_segm== 'edit-celebration' ){ echo 'class=active';  } ?>>View celebrations</a></li>
+    <li><a class="" href="add-holiday" <?PHP if( $uri_segm== 'add-holiday' ){ echo 'class=active';  } ?> >Add holiday</a></li>
+	<li><a class="" href="view-holidays" <?PHP if($uri_segm== 'view-holidayss' || $uri_segm== 'edit-holiday' ){ echo 'class=active';  } ?>>View celebrations</a></li>
                           
                           
                       </ul>
                   </li>
-                  -->
                   
                   <!-- Manage SMS-->
                   

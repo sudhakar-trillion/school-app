@@ -346,7 +346,16 @@ row+1  as DayOfMonth from( SELECT @row := @row + 1 as row FROM  (select 0 union 
 		else
 				$data['SectionIDE']= 0;
 		
-
+	//check whether todays attendance sent to principal or not
+		$TeacherAttendancePrincipal =  $this->Commonmodel->checkexists("teacherattendanceprincipal",array("Academicyear"=>$AcademicYear,"AttendanceFor"=>date('Y-m-d'))) ;
+		
+		$data['TeacherAttendancePrincipal']=0;
+	
+		if( $TeacherAttendancePrincipal==0)
+			$data['TeacherAttendancePrincipal']=0;
+		else
+			$data['TeacherAttendancePrincipal']=1;
+		
 		
 		$this->load->view(HEADER);	
 			$this->load->view('Admin/dashborad',$data);	

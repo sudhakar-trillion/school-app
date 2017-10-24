@@ -1197,5 +1197,47 @@ $(".deleteMark").on('click',function()
 	  
 	 //fee due send sms starts here
    
-    
+   $(document).on('click','#SendTodaysattendanceSMS',function()
+   {
+	 var Onclick = $(this);
+	 	 $.ajax({
+		 		url:base_url+"Managesms/sendTeacherAttendanceSMS",
+				async:false,
+				sendBefore:function(){  Onclick.html('Sending....'); Onclick.attr('id','');  },
+				success:function(resp)
+				{
+					resp = $.trim(resp);
+
+					if(resp=="1")
+					{
+						Onclick.removeClass('notsend');
+						Onclick.addClass('sent');
+						
+						$(".messagesent").removeClass('sent');
+						$(".messagesent").addClass('notsend');	
+						
+						$(".teacher-attendancve-sms-resp").html("<span class='alert alert-success'>SMS Sent Successfully</span>");
+						
+					}
+					else if(resp=="0")
+					{
+						Onclick.html('Send SMS'); Onclick.attr('id','SendTodaysattendanceSMS');
+						$(".teacher-attendancve-sms-resp").html("<span class='alert alert-danger'>Unable to send SMS </span>");
+					}
+					else if(resp=="-1")
+					{
+						Onclick.removeClass('notsend');
+						Onclick.addClass('sent');
+						
+						$(".messagesent").removeClass('sent');
+						$(".messagesent").addClass('notsend');	
+						
+						
+						$(".teacher-attendancve-sms-resp").html("<span class='alert alert-warning'>SMS Sent, but unable to update the database</span>");
+					}
+						
+					
+				}
+		 }); 
+   });
    

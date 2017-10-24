@@ -10,7 +10,16 @@
 						<li><i class="fa fa-laptop"></i>View Teacher Attandance</li>	
                         
                         <li class="pull-right">Total Presents:<span class="present-label" id="TotalPresents"></span></li>					  	
-                        <li class="pull-right">Total Absents:<span class="absent-label" id="TotalAbsents"></span></li>					  	
+                        <li class="pull-right">Total Absents:<span class="absent-label" id="TotalAbsents"></span></li>
+                        
+                        <?PHP
+						if( isset($Totalworkingdays))
+						{
+							?>
+                         <li class="pull-right">Total Working Days:<span class="absent-label" id="TotalAbsents"><?PHP echo $Totalworkingdays; ?></span></li>
+                         <?PHP
+						 }
+						 ?>					  	
 					</ol>
                 
                 </div>

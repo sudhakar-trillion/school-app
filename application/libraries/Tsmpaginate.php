@@ -859,6 +859,41 @@
 	
 	//getmarkslist ends here
 	
+	
+		// get student attendance list
+		
+		public function getstudentattendancelist($table,$cond,$baseurl,$perpage,$order_by_field='',$datastring,$pagination_string)
+		{
+			$config = $this->commonpaginationConfigs($table,$cond,$baseurl,$perpage);
+			$this->CI->pagination->initialize($config);
+		
+		$data['page'] = ($this->CI->uri->segment(2)) ? (($this->CI->uri->segment(2))) : 0;
+			
+			$limit = $config["per_page"];
+			
+			
+			if($data['page']==0)
+			$start = 0;
+			else
+			$start = ($data['page']-1)*$config["per_page"];
+			
+			
+			$data[$datastring] = $this->CI->Commonmodel->getstudentattendancelist($cond,$order_by='DESC',$order_by_field,$limit,$start);
+			
+//echo $this->CI->db->last_query(); exit; 
+			
+			
+			$data[$pagination_string] = $this->CI->pagination->create_links();		
+			
+		/*	echo "<pre>";
+				print_r($data); 
+			exit;*/
+			
+			return $data;
+		}
+		
+		
+		//get student attendance list ends here
 	} //class ends here
 	
 ?>

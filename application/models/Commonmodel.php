@@ -1015,6 +1015,39 @@ $this->db->order_by($order_by_field,$order_by);
 	
 	//viewTeacherAttendances ends here
 	
+	//getstudentattendancelist starts here
+	
+	public function getstudentattendancelist($cond,$order_by='DESC',$order_by_field,$limit,$start)
+	{
+		
+		
+		$this->db->select("MONTHNAME(att.AttendanceOn) as Month, cls.ClassName , sec.Section SectionName, concat(std.Student,' ' , std.LastName) as StudentName, date_format(att.AttendanceOn,'%d-%m-%Y') as DatedOn, att.PresentAbsent");
+		$this->db->from('studentattendance as att');
+		$this->db->join("newclass as cls","att.ClassId=cls.SLNO","inner");
+		$this->db->join("sections as sec","att.SectionId=sec.SectionId","inner");
+		$this->db->join("students as std","att.StudentId=std.StudentId","inner");
+		
+		
+		if(!empty($cond))
+		$this->db->where($cond);
+
+	
+		$this->db->order_by($order_by_field,$order_by);
+		$this->db->limit($limit,$start);
+		$qry = $this->db->get();
+		
+		if( $qry->num_rows()>0)
+		{
+			#echo $this->db->last_query(); exit; 	
+			return $qry;
+			
+		}
+		else
+			return "0";
+	}
+	
+	//getstudentattendancelist ends here
+	
 }//class ends here
 
 ?>

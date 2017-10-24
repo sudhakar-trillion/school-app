@@ -5,8 +5,8 @@
 				<div class="col-lg-12">
                 
                 <ol class="breadcrumb">
-<!--						<li><i class="fa fa-home"></i> <a href="<?PHP echo base_url('dashboard');?> ">Dashboard </a></li> -->
-						<li><i class="fa fa-laptop"></i>Add a celebration</li>						  	
+						<li><i class="fa fa-home"></i> <a href="<?PHP echo base_url('dashboard');?> ">Dashboard </a></li> 
+						<li>Add an hoiday</li>
 					</ol>
                 
                 </div>
@@ -18,7 +18,7 @@
                  
                       <section class="panel">
                           <header class="panel-heading">
-                             Add a celebration
+                             Add an holiday
                           </header>
                           <div class="panel-body">
 
@@ -107,7 +107,7 @@ if( $prevmont>=6)
 {
 
 ?>	                                 
-<div class="pre_div"><a href="<?PHP echo base_url('add-celebration')."/".$yr."/".$prevmont?>"><i class="fa fa-arrow-left" aria-hidden="true"></i></a></div>   
+<div class="pre_div"><a href="<?PHP echo base_url('add-holiday')."/".$yr."/".$prevmont?>"><i class="fa fa-arrow-left" aria-hidden="true"></i></a></div>   
 <?PHP
 }
 else
@@ -121,7 +121,7 @@ else
 if( $nxtmont<=15)
 {
 ?>
-<div class="next_div"><a href="<?PHP echo base_url('add-celebration')."/".$yr."/".$nxtmont?>"><i class="fa fa-arrow-right" aria-hidden="true"></i></a></div> <?PHP
+<div class="next_div"><a href="<?PHP echo base_url('add-holiday')."/".$yr."/".$nxtmont?>"><i class="fa fa-arrow-right" aria-hidden="true"></i></a></div> <?PHP
 }
 else
 {
@@ -154,20 +154,20 @@ else
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Add a celebration</h4>
+        <h4 class="modal-title">Add Holiday</h4>
       </div>
       <div class="modal-body">
       
    
         <form id="add-celebrationform">
         <div class="col-md-12 event_da">
-        <label>Celebration Date</label>
+        <label>Holiday On</label>
         	<input type="text" class="form-control cel_date"  placeholder="" readonly="readonly"/>
              
             </div>
             
              <div class="col-md-12 event_da">
-        <label>Celebration</label>
+        <label>Occasion</label>
         	
             <textarea class="form-control celebration"></textarea>
             <span class="err-msg"></span>
@@ -175,7 +175,7 @@ else
             
               <div class="col-md-12 event_da">
              <span class="pull-left addceleb_resp"> </span>
-              <button type="button" class="btn btn-primary pull-right celebrationbtn" addedit="add">Add celebration</button>
+              <button type="button" class="btn btn-primary pull-right addholidaybtn" addedit="add">Add Holiday</button>
               
               </div>
             
