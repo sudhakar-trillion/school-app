@@ -21,7 +21,7 @@
 						?>
                         
                        <?PHP
-							if( $Attendance_selected_Section>0 && isset($SelectedSection) )
+							if( @$Attendance_selected_Section>0 && isset($SelectedSection) )
 							{
 								?>
                                 <li class="pull-right"><input type="checkbox" class="filterdata" value="Attendance_selected_Section" checked="checked" /><?PHP echo 'Section-'.$SelectedSection;?></li>
@@ -30,7 +30,7 @@
 							
 						?>
                           <?PHP
-							if( $Attendance_selected_Class>0 && isset($SelectedClass) )
+							if( @$Attendance_selected_Class>0 && isset($SelectedClass) )
 							{
 								?>
                                 <li class="pull-right"><input type="checkbox" class="filterdata" value="Attendance_selected_Class" checked="checked" /><?PHP echo $SelectedClass;?></li>
@@ -41,7 +41,7 @@
                        
                         
                         <?PHP
-							if( $Attendance_selected_Month>0 && isset($SelectedMonth) )
+							if( @$Attendance_selected_Month>0 && isset($SelectedMonth) )
 							{
 								?>
                                 <li class="pull-right"><input type="checkbox" class="filterdata" value="Attendance_selected_Month" checked="checked" /><?PHP echo $SelectedMonth;?></li>
@@ -82,31 +82,21 @@
                   
                   <div class="panel-body">
                     
-                    <form  method="post" action="<?PHP echo base_url('view-attendance'); ?>">
+                    <form  method="post" action="<?PHP echo base_url('students-performance'); ?>">
                     
                     
                     <div class="col-md-2" style="padding:10px; margin-left:10px" >
-                     <select name="Month" id="Month" class="form-control">
+                     <select name="Exam" id="Exam" class="form-control">
                          
-                         <option value="0">Select month</option>
-                         <option value="06" <?PHP if( $Attendance_selected_Month=="06") echo 'selected="selected"';?>  >June</option>
-                         <option value="07" <?PHP if( $Attendance_selected_Month=="07") echo 'selected="selected"';?>>July</option>
-                         <option value="08" <?PHP if( $Attendance_selected_Month=="08") echo 'selected="selected"';?>>August</option>
-                         
-                         <option value="09" <?PHP if( $Attendance_selected_Month=="09") echo 'selected="selected"';?>>September</option>
-                         <option value="10" <?PHP if( $Attendance_selected_Month=="10") echo 'selected="selected"';?>>October</option>
-                         <option value="11" <?PHP if( $Attendance_selected_Month=="11") echo 'selected="selected"';?>>November</option>
-                         <option value="12" <?PHP if( $Attendance_selected_Month=="12") echo 'selected="selected"';?>>December</option>
-                         
-                          <option value="01" <?PHP if( $Attendance_selected_Month=="01") echo 'selected="selected"';?>>January</option>
-                         <option value="02" <?PHP if( $Attendance_selected_Month=="02") echo 'selected="selected"';?>>February</option>
-                         <option value="03" <?PHP if( $Attendance_selected_Month=="03") echo 'selected="selected"';?>>March</option>
-                         <option value="04" <?PHP if( $Attendance_selected_Month=="04") echo 'selected="selected"';?>>April</option>
-                         
-                         <option value="05" <?PHP if( $Attendance_selected_Month=="05") echo 'selected="selected"';?>>May</option>
-                         
-                         
-						 
+                        <option value="0">Select exam</option>
+                        <?PHP
+							foreach( $Exams->result() as $xam)
+							{
+								?>
+                                <option value="<?PHP echo $xam->ExamId; ?>" <?PHP if( @$performance_selected_Xam==$xam->ExamId) echo 'selected="selected"';?>  ><?PHP echo $xam->Exam; ?></option>
+                                <?PHP	
+							}
+						?>
                          </select>
                     </div>
                     
@@ -182,7 +172,7 @@
                     
                     
                      <div class="col-md-2" style="padding:10px; margin-left:10px" > 
-                          <input type="submit" name="studentattendance_filter" class="btn btn-primary" value="Filter" />
+                          <input type="submit" name="studentperformance_filter" class="btn btn-primary" value="Filter" />
                           
                           <input type="button" name="studentattendance_excel" id="studentattendance_excel" class="btn btn-success" value="Import" />
                           </div>
@@ -195,24 +185,26 @@
                            <thead>
                            <tr>
                                 <th>SLNO</th>
-                                 
-                                 <th><i class="icon_profile"></i>Month</th>
+                                 <th><i class="icon_profile"></i>Exam</th>
                                  <th><i class="icon_profile"></i>Class</th>
                                  <th><i class="icon_profile"></i>Section</th>
                                  <th><i class="icon_profile"></i>Student</th>
-                                 <th><i class="icon_profile"></i> Date</th>
-                                 <th><i class="icon_cogs"></i> Present/Absent</th>
+                                 <th><i class="icon_profile"></i>Subject</th>
+                                 <th><i class="icon_profile"></i>Present</th>
+                                 <th><i class="icon_profile"></i>Total Marks</th>
+                                 <th><i class="icon_cogs"></i> Secured Marks </th>
                               </tr>
 
                            </thead>
                            
                            <tbody>
                        			<?PHP
-								if( $attendancelist=='0')
+
+								if( $performancelist=='0')
 								{
 									?>
                                    <tr>
-                                   	 	<td colspan=7> <h2>Attendance has not yet taken for today</h2> </td>
+                                   	 	<td colspan=7> <h2>No Data Available</h2> </td>
                                     </tr>
                                     <?PHP
 								}
@@ -220,33 +212,37 @@
 								{
 									$slno=0;
 									if($this->uri->segment(2)) { $slno = ($this->uri->segment(2)-1)*$perpage;	}
-		
-									foreach( $attendancelist->result() as $data)
+									
+									foreach( $performancelist->result() as $perfor)
 									{
 										$slno++;
 										?>
-                                        <tr class="<?PHP if($data->PresentAbsent=="Absent") echo 'text-danger'; else echo 'text-default';?>" >
-                                        	<td><?PHP echo $slno; ?></td>
-                                            <td><?PHP echo $data->Month; ?></td>
+                                        <tr>
+                                        	<td><?PHP echo $slno;?></td>
+                                            <td><?PHP echo $perfor->Exam; ?></td>
                                             
-                                            <td><?PHP echo $data->ClassName; ?></td>
-                                            <td><?PHP echo $data->SectionName; ?></td>
+                                            <td><?PHP echo $perfor->ClassName; ?></td>
+                                            <td><?PHP echo $perfor->Section; ?></td>
+                                            
+                                            <td><?PHP echo $perfor->Student; ?></td>
+                                            <td><?PHP echo $perfor->SubjectName; ?></td>
                                            
-                                            <td><?PHP echo $data->StudentName; ?></td>
-                                             <td><?PHP echo $data->DatedOn; ?></td>
-                                              <td><?PHP echo $data->PresentAbsent; ?></td>
-                                             
-                                             
+                                            <td><?PHP if( $perfor->PresentAbsnt=="Absent") echo "Absent"; else "Present"; ?></td>
+                                            <td><?PHP if( $perfor->PresentAbsnt=="Absent") echo "--";  else echo $perfor->TotalMarks; ?></td> 
+                                             <td><?PHP if( $perfor->PresentAbsnt=="Absent") echo "--";  else echo $perfor->SecuredMarks; ?></td> 
                                         </tr>
-                                        <?PHP	
+                                        <?PHP
+										
 									}
-								?>
+
+									?>
                                   <tr>
-                                  	<td colspan="5"><ul><?PHP echo $pagination_string; ?></ul></td>
-                                   <td colspan="2"></td>
+                                  	<td colspan="6"><ul><?PHP echo $pagination_string; ?></ul></td>
+                                   <td colspan="3"></td>
                                   </tr>
-                        		<?PHP
+								<?PHP
 								}
+								
 								?>
                         
                            </tbody>

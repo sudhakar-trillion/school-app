@@ -1241,3 +1241,133 @@ $(".deleteMark").on('click',function()
 		 }); 
    });
    
+   
+   	$("#studentattendance_excel").on('click',function() 
+	{
+		 
+		var Onclick = $(this);
+		
+		var Month = $("#Month").val();
+			Month = $.trim(Month);
+			
+		var ClassName = $("#ClassName").val();
+			ClassName =$.trim(ClassName);
+		
+		var Section = $("#sections").val();
+			Section = $.trim(Section);
+		
+		var Rollno = $("#Rollno").val();
+			Rollno = $.trim(Rollno);
+		
+		var sendData = {"SelectedMonth":Month,"SelectedClass":ClassName,"SelectedSection":Section,"SelectedStudent":Rollno};
+		
+		$.ajax({
+				url:base_url+'Excelgeneration/studentsattendance',
+				type:"POST",
+				data:sendData,
+				async:false,
+				sendBefore:function(){  Onclick.val('Importing....'); Onclick.attr('id','');  },
+				success: function(response){
+				response = $.trim(response);
+					
+					if( response =="0" ) 
+						return false;					
+					else
+					{
+						location.href=base_url+response;
+							setTimeout( 
+											function()
+													{ 
+													 	Onclick.attr('id','studentattendance_excel');
+														Onclick.val('Done');
+														$.ajax({
+															url:base_url+"Financialdispatcher/deleteexcelsheet",
+															type:'POST',
+															data:{"excelname":response},
+															async:false,
+															success:function()
+															{
+																Onclick.val('Import');
+															}	
+														})
+														
+														},2000 );
+							
+							
+					}//else ends here
+				
+				}//success ends here
+			});
+	 });
+	 
+	 $(document).on('click','.filterdata',function()
+	 {
+		 var Onclick=$(this);
+		 if( $(this).attr('checked') =='checked' )
+		 {
+			 
+		 }
+		 else
+		 {
+			 var clearfilter = $(this).val();
+			 
+			 	$.ajax({
+							url:base_url+"Adminfromstudents/clearfilters",
+							data:{"clearfilter":clearfilter}	,
+							type:"POST",
+							async:false,
+							success:function(resp)
+							{
+								resp = $.trim(resp);
+								if(resp=='1')
+								{
+									if( clearfilter=="Attendance_selected_Month" || clearfilter=="Attendance_selected_Rollno" )
+										Onclick.parent().remove();
+									else
+									{
+										if( clearfilter=="Attendance_selected_Class" )
+										{
+											$(".filterdata").each(function()
+											{
+													console.log( $(this).val() );
+													
+													if( $(this).val()== "Attendance_selected_Month" )
+													{
+															
+													}
+													else
+														$(this).parent().remove();
+												
+											});
+										}
+										
+										if( clearfilter=="Attendance_selected_Section" )
+										{
+											$(".filterdata").each(function()
+											{
+													console.log( $(this).val() );
+													
+													if( $(this).val()== "Attendance_selected_Month" || $(this).val()== "Attendance_selected_Class" )
+													{
+															
+													}
+													else
+														$(this).parent().remove();
+												
+											});
+										}
+
+									}
+									location.href=base_url+'view-attendance';
+								}
+								else
+									Onclick.attr('checked',true);
+							}
+							
+					}); 
+			
+		 }
+		
+		
+	 });
+	

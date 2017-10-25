@@ -17,14 +17,12 @@
             <p class="text-404">404</p>
             
             <h2 style="color:red">Sorry </h2>
-            <p style="width:100%; color:red">There is no Page-<?PHP echo @$pgeno;?> in <?PHP echo @$viewingPage?></p>
+            
             <?PHP
             if(@$routeto=='')
-            {
-            $routeto='view-assign-teachers';
-            }
-            ?>
-            
+	            $routeto='view-assign-teachers';
+			?>
+            <p style="width:100%; color:red">There is no Page-<?PHP echo @$pgeno;?> in <?PHP echo @$viewingPage?></p>
             <p style="font-size:26px">Data not found on this request</p>
             <p><a class="btn btn-danger" href="<?PHP echo base_url($routeto)?>">Return back</a></p>
             

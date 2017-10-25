@@ -107,7 +107,7 @@ if( $prevmont>=6)
 {
 
 ?>	                                 
-<div class="pre_div"><a href="<?PHP echo base_url('add-celebration')."/".$yr."/".$prevmont?>"><i class="fa fa-arrow-left" aria-hidden="true"></i></a></div>   
+<div class="pre_div"><a href="<?PHP echo base_url('add-exam')."/".$yr."/".$prevmont?>"><i class="fa fa-arrow-left" aria-hidden="true"></i></a></div>   
 <?PHP
 }
 else
@@ -121,7 +121,7 @@ else
 if( $nxtmont<=15)
 {
 ?>
-<div class="next_div"><a href="<?PHP echo base_url('add-celebration')."/".$yr."/".$nxtmont?>"><i class="fa fa-arrow-right" aria-hidden="true"></i></a></div> <?PHP
+<div class="next_div"><a href="<?PHP echo base_url('add-exam')."/".$yr."/".$nxtmont?>"><i class="fa fa-arrow-right" aria-hidden="true"></i></a></div> <?PHP
 }
 else
 {

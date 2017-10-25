@@ -110,6 +110,10 @@ $route['add-student'] 						= 'Adminfromstudents/addstudent';
 $route['view-students'] 					= 'Adminfromstudents/viewstudents';
 $route['view-students/:any'] 				= 'Adminfromstudents/viewstudents';
 
+$route['students-performance']				= 'Adminfromstudents/studentperformance';
+$route['students-performance/:num']			= 'Adminfromstudents/studentperformance';
+
+
 $route['view-attendance']					= 'Adminfromstudents/viewstudentattendance';
 $route['view-attendance/:num']					= 'Adminfromstudents/viewstudentattendance';
 
@@ -192,6 +196,7 @@ $route['view-holidays/:num/:num'] 		 = 'schedulings/viewcelebration';
 
 
 $route['add-exam'] 							 = 'schedulings/addexam';
+$route['add-exam/:num/:num'] 				 = 'schedulings/addexam';
 $route['view-exams'] 						 = 'schedulings/viewexamschedules';
 $route['view-exams/:num/:num']			 	 = 'schedulings/viewexamschedules';
 

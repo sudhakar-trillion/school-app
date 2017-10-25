@@ -1048,6 +1048,33 @@ $this->db->order_by($order_by_field,$order_by);
 	
 	//getstudentattendancelist ends here
 	
+	//getstudentperformance
+	
+	public function getstudentperformance($cond,$order_by='',$order_by_field='',$limit,$start)
+	{
+		
+	
+	$this->db->select("std.Student, std.ClassName, std.Section, std.Exam, std.SubjectName, alloc.TotalMarks, IFNULL(alloc.SecuredMarks,'Absent') as PresentAbsnt, alloc.SecuredMarks ");
+	$this->db->from('studentexams as std');
+	$this->db->join('allocatedmarks as alloc','alloc.ExamSchedueId=std.ExamSchedueId','left');	
+	$this->db->where($cond);
+	$this->db->limit($limit,$start);
+	 $qry = $this->db->get();	
+	 
+
+	 
+	 if( $qry->num_rows()>0)
+		{
+			#echo $this->db->last_query(); exit; 	
+			return $qry;
+			
+		}
+		else
+			return "0";
+			
+			
+	}
+	
 }//class ends here
 
 ?>

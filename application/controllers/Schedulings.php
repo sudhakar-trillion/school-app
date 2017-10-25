@@ -230,8 +230,12 @@ public function viewexamschedules()
 	#echo $mnth; exit; 
 	
 	$schedules = $this->schedulinglib->getscheduledexams($yr,$mnth);
+/*
+echo "<pre>";
+print_r($schedules);
+exit;
 
-
+*/
 if($schedules!='0')
 	{
 		$data['schedules'] = $schedules;

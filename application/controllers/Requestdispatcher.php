@@ -1149,7 +1149,10 @@ public function sendEmail($toemail,$subject,$template)
 		return true;	
 	}
 	else
+	{
+		#echo $this->email->print_debugger();
 		return false;
+	}
 }
 
 		

@@ -293,6 +293,9 @@
 					
 					if( $mnth==9 || $mnth==10  )
 					{
+						if($mnth=="9")
+							$curmnth = "09";
+							
 							$nextmnth =	$mnth+1;
 							$nextmnth = $nextmnth;
 						

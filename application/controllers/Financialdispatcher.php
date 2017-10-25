@@ -398,7 +398,7 @@ public function exportbillsexcel()
 	{
 		
 		
-			
+		$requested_from =  $_SERVER['HTTP_REFERER'];
 			
 		if( strpos($requested_from, 'localhost') !== false)
 			$path = $_SERVER['DOCUMENT_ROOT']."/adi-akshara/".$_POST['excelname'];

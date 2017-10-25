@@ -1346,15 +1346,16 @@ span.absent-label
                   
                   
                   
-                      <a href="javascript:;" <?PHP if( $uri_segm== 'add-student' ||  $uri_segm== 'view-students' || $uri_segm== 'edit-student'){  echo 'class=active';  }?>  >
+                      <a href="javascript:;" <?PHP if( $uri_segm== 'add-student' ||  $uri_segm== 'view-students' || $uri_segm== 'edit-student' || $uri_segm == 'students-performance' ){  echo 'class=active';  }?>  >
                           <i class="icon_document_alt"></i>
                           <span>Manage Student </span>
-                          <span class="menu-arrow  <?PHP if( $uri_segm== 'add-student' ||  $uri_segm== 'view-students' || $uri_segm== 'edit-student' ){ echo 'arrow_carrot-down'; }else echo 'arrow_carrot-right'; ?>"></span>
+                          <span class="menu-arrow  <?PHP if( $uri_segm== 'add-student' ||  $uri_segm== 'view-students' || $uri_segm== 'edit-student' || $uri_segm == 'students-performance' ){ echo 'arrow_carrot-down'; }else echo 'arrow_carrot-right'; ?>"></span>
                       </a>
-                      <ul class="sub"  <?PHP if( $uri_segm== 'add-student' ||  $uri_segm== 'view-students' || $uri_segm== 'edit-student'  ){  echo 'style="overflow: hidden; display: block;"'; } ?> >
+                      <ul class="sub"  <?PHP if( $uri_segm== 'add-student' ||  $uri_segm== 'view-students' || $uri_segm== 'edit-student' || $uri_segm == 'students-performance'  ){  echo 'style="overflow: hidden; display: block;"'; } ?> >
 	
     <li><a class="" href="add-student" <?PHP if( $uri_segm== 'add-student' ){ echo 'class=active';  } ?> >Add student </a></li>
 	<li><a class="" href="view-students" <?PHP if( $uri_segm== 'view-students' || $uri_segm=='edit-student' ){ echo 'style="background:#24303b"';  } ?>>View students</a></li>
+    <li><a class="" href="students-performance" <?PHP if( $uri_segm == 'students-performance' ){ echo 'style="background:#24303b"';  } ?>>Students Performance</a></li>
     
                           
                           
