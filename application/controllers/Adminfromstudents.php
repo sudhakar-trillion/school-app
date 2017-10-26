@@ -557,6 +557,12 @@ public function studentperformance()
 {
 	$this->load->view(HEADER);
 	
+	/*
+		$this->session->set_userdata('performance_selected_Class','0');
+		$this->session->set_userdata('performance_selected_Section','0');
+		$this->session->set_userdata('performance_selected_Rollno','0');
+		*/
+		
 	$data=array();
 	$data['Exams'] = $this->Commonmodel->getrows($table='whichexam',array(),$order_by='',$order_by_field='',$limit='');
 	$data['classes'] = $this->Commonmodel->getrows($table='newclass',array(),$order_by='',$order_by_field='',$limit='');
@@ -600,10 +606,13 @@ public function studentperformance()
 			$cond['std.ExamId'] = $performance_selected_Xam;
 			$this->session->set_userdata('performance_selected_Xam',$performance_selected_Xam);
 			$data['performance_selected_Xam']= $performance_selected_Xam;
-			
 			$data['SelectedXam']  = $this->Commonmodel->getAfield('whichexam',array("ExamId"=>$performance_selected_Xam),'Exam',$order_by='',$order_by_field='',$limit='');
-			
-			
+		}
+		else
+		{
+			$this->session->set_userdata('performance_selected_Xam',0);
+			$data['performance_selected_Xam'] = 0;			
+			unset($data['SelectedXam']);
 		}
 		
 		if( $this->input->post('ClassName')>0)
@@ -647,6 +656,54 @@ public function studentperformance()
 	}
 	else
 	{
+		
+		
+		if( $this->session->userdata('performance_selected_Xam')>0)
+		{
+			$performance_selected_Xam = $this->session->userdata('performance_selected_Xam');
+			$cond['std.ExamId'] = $performance_selected_Xam;
+			$this->session->set_userdata('performance_selected_Xam',$performance_selected_Xam);
+			$data['performance_selected_Xam']= $performance_selected_Xam;
+			$data['SelectedXam']  = $this->Commonmodel->getAfield('whichexam',array("ExamId"=>$performance_selected_Xam),'Exam',$order_by='',$order_by_field='',$limit='');
+		}
+		
+		if( $this->session->userdata('performance_selected_Class')>0)
+		{
+			$performance_selected_Class = $this->session->userdata('performance_selected_Class');
+			$cond['std.SLNO'] = $performance_selected_Class;
+			$this->session->set_userdata('performance_selected_Class',$performance_selected_Class);
+			$data['performance_selected_Class']= $performance_selected_Class;
+			
+			$data['SelectedClass']  = $this->Commonmodel->getAfield('newclass',array("SLNO"=>$performance_selected_Class),'ClassName',$order_by='',$order_by_field='',$limit='');
+			
+			$data['relatedsections'] = $this->Commonmodel->getrows('sections',array("ClassSlno"=>$performance_selected_Class),$order_by='',$order_by_field='',$limit='');
+			
+		}
+		
+		if(  $this->session->userdata('performance_selected_Section')>0 )
+		{
+			$performance_selected_Section = $this->session->userdata('performance_selected_Section');
+			$cond['std.SectionId'] = $performance_selected_Section;
+			$this->session->set_userdata('performance_selected_Section',$performance_selected_Section);
+			$data['performance_selected_Section']= $performance_selected_Section;
+			
+			$data['SelectedSection']  = $this->Commonmodel->getAfield('sections',array("ClassSlno"=>$performance_selected_Class),'Section',$order_by='',$order_by_field='',$limit='');
+			
+			
+			$data['relatedstudents'] = $this->Commonmodel->getrows('students',array("ClassName"=>$performance_selected_Class,"ClassSection"=>$performance_selected_Section,"AcademicYear"=>$AcademicYear),$order_by='',$order_by_field='',$limit='');
+			
+		}
+		
+		if( $this->session->userdata('performance_selected_Rollno')>0 )
+		{
+			$performance_selected_Rollno = $this->session->userdata('performance_selected_Rollno');
+			$cond['std.StudentId'] = $performance_selected_Rollno;
+			$this->session->set_userdata('performance_selected_Rollno',$performance_selected_Rollno);
+			$data['performance_selected_Rollno']= $performance_selected_Rollno;
+			
+			$data['Selectedstudent']  = $this->Commonmodel->getAfield('students',array("AcademicYear"=>$AcademicYear,"ClassName"=>$performance_selected_Class,"ClassSection"=>$performance_selected_Section,"StudentId"=>$performance_selected_Rollno),'Student',$order_by='',$order_by_field='',$limit='');
+		}
+		
 		
 	}
 
@@ -720,6 +777,46 @@ public function clearfilters()
 		$this->session->set_userdata('Attendance_selected_Rollno','0');
 		echo "1";
 	}
+	
+	if( trim($clearfilter)=="performance_selected_Xam")
+	{
+		$this->session->set_userdata('performance_selected_Xam','0');
+		
+		if( $this->session->userdata('performance_selected_Xam')=='0')
+			echo "1";
+		else 
+			echo "0";	
+	}
+	
+	if( trim($clearfilter)=="performance_selected_Class")
+	{
+		
+		$this->session->set_userdata('performance_selected_Class','0');
+		$this->session->set_userdata('performance_selected_Section','0');
+		$this->session->set_userdata('performance_selected_Rollno','0');
+		echo "1";
+		
+	}
+	
+	if( trim($clearfilter)=="performance_selected_Section")
+	{
+		
+		$this->session->set_userdata('performance_selected_Section','0');
+		$this->session->set_userdata('performance_selected_Rollno','0');
+		echo "1";
+		
+	}
+
+
+	
+	if( trim($clearfilter)=="performance_selected_Rollno")
+	{
+		$this->session->set_userdata('performance_selected_Rollno','0');
+		echo "1";
+		
+	}
+
+
 	
 }
 

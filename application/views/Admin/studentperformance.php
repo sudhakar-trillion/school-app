@@ -11,29 +11,29 @@
 						
                       
                     	<?PHP
-							if( @$Attendance_selected_Rollno>0 && isset($Selectedstudent) )
+							if( @$performance_selected_Rollno>0 && isset($Selectedstudent) )
 							{
 								?>
-                                <li class="pull-right"><input type="checkbox" class="filterdata" value="Attendance_selected_Rollno" checked="checked" /><?PHP echo $Selectedstudent;?></li>
+                                <li class="pull-right"><input type="checkbox" class="filterdata" performanceattendance="performance" value="performance_selected_Rollno" checked="checked" /><?PHP echo $Selectedstudent;?></li>
                                 <?PHP
 							}
 							
 						?>
                         
                        <?PHP
-							if( @$Attendance_selected_Section>0 && isset($SelectedSection) )
+							if( @$performance_selected_Section>0 && isset($SelectedSection) )
 							{
 								?>
-                                <li class="pull-right"><input type="checkbox" class="filterdata" value="Attendance_selected_Section" checked="checked" /><?PHP echo 'Section-'.$SelectedSection;?></li>
+                                <li class="pull-right"><input type="checkbox" class="filterdata" performanceattendance="performance" value="performance_selected_Section" checked="checked" /><?PHP echo 'Section-'.$SelectedSection;?></li>
                                 <?PHP
 							}
 							
 						?>
                           <?PHP
-							if( @$Attendance_selected_Class>0 && isset($SelectedClass) )
+							if( @$performance_selected_Class>0 && isset($SelectedClass) )
 							{
 								?>
-                                <li class="pull-right"><input type="checkbox" class="filterdata" value="Attendance_selected_Class" checked="checked" /><?PHP echo $SelectedClass;?></li>
+                                <li class="pull-right"><input type="checkbox" performanceattendance="performance" class="filterdata" value="performance_selected_Class" checked="checked" /><?PHP echo $SelectedClass;?></li>
                                 <?PHP
 							}
 							
@@ -41,10 +41,10 @@
                        
                         
                         <?PHP
-							if( @$Attendance_selected_Month>0 && isset($SelectedMonth) )
+							if( @$performance_selected_Xam>0 && isset($SelectedXam) )
 							{
 								?>
-                                <li class="pull-right"><input type="checkbox" class="filterdata" value="Attendance_selected_Month" checked="checked" /><?PHP echo $SelectedMonth;?></li>
+                                <li class="pull-right"><input type="checkbox" class="filterdata" performanceattendance="performance" value="performance_selected_Xam" checked="checked" /><?PHP echo $SelectedXam;?></li>
                                 <?PHP
 							}
 							
@@ -111,7 +111,7 @@
 					foreach($classes->result() as $cls)
 					{ 
 				?> 
-                	<option value="<?PHP echo $cls->SLNO; ?>" <?PHP if(@$Attendance_selected_Class==$cls->SLNO) { echo 'selected="selected"'; }?> >
+                	<option value="<?PHP echo $cls->SLNO; ?>" <?PHP if(@$performance_selected_Class==$cls->SLNO) { echo 'selected="selected"'; }?> >
 						<?PHP echo $cls->ClassName;?>
                    </option>
 				   <?PHP	
@@ -134,7 +134,7 @@
 								foreach( $relatedsections->result() as $sec)
 								{
 									?>
-                                    <option value="<?PHP echo $sec->SectionId?>" <?PHP if($sec->SectionId==@$Attendance_selected_Section) echo 'selected="selected"'; ?> ><?PHP echo $sec->Section?></option>
+                                    <option value="<?PHP echo $sec->SectionId?>" <?PHP if($sec->SectionId==@$performance_selected_Section) echo 'selected="selected"'; ?> ><?PHP echo $sec->Section?></option>
                                     <?PHP
 								}
 						  }
@@ -157,7 +157,7 @@
 								foreach($relatedstudents->result() as $std)
 								{
 									?>
-                                    <option value="<?PHP echo $std->StudentId ?>" <?PHP if( @$Attendance_selected_Rollno== $std->StudentId ) echo 'selected="selected"';?> ><?PHP echo $std->Student." ".$std->LastName; ?></option>
+                                    <option value="<?PHP echo $std->StudentId ?>" <?PHP if( @$performance_selected_Rollno== $std->StudentId ) echo 'selected="selected"';?> ><?PHP echo $std->Student." ".$std->LastName; ?></option>
                                     <?PHP	
 								}
 							}
@@ -174,7 +174,7 @@
                      <div class="col-md-2" style="padding:10px; margin-left:10px" > 
                           <input type="submit" name="studentperformance_filter" class="btn btn-primary" value="Filter" />
                           
-                          <input type="button" name="studentattendance_excel" id="studentattendance_excel" class="btn btn-success" value="Import" />
+                          <input type="button" name="studentperformance_excel" id="studentperformance_excel" class="btn btn-success" value="Import" />
                           </div>
                     
                     </form>

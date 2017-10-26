@@ -14,7 +14,7 @@
 							if( @$Attendance_selected_Rollno>0 && isset($Selectedstudent) )
 							{
 								?>
-                                <li class="pull-right"><input type="checkbox" class="filterdata" value="Attendance_selected_Rollno" checked="checked" /><?PHP echo $Selectedstudent;?></li>
+                                <li class="pull-right"><input type="checkbox" class="filterdata" performanceattendance="attendance" value="Attendance_selected_Rollno" checked="checked" /><?PHP echo $Selectedstudent;?></li>
                                 <?PHP
 							}
 							
@@ -24,7 +24,7 @@
 							if( $Attendance_selected_Section>0 && isset($SelectedSection) )
 							{
 								?>
-                                <li class="pull-right"><input type="checkbox" class="filterdata" value="Attendance_selected_Section" checked="checked" /><?PHP echo 'Section-'.$SelectedSection;?></li>
+                                <li class="pull-right"><input type="checkbox" class="filterdata" value="Attendance_selected_Section" performanceattendance="attendance" checked="checked" /><?PHP echo 'Section-'.$SelectedSection;?></li>
                                 <?PHP
 							}
 							
@@ -33,7 +33,7 @@
 							if( $Attendance_selected_Class>0 && isset($SelectedClass) )
 							{
 								?>
-                                <li class="pull-right"><input type="checkbox" class="filterdata" value="Attendance_selected_Class" checked="checked" /><?PHP echo $SelectedClass;?></li>
+                                <li class="pull-right"><input type="checkbox" class="filterdata" performanceattendance="attendance" value="Attendance_selected_Class" checked="checked" /><?PHP echo $SelectedClass;?></li>
                                 <?PHP
 							}
 							
@@ -44,7 +44,7 @@
 							if( $Attendance_selected_Month>0 && isset($SelectedMonth) )
 							{
 								?>
-                                <li class="pull-right"><input type="checkbox" class="filterdata" value="Attendance_selected_Month" checked="checked" /><?PHP echo $SelectedMonth;?></li>
+                                <li class="pull-right"><input type="checkbox" class="filterdata" value="Attendance_selected_Month" performanceattendance="attendance" checked="checked" /><?PHP echo $SelectedMonth;?></li>
                                 <?PHP
 							}
 							

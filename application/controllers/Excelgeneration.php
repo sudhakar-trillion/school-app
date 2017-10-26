@@ -246,7 +246,239 @@ class Excelgeneration extends CI_Controller
 	}
 
 
+public function studentsperformance()
+{
+	
+	
+		$postdata = $this->striptags($_POST);
+		
+		extract($postdata);
+		
+		$table = 'studentattendance';
+				
+		$cond['std.AcademicYear'] = $this->schedulinglib->getAcademicyear();
+		
+		if( $SelectedExam>0 && $SelectedClass>0 )
+		{
+			if( $SelectedExam>0 )
+				$cond['std.ExamId'] = $SelectedExam ;
+			if( $SelectedClass>0 )
+				$cond['std.SLNO']  = $SelectedClass;
+			if( $SelectedSection>0 )
+				$cond['std.SectionId'] = $SelectedSection;	
+			if( $SelectedStudent>0 )
+				$cond['std.StudentId'] = $SelectedStudent;		
+		}
+		else
+		{
+			if( $SelectedExam>0 )
+					$cond['std.ExamId'] = $SelectedExam ;
+			else
+			{
+				if( $SelectedClass>0 )
+					$cond['std.SLNO']  = $SelectedClass;
+				
+			}
+		}
+		
+		
+			
+		
+		$this->db->select("std.Student, std.ClassName, std.Section, std.Exam, std.SubjectName, alloc.TotalMarks, IFNULL(alloc.SecuredMarks,'Absent') as PresentAbsnt, alloc.SecuredMarks ");
+	$this->db->from('studentexams as std');
+	$this->db->join('allocatedmarks as alloc','alloc.ExamSchedueId=std.ExamSchedueId','left');	
+	$this->db->where($cond);
 
+	 $qry = $this->db->get();	
+	
+		
+		
+		if( $qry->num_rows()>0)
+		{
+			$this->excel->setActiveSheetIndex(0);
+			$select_cols = array('Slno','Exam','Class','Section','Student','subject','TotalMarks','Secured','Present/Absent');
+			$excel_sheet_name = time(); 							
+			
+			$cnt=1;
+			
+			$Excelcolmns = range('A','Z');
+			
+			$needed_columns = array_slice( $Excelcolmns,0,sizeof($select_cols) );
+			foreach( $needed_columns as $key=>$val )
+			{
+				$col = $select_cols[$key];
+				$this->excel->getActiveSheet()->setCellValue($needed_columns[$key].'1', $col);
+				$this->excel->getActiveSheet()->getStyle($needed_columns[$key].'1')->getFont()->setSize(13);
+				$this->excel->getActiveSheet()->getStyle($needed_columns[$key].'1')->getFont()->setBold(true);
+				$this->excel->getActiveSheet()->getStyle($needed_columns[$key].'1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+			}
+			
+			$out_resp = array();
+			$slcnt=0;
+			foreach( $qry->result() as $data)
+			{
+				$slcnt++;
+				
+				if( $data->PresentAbsnt=='Absent' )
+				{
+					$SecuredMarks = '0';
+					$TotalMarks = '0';
+				}
+				else
+				{
+					$SecuredMarks =$data->SecuredMarks;
+					$TotalMarks = $data->TotalMarks;
+				}
+				
+				
+				$out_resp[] = array(
+										'Slno'=>$slcnt,
+										'Exam'=>$data->Exam,
+										'Class'=>$data->ClassName,
+										'Section'=>$data->Section,
+										"Student"=>$data->Student,
+										'Subject'=>$data->SubjectName,
+										'TotalMarks'=>$TotalMarks,
+										'Secured'=>$SecuredMarks,
+										'Present/Absent'=>$data->PresentAbsnt,
+									);
+			}
+			
+			
+			foreach($out_resp as $key=>$va)
+			{
+				
+			//prepare the excel sheet name
+			
+				if($cnt==1)
+				{ 
+					$this->excel->getActiveSheet()->setTitle("View-student-attendance-report"); 
+					//$excel_sheet_name = time().str_replace(" ","-",$postdata['filter']['Owner_Name']); 							
+				}	
+				
+				foreach($va as $k=>$value)
+				{
+				
+					if($k=="Slno")
+					{
+					//	echo "$k:".$value;	
+							$this->excel->getActiveSheet()->setCellValue('A'.($cnt+1), $value);
+							//change the font size
+							$this->excel->getActiveSheet()->getStyle('A'.($cnt+1))->getFont()->setSize(12);
+							$this->excel->getActiveSheet()->getStyle('A'.($cnt+1))->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);	
+					}
+					if($k=="Exam")
+					{
+					//	echo "$k:".$value;	
+							$this->excel->getActiveSheet()->setCellValue('B'.($cnt+1), $value);
+							//change the font size
+							$this->excel->getActiveSheet()->getStyle('B'.($cnt+1))->getFont()->setSize(12);
+							$this->excel->getActiveSheet()->getStyle('B'.($cnt+1))->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);	
+					}
+					if($k=="Class")
+					{
+					//	echo "$k:".$value;	
+							$this->excel->getActiveSheet()->setCellValue('C'.($cnt+1), $value);
+							//change the font size
+							$this->excel->getActiveSheet()->getStyle('C'.($cnt+1))->getFont()->setSize(12);
+							$this->excel->getActiveSheet()->getStyle('C'.($cnt+1))->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);	
+					}
+					if($k=="Section")
+					{
+					//	echo "$k:".$value;	
+							$this->excel->getActiveSheet()->setCellValue('D'.($cnt+1), $value);
+							//change the font size
+							$this->excel->getActiveSheet()->getStyle('D'.($cnt+1))->getFont()->setSize(12);
+							$this->excel->getActiveSheet()->getStyle('D'.($cnt+1))->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);	
+					}
+					
+					if($k=="Student")
+					{
+					//	echo "$k:".$value;	
+							$this->excel->getActiveSheet()->setCellValue('E'.($cnt+1), $value);
+							//change the font size
+							$this->excel->getActiveSheet()->getStyle('E'.($cnt+1))->getFont()->setSize(12);
+							$this->excel->getActiveSheet()->getStyle('E'.($cnt+1))->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);	
+					}
+					if($k=="Subject")
+					{
+					//	echo "$k:".$value;	
+							$this->excel->getActiveSheet()->setCellValue('F'.($cnt+1), $value);
+							//change the font size
+							$this->excel->getActiveSheet()->getStyle('F'.($cnt+1))->getFont()->setSize(12);
+							$this->excel->getActiveSheet()->getStyle('F'.($cnt+1))->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);	
+					}
+					if($k=="TotalMarks")
+					{
+					//	echo "$k:".$value;	
+							$this->excel->getActiveSheet()->setCellValue('G'.($cnt+1), $value);
+							//change the font size
+							$this->excel->getActiveSheet()->getStyle('G'.($cnt+1))->getFont()->setSize(12);
+							$this->excel->getActiveSheet()->getStyle('G'.($cnt+1))->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);	
+					}
+					if($k=="Secured")
+					{
+					//	echo "$k:".$value;	
+							$this->excel->getActiveSheet()->setCellValue('H'.($cnt+1), $value);
+							//change the font size
+							$this->excel->getActiveSheet()->getStyle('H'.($cnt+1))->getFont()->setSize(12);
+							$this->excel->getActiveSheet()->getStyle('H'.($cnt+1))->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);	
+					}
+					if($k=="Present/Absent")
+					{
+					//	echo "$k:".$value;	
+							$this->excel->getActiveSheet()->setCellValue('I'.($cnt+1), $value);
+							//change the font size
+							$this->excel->getActiveSheet()->getStyle('I'.($cnt+1))->getFont()->setSize(12);
+							$this->excel->getActiveSheet()->getStyle('I'.($cnt+1))->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);	
+					}
+					
+					
+				
+				
+				//'Slno','Paid For','Paid Amount','Paid To','Paid On','Contact Person','Email','Phone'
+				}
+				$cnt++;
+			
+			}
+			
+			
+			$filename="$excel_sheet_name.xls"; //save our workbook as this file name
+			
+			
+			header("Pragma: public");
+			header("Expires: 0");
+			header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+			header("Content-Type: application/force-download");
+			header("Content-Type: application/octet-stream");
+			header("Content-Type: application/download");
+			
+			header('Content-Type: application/vnd.ms-excel'); //mime type
+			header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
+			header('Cache-Control: max-age=0'); //no cache
+			
+			//save it to Excel5 format (excel 2003 .XLS file), change this to 'Excel2007' (and adjust the filename extension, also the header mime type)
+			//if you want to save it as .XLSX Excel 2007 format
+			$objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');  
+			//force user to download the Excel file without writing it to server's HD
+			
+			$requested_from =  $_SERVER['HTTP_REFERER'];
+			
+			if( strpos($requested_from, 'localhost') !== false)
+			$filename = $filename;
+			elseif(strpos($requested_from, 'trillionit.in') !== false)
+			$filename = "excel-bills/".$filename;
+			
+			//$objWriter->save('php://output');
+			$objWriter->save($filename);
+			echo $filename;
+			
+		}
+		else
+			echo "0";
+	
+	
+}
 
 	
 		

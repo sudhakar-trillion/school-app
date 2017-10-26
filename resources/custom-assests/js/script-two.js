@@ -1303,6 +1303,8 @@ $(".deleteMark").on('click',function()
 	 $(document).on('click','.filterdata',function()
 	 {
 		 var Onclick=$(this);
+		 var performanceattendance = $(this).attr('performanceattendance');
+		 
 		 if( $(this).attr('checked') =='checked' )
 		 {
 			 
@@ -1321,47 +1323,104 @@ $(".deleteMark").on('click',function()
 								resp = $.trim(resp);
 								if(resp=='1')
 								{
-									if( clearfilter=="Attendance_selected_Month" || clearfilter=="Attendance_selected_Rollno" )
-										Onclick.parent().remove();
-									else
+									
+									if( performanceattendance=="performance" )
 									{
-										if( clearfilter=="Attendance_selected_Class" )
+									
+										
+										if( clearfilter=="performance_selected_Xam" || clearfilter=="performance_selected_Xam" )
+											Onclick.parent().remove();
+										else
 										{
-											$(".filterdata").each(function()
+											if( clearfilter=="performance_selected_Class" )
 											{
-													console.log( $(this).val() );
+												$(".filterdata").each(function()
+												{
+														console.log( $(this).val() );
+														
+														if( $(this).val()== "performance_selected_Xam" )
+														{
+																
+														}
+														else
+															$(this).parent().remove();
 													
-													if( $(this).val()== "Attendance_selected_Month" )
-													{
-															
-													}
-													else
-														$(this).parent().remove();
-												
-											});
+												});
+											}
+											
+											if( clearfilter=="performance_selected_Section" )
+											{
+												$(".filterdata").each(function()
+												{
+														console.log( $(this).val() );
+														
+														if( $(this).val()== "performance_selected_Xam" || $(this).val()== "performance_selected_Class" )
+														{
+																
+														}
+														else
+															$(this).parent().remove();
+													
+												});
+											}
+											else
+												Onclick.attr('checked',true);
+	
 										}
 										
-										if( clearfilter=="Attendance_selected_Section" )
-										{
-											$(".filterdata").each(function()
-											{
-													console.log( $(this).val() );
-													
-													if( $(this).val()== "Attendance_selected_Month" || $(this).val()== "Attendance_selected_Class" )
-													{
-															
-													}
-													else
-														$(this).parent().remove();
-												
-											});
-										}
-
+										location.href=base_url+'students-performance';
+									
+									
 									}
-									location.href=base_url+'view-attendance';
+									else if( performanceattendance=="attendance")
+									{
+										
+										if( clearfilter=="Attendance_selected_Month" || clearfilter=="Attendance_selected_Rollno" )
+											Onclick.parent().remove();
+										else
+										{
+											if( clearfilter=="Attendance_selected_Class" )
+											{
+												$(".filterdata").each(function()
+												{
+														console.log( $(this).val() );
+														
+														if( $(this).val()== "Attendance_selected_Month" )
+														{
+																
+														}
+														else
+															$(this).parent().remove();
+													
+												});
+											}
+											
+											if( clearfilter=="Attendance_selected_Section" )
+											{
+												$(".filterdata").each(function()
+												{
+														console.log( $(this).val() );
+														
+														if( $(this).val()== "Attendance_selected_Month" || $(this).val()== "Attendance_selected_Class" )
+														{
+																
+														}
+														else
+															$(this).parent().remove();
+													
+												});
+											}
+											else
+												Onclick.attr('checked',true);
+	
+										}
+										
+										location.href=base_url+'view-attendance';
+									
+									}
+									else
+										Onclick.attr('checked',true);
 								}
-								else
-									Onclick.attr('checked',true);
 							}
 							
 					}); 
@@ -1369,5 +1428,65 @@ $(".deleteMark").on('click',function()
 		 }
 		
 		
+	 });
+	 
+  	$("#studentperformance_excel").on('click',function() 
+	{
+		 
+		var Onclick = $(this);
+		
+		var Exam = $("#Exam").val();
+			Exam = $.trim(Exam);
+			
+		var ClassName = $("#ClassName").val();
+			ClassName =$.trim(ClassName);
+		
+		var Section = $("#sections").val();
+			Section = $.trim(Section);
+		
+		var Rollno = $("#Rollno").val();
+			Rollno = $.trim(Rollno);
+		
+		var sendData = {"SelectedExam":Exam,"SelectedClass":ClassName,"SelectedSection":Section,"SelectedStudent":Rollno};
+		
+		$.ajax({
+				url:base_url+'Excelgeneration/studentsperformance',
+				type:"POST",
+				data:sendData,
+				async:false,
+				sendBefore:function(){  Onclick.val('Importing....'); Onclick.attr('id','');  },
+				success: function(response){
+				response = $.trim(response);
+				
+				//return false;	
+				
+					if( response =="0" ) 
+						return false;					
+					else
+					{
+						location.href=base_url+response;
+							setTimeout( 
+											function()
+													{ 
+													 	Onclick.attr('id','studentattendance_excel');
+														Onclick.val('Done');
+														$.ajax({
+															url:base_url+"Financialdispatcher/deleteexcelsheet",
+															type:'POST',
+															data:{"excelname":response},
+															async:false,
+															success:function()
+															{
+																Onclick.val('Import');
+															}	
+														})
+														
+														},2000 );
+							
+							
+					}//else ends here
+				
+				}//success ends here
+			});
 	 });
 	
