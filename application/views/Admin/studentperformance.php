@@ -199,7 +199,7 @@
                            
                            <tbody>
                        			<?PHP
-
+									#	print_r( $performancelist); exit; 
 								if( $performancelist=='0')
 								{
 									?>
@@ -217,7 +217,7 @@
 									{
 										$slno++;
 										?>
-                                        <tr>
+                                        <tr class="<?PHP if( $perfor->PresentAbsnt=="Absent") echo "text-danger"; else echo "text-default"; ?>">
                                         	<td><?PHP echo $slno;?></td>
                                             <td><?PHP echo $perfor->Exam; ?></td>
                                             
@@ -227,7 +227,7 @@
                                             <td><?PHP echo $perfor->Student; ?></td>
                                             <td><?PHP echo $perfor->SubjectName; ?></td>
                                            
-                                            <td><?PHP if( $perfor->PresentAbsnt=="Absent") echo "Absent"; else "Present"; ?></td>
+                                            <td><?PHP if( $perfor->PresentAbsnt=="Absent") echo "Absent"; else echo "Present"; ?></td>
                                             <td><?PHP if( $perfor->PresentAbsnt=="Absent") echo "--";  else echo $perfor->TotalMarks; ?></td> 
                                              <td><?PHP if( $perfor->PresentAbsnt=="Absent") echo "--";  else echo $perfor->SecuredMarks; ?></td> 
                                         </tr>

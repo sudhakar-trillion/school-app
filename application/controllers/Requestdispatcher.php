@@ -1130,6 +1130,7 @@ public function sendEmail($toemail,$subject,$template)
 	$config['smtp_port'] = 465;
 	$config['smtp_user'] = $sender_email;
 	$config['smtp_pass'] = $user_password;
+	$config['mailtype'] = 'html';
 	
 	// Load email library and passing configured values to email library
 	$this->load->library('email', $config);
@@ -1143,7 +1144,7 @@ public function sendEmail($toemail,$subject,$template)
 	$this->email->subject($subject);
 	// Message in email
 	$this->email->message($template);
-	
+	//$this->email->attach('http://localhost/adi-akshara/resources/index-page/images/logo.png');
 	if ($this->email->send()) 
 	{
 		return true;	

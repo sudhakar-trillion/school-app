@@ -89,7 +89,7 @@ class Schedulings extends CI_Controller
 	
 	//viewcelebration starts here
 	
-	public function viewcelebration()
+	public function viewholidays()
 	{
 		$this->load->view(HEADER);
 		

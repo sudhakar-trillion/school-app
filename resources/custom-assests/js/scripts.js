@@ -667,13 +667,15 @@ $(document).on('click','.remove_students',function()
 	});
 
 
-$("#RollNo").keyup(function(event){
+$(".ParentRollLogin").keyup(function(event){
 	    
 		if(event.keyCode == 13)
 		{
-			alert(); return false;
 			$("#parentlogin").trigger('click');
-	    }
+			}
+		
+			
+
 });
 
 
@@ -683,6 +685,8 @@ $("#RollNo").keyup(function(event){
 
 	$(document).on('click',"#parentlogin",function()
 	{
+		
+		
 		var err_cnt='0';
 		var OnClick=$(this);
 		
@@ -764,6 +768,8 @@ $("#RollNo").keyup(function(event){
 						
 					});
 		}	
+		else
+			return false;
 		
 				
 		
@@ -2263,6 +2269,7 @@ $(document).on('click',".calendar .day",function()
 {
 
 
+
 	prev_dated = $(this);
 
 	$(".del_exam_schedule i").css({'cursor':'pointer'});
@@ -2344,6 +2351,74 @@ $(document).on('click',".calendar .day",function()
 				
 						});//ajax ends here
 			}
+	
+	}
+	else if( pathname[2] == "parent-view-holidays")
+	{
+		
+		if( pathname[2] =="view-celebrations" )
+		$('#examscheduletime').timepicker('setTime', new Date());
+		
+		var dtd = $(this).html();
+		
+		console.log( dtd.indexOf("<a"));
+		
+		if( dtd.indexOf("<a") == 0 )
+			{
+				var dtd = $(this).find('a').attr('href');
+				
+				//console.log(dtd);
+				var month_day = $(this).parent().parent().parent().find('th').text();
+				month_day = month_day.replace(" ","-",month_day);
+			
+				//$(".cel_date").val(date+'-'+month_day);
+				var dated =  date+'-'+month_day;
+				
+				$dtd = dtd.split("||||");
+				var CelebId = $dtd[1];
+				
+				$.ajax({
+							
+							url:'Schedulingdispatcher/getholiday',
+							type:"POST",
+							data:{"CelebId":CelebId},
+							beforeSend:function() { $(".loader").css('display','block');   },
+							success:function(resp)
+							{
+								resp = $.trim(resp);
+								if(resp!='0')
+								{
+									$(".modal").css('display','block');
+									$("#myModal").addClass('in');
+									
+									$("#myModal").css({'background':'rgba(0, 0, 0, 0.72)'});
+									
+									$(".event_da .form-control").css({'width':'75%'});
+									
+									$(".event_da").css({'margin-bottom':'30px'});	
+									$(".event_da label").css({'float': 'left','margin-right': '20px',"width":'20%'});
+									$(".err-msg").css({'float':'right','margin-right':'7px'});
+									
+									
+									resp = JSON.parse(resp);
+									
+									$.each(resp,function()
+									{ 
+									//	console.log(resp[0].Celebration_Date);
+										
+										$(".cel_date").html(resp[0].HolidayOn);
+										$(".celebration").html(resp[0].HolidayFor);
+										
+										
+									});
+									
+									
+								}
+							}
+				
+						});//ajax ends here
+			}
+	
 	
 	}
 	else

@@ -1151,7 +1151,52 @@ public function feepaid()
 	}
 
 	
+	public function viewholidays()
+	{
+		$data['New_Notifications'] = @New_Notifications;	
+		$this->load->view(HEADER,$data);
+		
 
+		$prefs['template'] = array(
+        'table_open'           => '<table class="calendar">',
+        'cal_cell_start'       => '<td class="day">',
+        'cal_cell_start_today' => '<td class="day today">',
+);
+
+	$prefs['start_day']    = 'Sunday';
+	$prefs['month_type']    = 'long';
+	$prefs['day_type']    = 'short';
+
+	//get the events 
+	$yr = date('Y');
+	$mnth=date('m');
+	
+
+	
+	if($this->uri->segment(3)!='')
+		$mnth = $this->uri->segment(3);
+	
+	$events = $this->schedulinglib->getholidaylist($yr,$mnth);
+
+/*
+	echo "<Pre>";
+	print_r($events);
+	exit; 
+*/
+	if($events!='0')
+	{
+		$data['events'] = $events;
+	}
+	else
+	{
+		$data['events'] = array();	
+	}
+
+	$this->load->library('calendar',$prefs);
+	
+			$this->load->view('Parent/view-holidays',$data);		
+		$this->load->view(FOOTER);	
+	}
 
 		
 }//class ends here

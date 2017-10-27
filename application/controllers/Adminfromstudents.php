@@ -353,6 +353,7 @@ public function viewattendance()
 public function viewstudentattendance()
 {
 	
+	
 	$this->load->view(HEADER);
 	
 	$data=array();
@@ -555,7 +556,16 @@ else
 
 public function studentperformance()
 {
+
+
+	
 	$this->load->view(HEADER);
+
+
+	if( $this->session->has_userdata('performance_selected_Xam') )
+		$this->session->mark_as_flash('performance_selected_Xam');	
+	
+	
 	
 	/*
 		$this->session->set_userdata('performance_selected_Class','0');
@@ -709,15 +719,20 @@ public function studentperformance()
 
 	$qrey = $this->tsmpaginate->getstudentperformance($table,$cond,$baseurl,$perpage,$order_by_field='',$datastring,$pagination_string);
 
-	 
-	 if( $qrey['performancelist']!='0')
+	if( isset($qrey['performancelist'])) 
 	{
-		$data['perpage']= $perpage;
-		$data['performancelist'] = $qrey['performancelist'];
-		$data['pagination_string'] = $qrey['pagination_string'];
+
+		if( $qrey['performancelist']!='0')
+		{
+	
+			$data['perpage']= $perpage;
+			$data['performancelist'] = $qrey['performancelist'];
+			$data['pagination_string'] = $qrey['pagination_string'];
+		}
 	}
 else
-	$data['attendancelist']	='0';
+	$data['performancelist']='0';
+
 
 
 	$this->load->view("Admin/studentperformance",$data);
@@ -821,8 +836,6 @@ public function clearfilters()
 }
 
 //clearfilters ends here	
-
-
 
 
 

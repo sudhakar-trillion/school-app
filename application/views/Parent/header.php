@@ -719,7 +719,7 @@ ul.sidebar-menu li.active a{
                       </a>
                       <ul class="sub"  <?PHP if( $uri_segm == 'view-events' ){  echo 'style="overflow: hidden; display: block;"'; } ?> >
        <!--  <li><a href="<?PHP echo base_url('view-events')?>" <?PHP if( $uri_segm== 'view-events' ){echo 'style=""'; } ?> >view celebrations</a> </li> -->
-       <li><a style="cursor:pointer" >view holidays</a> </li>
+       <li><a style="cursor:pointer" href="<?PHP echo base_url('parent-view-holidays'); ?>" >view holidays</a> </li>
                       </ul>
                   </li>
                   

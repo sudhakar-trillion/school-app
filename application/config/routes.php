@@ -174,8 +174,8 @@ $route['edit-student-activity/:num'] 		= 'managestudentactivities/editstudentact
 $route['add-holiday'] 					 = 'schedulings/addcelebration';
 $route['add-holiday/:num/:num'] 		 = 'schedulings/addcelebration';
 
-$route['view-holidays'] 				 = 'schedulings/viewcelebration';
-$route['view-holidays/:num/:num'] 		 = 'schedulings/viewcelebration';
+$route['view-holidays'] 				 = 'schedulings/viewholidays';
+$route['view-holidays/:num/:num'] 		 = 'schedulings/viewholidays';
 /* Manage Holidays ends here */
 
 
@@ -318,8 +318,12 @@ $route['view-events/:num/:num'] 			= 'parents/viewevents';
 $route['parent/pay-fee'] 					= 'parents/payschoolfee';
 $route['parent/fee-paid'] 					= 'parents/feepaid';
 $route['parent/payment-history']			= 'parents/paymenthistory';
+
+
+$route['parent-view-holidays'] 				 = 'parents/viewholidays';
+$route['parent-view-holidays/:num/:num'] 	 = 'parents/viewholidays';
 				
 $route['parent-logout']						= 'parents/logout';
 
-
+$route['fileuploading'] 					= 'Adminfromstudents/fileuploading';
 

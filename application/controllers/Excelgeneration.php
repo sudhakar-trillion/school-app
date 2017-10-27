@@ -233,8 +233,6 @@ class Excelgeneration extends CI_Controller
 			
 			if( strpos($requested_from, 'localhost') !== false)
 			$filename = $filename;
-			elseif(strpos($requested_from, 'trillionit.in') !== false)
-			$filename = "excel-bills/".$filename;
 			
 			//$objWriter->save('php://output');
 			$objWriter->save($filename);
@@ -286,8 +284,10 @@ public function studentsperformance()
 		
 		$this->db->select("std.Student, std.ClassName, std.Section, std.Exam, std.SubjectName, alloc.TotalMarks, IFNULL(alloc.SecuredMarks,'Absent') as PresentAbsnt, alloc.SecuredMarks ");
 	$this->db->from('studentexams as std');
-	$this->db->join('allocatedmarks as alloc','alloc.ExamSchedueId=std.ExamSchedueId','left');	
+	$this->db->join('allocatedmarks as alloc','alloc.ExamSchedueId=std.ExamSchedueId and std.StudentId=alloc.Student','left');	
 	$this->db->where($cond);
+	$this->db->order_by('std.ExamSchedule','DESC');
+	$this->db->order_by('alloc.SecuredMarks','DESC');
 
 	 $qry = $this->db->get();	
 	
@@ -466,8 +466,6 @@ public function studentsperformance()
 			
 			if( strpos($requested_from, 'localhost') !== false)
 			$filename = $filename;
-			elseif(strpos($requested_from, 'trillionit.in') !== false)
-			$filename = "excel-bills/".$filename;
 			
 			//$objWriter->save('php://output');
 			$objWriter->save($filename);

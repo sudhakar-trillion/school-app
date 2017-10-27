@@ -1482,6 +1482,7 @@ $(".deleteMark").on('click',function()
 														})
 														
 														},2000 );
+						
 							
 							
 					}//else ends here

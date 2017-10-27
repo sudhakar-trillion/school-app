@@ -59,7 +59,6 @@ body{
  <div class="headers">
  <img src="resources/index-page/images/logo.png?<?PHP echo time();?>" />
 </div></div>
-<form method="post" action="">
  
   <div class="login-form">
   <!--<h1>Login Form</h1>
@@ -108,7 +107,7 @@ body{
   <div class="form-group">
  
     <label></label>
-    <input type="text" name="RollNo" id="RollNo"  placeholder="Enter roll no">
+    <input type="text" name="RollNo" id="RollNo" class="ParentRollLogin"  placeholder="Enter roll no">
     <i class="fa fa-user"></i>
      <p class="error RollNo_err"><?PHP echo form_error('password');?></p>
      
@@ -131,8 +130,7 @@ body{
     </div>
     <div class="clearfix"></div>
   </div>
-
-</form>
+  
 <div class="clearfix"></div>
 </div>
 <div class="clearfix"></div>

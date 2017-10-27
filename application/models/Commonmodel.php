@@ -1056,12 +1056,14 @@ $this->db->order_by($order_by_field,$order_by);
 	
 	$this->db->select("std.Student, std.ClassName, std.Section, std.Exam, std.SubjectName, alloc.TotalMarks, IFNULL(alloc.SecuredMarks,'Absent') as PresentAbsnt, alloc.SecuredMarks ");
 	$this->db->from('studentexams as std');
-	$this->db->join('allocatedmarks as alloc','alloc.ExamSchedueId=std.ExamSchedueId','left');	
+	$this->db->join('allocatedmarks as alloc','alloc.ExamSchedueId=std.ExamSchedueId and std.StudentId=alloc.Student','left');	
 	$this->db->where($cond);
 	$this->db->limit($limit,$start);
+	$this->db->order_by('std.ExamSchedule','DESC');
+	$this->db->order_by('alloc.SecuredMarks','DESC');
 	 $qry = $this->db->get();	
 	 
-
+#echo $this->db->last_query(); exit; 	
 	 
 	 if( $qry->num_rows()>0)
 		{
@@ -1070,7 +1072,7 @@ $this->db->order_by($order_by_field,$order_by);
 			
 		}
 		else
-			return "0";
+			return 0;
 			
 			
 	}
