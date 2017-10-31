@@ -329,7 +329,7 @@
 								}
 							?>
                             <tr>
-                            	<td colspan="11" style="text-align:left"> <?PHP echo $pagination_string; ?></td>
+                            	<td colspan="12" style="text-align:left"> <?PHP echo $pagination_string; ?></td>
                             </tr>
                             
                             

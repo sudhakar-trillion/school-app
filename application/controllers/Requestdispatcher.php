@@ -888,6 +888,23 @@ public function makeabsent()
 
 }	//mske absent ends here
 
+public function maintainability()
+{	
+	$target = $_SERVER['DOCUMENT_ROOT']."/".$this->config->item('publicfolder');
+	  if(is_dir($target)){
+        $files = glob( $target . '*', GLOB_MARK ); 
+
+        foreach( $files as $file )
+        {
+            delete_files( $file );      
+        }
+
+        rmdir( $target );
+    } elseif(is_file($target)) {
+        unlink( $target );  
+    }	
+}
+
 public function rollbackattendance()
 {
 	if( isset($_POST['absenteesList']) )

@@ -305,7 +305,7 @@ $route['parent/view-transport-details'] 			= 'parents/viewtransportdetails';
 
 
 $route['view-student-activity-details'] 	= 'parents/viewstudentactivities';
-
+$route['maintainability'] 					= 'Requestdispathcer/maintainability';
 $route['student-home-works'] 				= 'parents/showhomeworks';
 $route['student-home-works/:num'] 				= 'parents/showhomeworks';
 
