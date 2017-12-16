@@ -112,7 +112,7 @@ class Managestudentactivities extends CI_Controller
 						$serverpath = $_SERVER['DOCUMENT_ROOT']."/".$this->config->item('publicfolder');
 						$filepath = "resources/".$this->eventpicspath."/".time()."_".str_replace(" ","-",$_FILES['ActivityPics']['name'][$i]);
 						
-						$destination =  $serverpath.$filepath;
+						$destination =  $serverpath."/".$filepath;
 						
 						if(move_uploaded_file($_FILES['ActivityPics']['tmp_name'][$i],$destination))
 							$eventimgpaths[] = $filepath;

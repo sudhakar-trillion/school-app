@@ -231,6 +231,12 @@ class Managesms extends CI_Controller
 		$table = 'parentdetails';
 		$totalstds = sizeof($selected_students);
 		$smssent=0;	
+		
+		//print_r($selected_students); exit;
+		
+		if( !is_array($selected_students))
+			$selected_students = array($selected_students);
+	
 	
 		foreach( $selected_students as $stdid)
 		{
@@ -243,7 +249,13 @@ class Managesms extends CI_Controller
 			$contactNumber = $this->Commonmodel->getAfield($table,$cond,$field,$order_by='',$order_by_field='',$limit='');
 
 			$cond = array();
-			$cond['StudentId'] = $stdid;
+			
+			if( $stdid!='' )
+				$cond['StudentId'] = $stdid;
+			else
+				$cond['StudentId'] = $selected_students;
+				
+				
 			$cond['AcademicYear'] = $this->schedulinglib->getAcademicyear();
 		
 			$field='Student';
@@ -255,12 +267,13 @@ class Managesms extends CI_Controller
 				if( $SMSTYPE=="Absent")
 					$message = " Dear Parent, your child ".$Student." is absent today, Thank you. Adi Akashara ";
 				else if( $SMSTYPE=="Feedue" )
-					$message = $duesmscontent;
+					$message = str_replace("?",'',$duesmscontent);
 				else if( $SMSTYPE=="Activity" )
 					$message = $activitycontent;	
 				else if($SMSTYPE=="BulkSMS")
 					$message = $bulksmscontent;
 			
+				$contactNumber = '8498081693';
 				
 				$request="username=adiakshara&password=preschool123&to=".$contactNumber."&from=$from&message=".urlencode($message);	
 								

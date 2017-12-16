@@ -236,11 +236,11 @@
 									?>
                                     <tr >
                                     <td><?PHP echo $slno; ?> </td>
-                                    <td><?PHP echo $std->Roll?></td>
-                                    <td style="text-align:left"><?PHP echo $std->Student?></td>
-                                    <td  style="text-align:left"><?PHP echo $ClassName?></td>
-                                    <td><?PHP echo strtoupper($Section); ?></td>
-                                    <td>
+                                    <td class="Stdroll"><?PHP echo $std->Roll?></td>
+                                    <td class="Student" style="text-align:left"><?PHP echo $std->Student?></td>
+                                    <td class="ClassName" style="text-align:left"><?PHP echo $ClassName?></td>
+                                    <td class="Section"><?PHP echo strtoupper($Section); ?></td>
+                                    <td class="MonthName">
 										<?PHP 
 												if( $SelMonth!='0' )
 												{ 
@@ -307,23 +307,23 @@
 											$paid='0';
 											echo "No";
 										}
-										
-										
-										
-										
-										
-										
-										
-									
 									?>
                                     
                                     </td>
                                     <td> <?PHP echo $MonthlyFee;?> </td>
                                     <td><?PHP echo $paid;?></td>
-                                    <td><?PHP echo $topay;?></td>
-                                    <td><a style="cursor:pointer" class="viewnow"  data-toggle="modal" data-target="#fee-view" viewid="<?PHP echo $std->StudentId?>">View/Pay</a> </td>
-                                   <!-- <td><a class="paid"  style="cursor:pointer" data-toggle="modal" data-target="#add-fee" payid="<?PHP echo $std->StudentId?>" >Pay Now</a> </td>-->
-                                    
+                                    <td class="Due"><?PHP echo $MonthlyFee-$paid; ?></td>
+                                    <td>
+                                    <a style="cursor:pointer" class="viewnow"  data-toggle="modal" data-target="#fee-view" viewid="<?PHP echo $std->StudentId?>">View/Pay</a> 
+                                   	<?PHP
+                                    if( ($MonthlyFee-$paid)>0)
+									{
+									?>
+		                                <a style="cursor:pointer" class="SENDSMS" >SMS</a> 
+        		                     <?PHP
+									}
+									?>
+                                    </td>
                                     </tr>        
                                     <?PHP	
 								}

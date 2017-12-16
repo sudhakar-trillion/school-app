@@ -20,8 +20,6 @@ class Requestdispatcher extends CI_Controller
 	
 	public function striptags($posted_data)
 		{
-			
-		
 			$requested_from =  $_SERVER['HTTP_REFERER'];
 			
 			
@@ -114,22 +112,12 @@ class Requestdispatcher extends CI_Controller
 			$insertdata['Lastupdated'] = $TeacherName;
 			
 			if( $this->Commonmodel->insertdata($table,$insertdata) )
-			{
-					$inserted_cnt++;
-					
-			}
-			
+				$inserted_cnt++;
+
 			if($inserted_cnt== $Totalassignedsubjects)
-			{
 				echo "1";
-			}	
-			
 		}
-		
-		
 	}
-	
-	
 	
 	//asignteacher ends here
 	
@@ -797,7 +785,15 @@ public function makeabsent()
 	$cond['ClassId'] 		= $_POST['ClassId'];
 	$cond['SectionId'] 		= $_POST['SectionId'];
 	$cond['AcademicYear'] 	= $AcademicYear;
-	$cond['AttendanceOn'] 	= date('Y-m-d');
+
+	$Attdate = trim($_POST['attDate']);
+	$Attdate = str_replace("/","-",$Attdate);
+	
+	$Attdate = date_create($Attdate);
+	$Attdate = date_format($Attdate,"Y-m-d");
+	
+	
+	$cond['AttendanceOn'] 	= $Attdate;
 	
 	if( $this->Commonmodel->checkexists($table,$cond) )
 	{
@@ -844,7 +840,7 @@ public function makeabsent()
 				$insertdata['SectionId'] 		 = $_POST['SectionId'];
 				
 				
-				$insertdata['AttendanceOn']		 = date('Y-m-d');
+				$insertdata['AttendanceOn']		 = $Attdate;//date('Y-m-d');
 				$insertdata['AcademicYear'] 		= $AcademicYear;
 				$insertdata['LastUpdated'] 		 = time();
 				
@@ -868,7 +864,7 @@ public function makeabsent()
 				$insertdata['SectionId'] 		 = $_POST['SectionId'];
 				$insertdata['PresentAbsent'] 		 = "Present";
 				
-				$insertdata['AttendanceOn']		 = date('Y-m-d');
+				$insertdata['AttendanceOn']		 = $Attdate;// date('Y-m-d');
 				$insertdata['AcademicYear'] 		= $AcademicYear;
 				$insertdata['LastUpdated'] 		 = time();
 				
@@ -1173,5 +1169,92 @@ public function sendEmail($toemail,$subject,$template)
 	}
 }
 
+public function setSelMonth()
+{
+	$this->session->set_userdata('SelMonth',$_POST['monthNum']);
+	echo "1";
+}
+
+public function getStudents()
+{
+	extract($_POST);
+
+	$AcademicYear = $this->schedulinglib->getAcademicyear();
+	$output=array();
+	
+		
+	if( $addedit=="add" )
+	{
+		$cond = array();
+		$cond['ClassName'] = $cls;
+		$cond['ClassSection'] = $section;
+		$cond['AcademicYear'] = $AcademicYear;
+		
+		$table='students';
+		$order_by='ASC';
+		$order_by_field = 'Roll';
+		
+		$qry = $this->Commonmodel->getrows($table,$cond,$order_by,$order_by_field,$limit='');
+		
+		if($qry->num_rows()>0)
+		{
+			foreach( $qry->result() as $students)
+			{
+				$output[] = array(
+									"StudentId"=>$students->StudentId,
+									"RollNo"=>$students->Roll,
+									"Student"=>$students->Student,
+									"ProfileIPic"=>$students->ProfileIPic,
+									"Present"=>"Present"
+								);	
+			}
+			echo json_encode($output);
+		}
+		else
+			echo "0";
+		
+	}// send students for add attendance
+	else if( $addedit=="edit" )
+	{
+		$cond = array();
+		
+		$cond['std.ClassName'] = $cls;
+		$cond['std.ClassSection'] = $section;
+		$cond['std.AcademicYear'] = $AcademicYear;
+		
+		$attDate = str_replace("/","-",trim($_POST['attdate']));
+		
+		$attDate = date_create($attDate);
+		$attDate = date_format($attDate,"Y-m-d");
+		
+		$cond['att.AttendanceOn'] = $attDate;
+		
+		
+		$this->db->select("std.Student as StudentName, std.StudentId as StudentId, std.Roll as Roll, std.ProfileIPic as ProfileIPic, att.PresentAbsent as PresentAbsent");
+		$this->db->from('students as std');
+		$this->db->join('studentattendance as att','att.StudentId=std.StudentId','inner');
+		$this->db->where($cond);
+		$qry = $this->db->get();
+		
+		if($qry->num_rows()>0)
+		{
+			foreach( $qry->result() as $students)
+			{
+				$output[] = array(
+									"StudentId"=>$students->StudentId,
+									"RollNo"=>$students->Roll,
+									"Student"=>$students->StudentName,
+									"ProfileIPic"=>$students->ProfileIPic,
+									"Present"=>$students->PresentAbsent
+								);	
+			}
+			echo json_encode($output);
+		}
+		else
+			echo "0";
+			
+	}
+	
+}
 		
 }//class ends here		

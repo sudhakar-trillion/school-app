@@ -30,7 +30,13 @@
                           
                             <div class="col-md-8 text-right">
                             
+                            
+                            <div class="form-group cla" style="width:100px">
+							<input type="text" class="form-control" name="att-date" id="att-date" placeholder="Select Date" value="<?PHP echo date('d/m/Y'); ?>" />
+                            </div>
                            <div class="form-group cla">
+                           
+                           
 
   <select class="form-control " name="ClassName" id="ClassName">
     <option value="0">Seclect Class</option>
@@ -50,7 +56,7 @@
 
  <div class="form-group cla mr1">
 
-  <select class="form-control getstudents"  name="sections" id="sections">
+  <select class="form-control getstudents"  name="sections" id="sections" addedit="edit"> 
     <option value="0">Seclect Section</option>
     <?PHP
 		foreach($sections->result() as $Sects)
@@ -74,7 +80,11 @@
 			
 			if($studentDetails!='0')
 			{
-
+				?>
+                 <div class="respective-students">
+                <?PHP
+				
+			
 				$prsnt_abs = array();
 				
 				if($AbsenteeDetails!='0')
@@ -145,6 +155,11 @@
                 
                 </div>
                 <?PHP
+			
+			
+			?>
+            </div>
+            <?PHP
 			}
 			?>
             

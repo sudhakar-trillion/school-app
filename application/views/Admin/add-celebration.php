@@ -54,7 +54,7 @@
 									{ 
 										$yr = $this->uri->segment(2);
 										
-										if( $this->uri->segment(3)>=6 && $this->uri->segment(3)<=15 )
+										if( $this->uri->segment(3)>=3 && $this->uri->segment(3)<=15 )
 										{
 									 	 	
 											if( $this->uri->segment(3)<=12 )
@@ -72,12 +72,20 @@
 											
 											 if($this->uri->segment(3)==15)
 											 {
+												# $yr.":".$startmonth; exit; 
+												$startmonth=3;
 											 	if($cnt<=1)
 													echo  $this->calendar->generate( $yr, $startmonth+$cnt);	
+												
 											 }
 											else
 											{
-												echo  $this->calendar->generate( $yr, $startmonth+$cnt);
+												 if($this->uri->segment(3)>12 && $this->uri->segment(3)<15 )
+												 {
+													 $yr = $yr;
+													 $startmonth=1;
+												 }
+													echo  $this->calendar->generate( $yr, $startmonth+$cnt);
 											}
 										}
 										else
@@ -103,7 +111,39 @@
 								   ?>
                                   </div>
 <?PHP
-if( $prevmont>=6)
+
+
+if( trim($this->uri->segment(2))!='' )
+	{
+		$prevmont = $this->uri->segment(3)-1;
+		$yr = $this->uri->segment(2);
+		
+		 if( $this->uri->segment(3)==15)
+			 {
+				$yr = ($this->uri->segment(2));
+				$prevmont = ($this->uri->segment(3))-1;
+			 }
+		 if( $this->uri->segment(3)==14)
+			 {
+				$yr = ($this->uri->segment(2))-1;
+				$prevmont = ($this->uri->segment(3))-2;
+			 }
+			 else if( $this->uri->segment(3)==13)
+			 {
+				$yr = ($this->uri->segment(2))-1;
+				$prevmont = ($this->uri->segment(3))-1;
+			 }
+			 else
+			  $yr = ($this->uri->segment(2));
+		 
+	}
+else
+	$yr = date('Y');
+	
+
+
+ 
+if( $prevmont>=3)
 {
 
 ?>	                                 
@@ -112,16 +152,44 @@ if( $prevmont>=6)
 }
 else
 {
+	$yr = date('Y')-1;
+	$prevmont = 12;
 ?>
-<div class="pre_div"><a ><i class="fa fa-arrow-left" aria-hidden="true" style="background:#eee"></i></a></div>   
+<!--<div class="pre_div"><a ><i class="fa fa-arrow-left" aria-hidden="true" style="background:#eee"></i></a></div>   -->
+<div class="pre_div"><a href="<?PHP echo base_url('add-holiday')."/".$yr."/".$prevmont?>"><i class="fa fa-arrow-left" aria-hidden="true"></i></a></div>   
+
 <?PHP	
 }
 ?>
 <?PHP
-if( $nxtmont<=15)
+if( $this->uri->segment(3)>=10 && $this->uri->segment(3)<15)
+ 	$yr = $this->uri->segment(2)+1;
+elseif( date('m')==1 || ( date('m')>3 && date('m')<=12 )  )	
+	$yr =$this->uri->segment(2);
+	  
+#echo $yr; exit; 
+if( $nxtmont<=16 )
 {
+	if( $nxtmont==16)
+	{
+		if( $this->uri->segment(3)==15)
+		{
+		?>
+        <div class="next_div"><a sytle="cursor:pointer"><i class="fa fa-arrow-right" style="background:#eee" aria-hidden="true"></i></a></div> 
+        <?PHP
+		}
+		else
+		{
+		
+?>
+	<div class="next_div"><a href="<?PHP echo base_url('add-holiday')."/".($yr-1)."/".($nxtmont-1)?>"><i class="fa fa-arrow-right" aria-hidden="true"></i></a></div> <?PHP
+		}
+}
+	else
+	{
 ?>
 <div class="next_div"><a href="<?PHP echo base_url('add-holiday')."/".$yr."/".$nxtmont?>"><i class="fa fa-arrow-right" aria-hidden="true"></i></a></div> <?PHP
+}
 }
 else
 {

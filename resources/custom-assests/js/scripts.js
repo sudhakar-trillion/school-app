@@ -2267,9 +2267,6 @@ $(document).on('click','.day a',function()
 
 $(document).on('click',".calendar .day",function()
 {
-
-
-
 	prev_dated = $(this);
 
 	$(".del_exam_schedule i").css({'cursor':'pointer'});
@@ -2435,8 +2432,6 @@ $(document).on('click',".calendar .day",function()
 			
 				$(".cel_date").val(date+'-'+month_day);
 			
-			
-			
 			$("#myModal").css('display','block');
 			$("#myModal").addClass('in');
 			
@@ -2589,6 +2584,7 @@ $(document).on('click','.addholidaybtn,.updateholidaybtn',function()
 		$(".err-msg").html('Enter Occassion Name');
 		$(".celebration").focus();
 	}
+	//alert(base_url); return false;
 	
 	if(err_cnt=='0')
 	{
@@ -3448,6 +3444,7 @@ $(document).on('click','#Addbill',function()
 $(document).on('change','.getstudents', function()
 {
 	
+/*	
 	var section = $(".getstudents").val();
 		section = $.trim(section);
 		
@@ -3472,6 +3469,105 @@ $(document).on('change','.getstudents', function()
 			var getpage = url.split("/");
 
 			window.location.href=base_url+getpage[4]+'/'+cls+'/'+section;
+			
+		}
+	}
+	
+*/
+var addedit= $(this).attr('addedit');
+	
+	
+var attdate = $("#att-date").val();
+	attdate = $.trim(attdate);
+	
+	
+
+var section = $(".getstudents").val();
+		section = $.trim(section);
+		
+	var cls = $("#ClassName	").val();
+		cls = $.trim(cls);
+		
+	
+	if( section =="0" || section =='')
+	{
+		
+	}
+	else
+	{
+		if(cls =='0' || cls =='')
+		{
+			
+		}
+		else
+		{
+			
+			if(addedit=="add")
+				attdate = '';
+			else if(addedit=="edit")
+				attdate = attdate;
+				
+
+			$.ajax({
+					
+					url:base_url+"Requestdispatcher/getStudents",
+					type:"POST",
+					data:{"cls":cls,"section":section,"attdate":attdate,"addedit":addedit},
+					success:function(resp)
+					{
+						if(resp!='0')
+						{
+							resp = JSON.parse(resp);
+							
+							var std_div='';
+							
+							$.each(resp,function(ind,val)
+							{
+								std_div = std_div+'<div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">';
+									std_div = std_div+'<div class="card">';
+										std_div = std_div+'<div class="body">';
+											std_div = std_div+'<div class="member-card verified">';
+												std_div = std_div+'<div class="thumb-xl member-thumb" stdid="'+val.StudentId+'" > ';
+									
+															if( $.trim(val.ProfileIPic)!='' )
+																std_div = std_div+' <img  src="'+val.ProfileIPic+'" height="100px" class="img-circle" alt="profile-image">';
+															else
+																std_div = std_div+' <img  src="resources/studentspics/students-profile-icon.jpg" height="100px" class="img-circle" alt="profile-image">';
+									
+															if( $.trim(val.Present)=='Present'  )	
+																std_div = std_div+' <p stdRoll="'+val.StudentId+'" class="zmdi present_absent stdroll_'+val.StudentId+'">P</p>';
+															else if( $.trim(val.Present)=='Absent'  )	
+																std_div = std_div+' <p stdRoll="'+val.StudentId+'" class="zmdi present_absent dan stdroll_'+val.StudentId+'">A</p>';
+									
+															std_div = std_div+'</div>';
+															std_div = std_div+'<div><h4 class="m-b-5" id="'+val.StudentId+'">'+val.Student+'</h4>';
+															std_div = std_div+'<p class="text-muted">Roll No: '+val.StudentId+'</p></div>';
+											std_div = std_div+'</div>';
+										std_div = std_div+'</div>';
+									std_div = std_div+'</div>';
+								std_div = std_div+'</div>';
+								
+							});
+							
+							if(addedit=='edit')
+							{
+								std_div= std_div+'<div class="text-right"><span style="display:inline-block; margin-right:40px;" class="attendance-msg" ><div class="" style="margin-left:500px">&nbsp;</div></span><button type="button" style="margin-right:15px" class="btn btn-danger EdittAbsentees" data-dismiss="modal">Edit Absentee List</button>    </div>';
+							}
+							else
+							{
+							std_div= std_div+'<div class="text-right"><span style="display:inline-block; margin-right:40px;" class="attendance-msg" ><div class="" style="margin-left:500px">&nbsp;</div></span><button type="button" style="margin-right:15px" class="btn btn-danger SubmitAbsentees" data-dismiss="modal">Submit Absentees</button>    </div>';					
+							}
+							
+							
+							$(".respective-students").html(std_div);
+								
+						}
+						else
+							$(".respective-students").html("<h2>Attendance not taken</h2>");
+					}
+					
+				});
+			
 			
 		}
 	}
@@ -3601,7 +3697,6 @@ $(document).on('change','.RouteNumber', function()
 
 $(document).on('click','.SubmitAbsentees, .EdittAbsentees',function()
 {
-	
 	var OnClick = $(this);
 	
 	 ClassName = $("#ClassName").val();
@@ -3611,6 +3706,7 @@ $(document).on('click','.SubmitAbsentees, .EdittAbsentees',function()
 	var studentAbsent=[];
 	absentees= [];
 	
+	var attDate = $("#att-date").val();
 	
 	//if click is for edit absentees list
 	if(  $.trim(OnClick.html()) == "Edit Absentee List") 
@@ -3625,10 +3721,11 @@ $(document).on('click','.SubmitAbsentees, .EdittAbsentees',function()
 		
 			if(!absentees.length)
 				{
+					
 					$.ajax({
 								url:base_url+'Requestdispatcher/rollbackattendance',
 								type:"POST",
-								data:{"ClassId":ClassName,"SectionId":sections},
+								data:{"ClassId":ClassName,"SectionId":sections,"attDate":attDate},
 								success:function(resp)
 								{
 									resp = $.trim(resp);
@@ -3643,18 +3740,19 @@ $(document).on('click','.SubmitAbsentees, .EdittAbsentees',function()
 				}	
 				else
 				{
+	
 						
 					$.ajax({
 								url:base_url+'Requestdispatcher/rollbackattendance',
 								type:"POST",
-								data:{"ClassId":ClassName,"SectionId":sections,"absenteesList":absentees},
+								data:{"ClassId":ClassName,"SectionId":sections,"absenteesList":absentees,"attDate":attDate},
 								success:function(resp)
 								{
 									resp = $.trim(resp);
 									if(resp=='0')
-				$(".attendance-msg").html("<div class='alert alert-danger' style=' padding: 7px 15px !important;'>Unable to update attendance  </div>");
-			if(resp=='1')
-				$(".attendance-msg").html("<div class='alert alert-success' style=' padding: 7px 15px !important;'>Attendance Updated Successfully</div>");
+												$(".attendance-msg").html("<div class='alert alert-danger' style=' padding: 7px 15px !important;'>Unable to update attendance  </div>");
+									if(resp=='1')
+												(".attendance-msg").html("<div class='alert alert-success' style=' padding: 7px 15px !important;'>Attendance Updated Successfully</div>");
 	
 									}//success function ends here
 									
@@ -3706,14 +3804,15 @@ $(document).on('click','.SubmitAbsentees, .EdittAbsentees',function()
 				$.ajax({
 							url:base_url+'Requestdispatcher/makeabsent',
 							type:"POST",
-							data:{"ClassId":ClassName,"SectionId":sections,"absenteesList":absentees},
+							data:{"ClassId":ClassName,"SectionId":sections,"absenteesList":absentees,"attDate":attDate},
 							success:function(resp)
 							{
 								resp = $.trim(resp);
 								if(resp=='-1')
-								{
 									$(".attendance-msg").html("<div class='alert alert-danger' style=' padding: 7px 15px !important;'>Attendance already done for today </div>");
-								}
+								if(resp=='1')
+									$(".attendance-msg").html("<div class='alert alert-success' style=' padding: 7px 15px !important;'>Attendance Added Successfully</div>");
+									
 							}
 						});
 			
@@ -3724,12 +3823,12 @@ $(document).on('click','.SubmitAbsentees, .EdittAbsentees',function()
 
 $(".yesConfirm").on('click', function()
 {
+	var attDate = $("#att-date").val();
 
-	
 			$.ajax({
 					url:base_url+'Requestdispatcher/makeabsent',
 					type:"POST",
-					data:{"ClassId":ClassName,"SectionId":sections,"absenteesList":absentees},
+					data:{"ClassId":ClassName,"SectionId":sections,"absenteesList":absentees,"attDate":attDate},
 					success:function(resp)
 					{
 						resp = $.trim(resp);
@@ -3951,7 +4050,17 @@ $(document).on('click','.addstudenttoroute',function()
 								tr=tr+'<td>'+val.PaidAmount+'</td>';
 								tr=tr+'<td>'+val.MonthlyFee+'</td>';
 								tr=tr+'<td>'+val.DueAmount+'</td>';
-								tr=tr+'<td><button type="button" class="btn btn-success payStdntfee" mnth='+val.mnth+' stdnt='+val.StudentId+'  style="margin-right:15px;">Pay Now</button></td>';
+								
+								var due = parseInt(val.DueAmount);
+								
+								if( due>0)
+								{
+									tr=tr+'<td><button type="button" class="btn btn-success payStdntfee" mnth='+val.mnth+' stdnt='+val.StudentId+'  style="margin-right:15px;">Pay Now</button></td>';
+								}
+							else
+							{
+								tr=tr+'<td><button type="button" class="btn btn-primary" style="margin-right:15px; padding:7px 28px ">Paid</button></td>';
+							}
 								
 								tr+= '</tr>';
 								//$(".feedetails_std").append(tr);

@@ -12,7 +12,7 @@ define('TRIMREQ','trim|required');
 #echo $_SERVER['HTTP_HOST']; exit; 
 
 
-if( $_SERVER['HTTP_HOST'] == "localhost" || $_SERVER['HTTP_HOST'] == "192.168.0.9" )
+if( $_SERVER['HTTP_HOST'] == "localhost" || $_SERVER['HTTP_HOST'] == "192.168.0.12" )
 	{
 		//$config['base_url'] = 'http://192.168.0.3/adi-akshara/';
 		$config['base_url'] = 'http://localhost/adi-akshara/';
@@ -189,7 +189,7 @@ $config['standardize_newlines'] = FALSE;
 |          for backwards compatibility purposes!
 |
 */
-$config['global_xss_filtering'] = FALSE;
+$config['global_xss_filtering'] = TRUE;
 
 /*
 |--------------------------------------------------------------------------

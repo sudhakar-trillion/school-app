@@ -292,8 +292,29 @@ row+1  as DayOfMonth from( SELECT @row := @row + 1 as row FROM  (select 0 union 
 		
 		$data['FeeCollected'] = $FeeCollected;
 		
+		$Feetocollect=0;
 		
 		
+		$qry = $this->db->query('SELECT count(*) TotalStudents, ClassName  FROM `students` where AcademicYear="'.$AcademicYear.'" GROUP by ClassName');
+		foreach( $qry->result() as $fee)
+		{
+			$qrey = $this->db->query("select MonthlyFee from schoolfee where Class=".$fee->ClassName." and AcademicYear='".$AcademicYear."'");	
+			
+			foreach(  $qrey->result() as $FeeFixed)
+			{
+				$Feetocollect = $Feetocollect+(($FeeFixed->MonthlyFee)*$fee->TotalStudents);	
+			}
+			
+		}
+		
+		$qrey = $this->db->query("SELECT sum(Paid) PaidFee from feecollection where Month like '".date('Y-m')."%' and  AcademicYear='".$AcademicYear."'");	
+		
+		foreach(  $qrey->result() as $FeeColl)
+			{
+				$TotalFeeCollected = $FeeColl->	PaidFee;
+			}
+		
+		$data['PendingFeeMonth'] = $Feetocollect-$TotalFeeCollected;
 		
 		if( $this->uri->segment(2)!='')	
 			$SelectedCls = $this->uri->segment(2);
@@ -326,8 +347,19 @@ row+1  as DayOfMonth from( SELECT @row := @row + 1 as row FROM  (select 0 union 
 		$birthdaycond['DAY(std.DOB)'] = date('d');
 		
 		
-		$data['BirthdayStudents'] =  $this->Commonmodel->getbirthdays($birthdaycond);
+		$data['BirthdayStudents'] =  $this->Commonmodel->getbirthdays($birthdaycond,'students');
 		
+		
+		
+		$birthdaycond = array();
+
+		$birthdaycond['MONTH(teac.DOB)'] = date('m');
+		$birthdaycond['DAY(teac.DOB)'] = date('d');
+		
+		
+		$data['BirthdayStaff'] =  $this->Commonmodel->getbirthdays($birthdaycond,'teacherpersonaldetails');
+
+
 		
 		$data['StudentActivities'] = $this->Commonmodel->getRows_fields('studentactivities',array('AcademicYear'=>$AcademicYear),$fields='ActivityTitle',$order_by='DESC',$order_by_field='ActivityId',$limit=5);
 		

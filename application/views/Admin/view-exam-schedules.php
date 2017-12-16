@@ -26,6 +26,10 @@
                               <div class="form col-lg-12">
                                   
                                   <?PHP
+								
+								# echo "<pre>";  print_r($events); exit;
+								  $currentMonth = date('m');
+
 								  $previous=13;
 								  $next=15;
 								  
@@ -45,54 +49,83 @@
 									  $yr = date('Y');
 									  $prevmont = date('m')-1;
 									  $nxtmont = date('m')+3;
-									  
-									 
+									 									 
 									  if($i==3)
 									  {
 										  $showMonth=date('m');
 										  $showYear=date('Y');
 										  $setEvents = array();
 										  
-										  
-										  
-										  if(!empty($schedules))
+										 
+										  if(!empty($events))
 										  {
+												$events_mnths = array_keys($events);
+												if( in_array($showMonth,$events_mnths) )
+												{
+													echo  @$this->calendar->generate( (date('Y')),$showMonth,$events[$showMonth]);
+													unset($events[$showMonth]);
+												}
+												else
+													echo  @$this->calendar->generate( (date('Y')),$showMonth);
+													
+												
+											  /*
 											$event_cnt=0;	
-											foreach($schedules as $key=>$val)
+											foreach($events as $key=>$val)
 											{
 												$event_cnt++;
 												
 												if($event_cnt==1) 
-													echo  $this->calendar->generate( date('Y'),$showMonth,@$schedules[$showMonth]);
-									
-
-											}//foreach ends here
+												{
+													if( date('m')>4 && date('m')<=12)
+													{
+														if( $key>4)
+														{
+															echo  @$this->calendar->generate( (date('Y')),$key,$val);	
+														}
+														else
+														{
+															echo $key; 
+															#echo  @$this->calendar->generate( (date('Y')+1),$key,$val);	
+														}
+														
+													}
+													else
+													{
+														
+														echo  @$this->calendar->generate( date('Y'),$key,$val);	
+													}
+												}
+												*/
+												
+											//}//foreach ends here
 										  }//if not empty ends here
 					  					else
-											echo  $this->calendar->generate( date('Y'),$showMonth,@$schedules[$showMonth]);
-											
-									
+											echo  @$this->calendar->generate( date('Y'),$showMonth);
+										  
 										  	
 									  }
 									else
 									{	
-
-										  $showMonth=date('m')+$cnt;
-										//  echo $showMonth;
-										  $showYear=date('Y');
+										
+										$showMonth=date('m')+$cnt;
+										if($showMonth==13)
+											$showMonth=1;
+										else if($showMonth==14)
+											$showMonth=2;
+										else if($showMonth==15)
+											$showMonth=3;
+										else if($showMonth==16)
+											$showMonth=4;
+										
+										$showYear=date('Y');
 										  $setEvents = array();
-										  
-										  /*
-										  echo "<Pre>";
-										  print_r($schedules);
-										  echo "</pre>";
-										 */
-										 
-										  if(!empty($schedules))
-										  {
 											
+										
+										  if(!empty($events))
+										  {
 											$event_cnt=0;	
-											foreach($schedules as $key=>$val)
+											foreach($events as $key=>$val)
 											{
 												$nextMONTH = date('m')+$cnt;
 													if($nextMONTH==$key)
@@ -102,22 +135,22 @@
 														
 														$showMonth=$key;
 														$setEvents = $keys;
-															
 													}
-
+													
 
 											}//foreach ends here
 										  }//if not empty ends here
-										/*echo "<pre>"; print_r($events[$showMonth]); echo "</pre>";
 										
-										*/
-										echo  $this->calendar->generate( date('Y'),$showMonth,@$schedules[$showMonth]);
-									}
+											echo  @$this->calendar->generate( date('Y'),$showMonth,$events[$showMonth]);
+									
+										
+										}
 									}
 									else
 									{ 
 										$yr = $this->uri->segment(2);
 										//$yr = date('Y');
+										 
 										if( $this->uri->segment(3)>=6 && $this->uri->segment(3)<=15 )
 										{
 									 	 	
@@ -133,79 +166,124 @@
 											}
 												$startmonth = $this->uri->segment(3);
 											
-											
+											//echo $startmonth; 
 											 if($this->uri->segment(3)==15)
 											 {
+												 $startmonth=3;
 											 	if($cnt<=1)
-												{
-													
 													echo  $this->calendar->generate( $yr, $startmonth+$cnt);	
-												}
 											 }
 											else
 											{
-												
-												$showMonth=$startmonth+$cnt;
-												
-												$setEvents = array();
-												
-												if(!empty($schedules))
-												{
-													$events_cnt=0;	
-													foreach($schedules as $key=>$val)
-													{
-														if($this->uri->segment(3)==12)
+												//echo $startmonth;
+												$eventKeys = array_keys($events);
+												if($startmonth>12 && $startmonth<15 )
+												 {
+													 $yr = $yr;
+													 static $startmnth=1;
+													 if(!empty($events))
 														{
-															if($cnt==0)
+															$events_cnt=0;	
+															//$startmonth = $startmonth+$cnt;
+															if( in_array($startmnth,$eventKeys) )
 															{
-																$nextMONTH = $startmonth+$cnt;
-																$yr = date('Y');
+																echo $this->calendar->generate( $yr,$startmnth,@$events[$startmnth]);
+																$startmnth = $startmnth+1;
 															}
 															else
 															{
-																$nextMONTH = $cnt;
-																if($cnt==1)
-																	$yr = date('Y')+1;
-																else
-																	$yr = date('Y');
+																echo $this->calendar->generate( $yr,$startmnth);
+																$startmnth++;
 															}
+		
+														}//if not empty ends here
+													 
+												 }
+												 else
+												 	{
+														if(  $startmonth==12 )	
+														{
+															if( !isset($nextcnt))
+																{
+																	if( in_array($startmonth,$eventKeys) )
+																		echo $this->calendar->generate( $yr,$startmonth,@$events[$startmonth]);
+																	else
+																		echo $this->calendar->generate( $yr,$startmonth);
+																	
+																	$nextcnt=0;	
+																}
+																else
+																{
+																	$nextcnt++;
+																	$yr = $this->uri->segment(2);
+																	$yr++;
+																	
+																	if( in_array($cnt,$eventKeys) )
+																		echo $this->calendar->generate( $yr,$cnt,@$events[$cnt]);
+																	else
+																		echo $this->calendar->generate( $yr,$cnt);
+																}
+															
+															
+															
+														}
+														else if ($startmonth==11)
+														{
+															$startmonth = $startmonth+$cnt;
+															if( !isset($nextcnt) )
+															{
+																if( in_array($startmonth,$eventKeys) )
+																	echo $this->calendar->generate( $yr,$startmonth,@$events[$startmonth]);
+																else
+																	echo $this->calendar->generate( $yr,$startmonth);
+																if($cnt==1)	
+																$nextcnt=0;																
+															}
+															else
+																{
+																	$yr = $this->uri->segment(2);
+																	$yr++;
+																	$startmonth=1;
+																	
+																	if( in_array($startmonth,$eventKeys) )
+																		echo $this->calendar->generate( $yr,$startmonth,@$events[$startmonth]);
+																	else
+																		echo $this->calendar->generate( $yr,$startmonth);	
+																}
 														}
 														else
-															$nextMONTH = $startmonth+$cnt;
-														
-														if($nextMONTH==$key)
 														{
-															$keys= array_keys($val);
-															$keys = array_flip($keys);
-															
-															$showMonth=$key;
-															$setEvents = $keys;
+															$startmonth = $startmonth+$cnt;
+															if( in_array($startmonth,$eventKeys) )
+																echo $this->calendar->generate( $yr,$startmonth,@$events[$startmonth]);
+															else
+																echo $this->calendar->generate( $yr,$startmonth);
 														}
-													
-													//$events_cnt++;
-													}//foreach ends here
-												}//if not empty ends here
-											//	echo $yr;
-												 
+													}
+												 	
+											
 												
-											echo $this->calendar->generate( $yr,$showMonth,@$schedules[$nextMONTH]);
 												
-												//echo  $this->calendar->generate( $yr, $startmonth+$cnt);
 											}
 										}
 										else
 										{
+											
 												if($this->uri->segment(3)<6)
 												{
 													$prevmont = 5;
 												 	$nxtmont =9;
-												 	echo  $this->calendar->generate( $yr, 3+$i,@$schedules[$nextMONTH]);		
+												 	
+													//print_r($events);
+													
+													
+													echo  $this->calendar->generate( $yr, 3+$i,@$events[$nextMONTH]);		
 												}
 												else
 												{
 												 	$prevmont = 12;
 												 	$nxtmont = 16;
-												 	echo  $this->calendar->generate( $yr, 14+$cnt,@$schedules[$nextMONTH]);		
+												 	echo  $this->calendar->generate( $yr, 14+$cnt,@$events[$nextMONTH]);		
 												}
 												 	
 										}
@@ -215,26 +293,126 @@
 									}
 								   ?>
                                   </div>
+                                  
+                                  
+                         
 <?PHP
-if( $prevmont>=6)
-{
 
+
+if( trim($this->uri->segment(2))!='' )
+	{
+		$prevmont = $this->uri->segment(3)-1;
+		$yr = $this->uri->segment(2);
+		
+		 if( $this->uri->segment(3)==15)
+			 {
+				$yr = ($this->uri->segment(2));
+				$prevmont = ($this->uri->segment(3))-1;
+			 }
+		 if( $this->uri->segment(3)==14)
+			 {
+				$yr = ($this->uri->segment(2))-1;
+				$prevmont = ($this->uri->segment(3))-2;
+			 }
+		else if( $this->uri->segment(3)==13)
+			 {
+				$yr = ($this->uri->segment(2))-1;
+				$prevmont = ($this->uri->segment(3))-1;
+			 }
+		else if( $this->uri->segment(3)==12)
+			 {
+				$prevmont = ($this->uri->segment(3))-1;
+			 }
+			 else
+			  $yr = ($this->uri->segment(2));
+		 
+	}
+else
+	$yr = date('Y');
+
+if( $prevmont>=3)
+{
+	if( $this->uri->segment(3)>6 || $this->uri->segment(3)=='')
+	{
 ?>	                                 
 <div class="pre_div"><a href="<?PHP echo base_url('view-exams')."/".$yr."/".$prevmont?>"><i class="fa fa-arrow-left" aria-hidden="true"></i></a></div>   
 <?PHP
+	}
+	else
+	{
+		?>
+        <div class="pre_div"><a ><i class="fa fa-arrow-left" aria-hidden="true" style="background:#eee"></i></a></div>  
+        <?PHP	
+	}
 }
 else
 {
+	$yr = date('Y')-1;
+	$prevmont = 12;
 ?>
-<div class="pre_div"><a ><i class="fa fa-arrow-left" aria-hidden="true" style="background:#eee"></i></a></div>   
+<!--<div class="pre_div"><a ><i class="fa fa-arrow-left" aria-hidden="true" style="background:#eee"></i></a></div>   -->
+<div class="pre_div"><a href="<?PHP echo base_url('view-exams')."/".$yr."/".$prevmont?>"><i class="fa fa-arrow-left" aria-hidden="true"></i></a></div>   
+
 <?PHP	
 }
 ?>
+
 <?PHP
-if( $nxtmont<=15)
+
+$yr =$this->uri->segment(2);
+if( $nxtmont<=16 )
 {
+	if( $nxtmont==16)
+	{
+		if( $this->uri->segment(3)==15)
+		{
+		?>
+        <div class="next_div"><a sytle="cursor:pointer"><i class="fa fa-arrow-right" style="background:#eee" aria-hidden="true"></i></a></div> 
+        <?PHP
+		}
+		else
+		{
+		
 ?>
-<div class="next_div"><a href="<?PHP echo base_url('view-exams')."/".$yr."/".$nxtmont?>"><i class="fa fa-arrow-right" aria-hidden="true"></i></a></div> <?PHP
+	<div class="next_div"><a href="<?PHP echo base_url('view-exams')."/".($yr-1)."/".($nxtmont-1)?>"><i class="fa fa-arrow-right" aria-hidden="true"></i></a></div> <?PHP
+		}
+}
+if( $nxtmont==15)
+		{
+				$yr=date('Y')+1;	  
+		?>
+<div class="next_div"><a href="<?PHP echo base_url('view-exams')."/".($yr)."/".($nxtmont)?>"><i class="fa fa-arrow-right" aria-hidden="true"></i></a></div> 
+        <?PHP
+		}
+	else
+	{
+		if( $this->uri->segment(3)==15 || $this->uri->segment(3)==16 )
+		{
+		?>
+        <div class="next_div"><a sytle="cursor:pointer"><i class="fa fa-arrow-right" style="background:#eee" aria-hidden="true"></i></a></div> 
+		<?PHP
+       			
+		}
+		else
+		{
+			if ($this->uri->segment(3)==10 || $this->uri->segment(3)==11)
+			{
+				$nxtmont=13;
+				$yr=$yr+1;
+			?>
+		<div class="next_div"><a href="<?PHP echo base_url('view-exams')."/".($yr)."/".$nxtmont?>"><i class="fa fa-arrow-right" aria-hidden="true"></i></a></div>             
+            <?PHP		
+			}
+			else
+			{
+				if( $this->uri->segment(3)==14 || $this->uri->segment(3)==13 )
+					$nxtmont = 15;
+?>
+<div class="next_div"><a href="<?PHP echo base_url('view-exams')."/".$yr."/".$nxtmont?>"><i class="fa fa-arrow-right" aria-hidden="true"></i></a></div> 
+<?PHP
+		}
+		}
+}
 }
 else
 {
@@ -245,6 +423,7 @@ else
 	$cnt++;
 }
 ?>
+
                                   <div class="clearfix"></div>
                                   
 								  

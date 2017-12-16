@@ -172,78 +172,93 @@
 			
 			$yr1=date('Y');
 			$yr2=date('Y');
+			
+			if( $mnth<6 )
+				$mnth=6;
 					
 			if( $mnth>=6 && $mnth<=12 )
 				{
 
-					$mtn = $mnth;
-					
-					$curmnth  = $mnth;
-					
-					if( $mnth==9 || $mnth==10  )
-					{
-							if( $mnth==9)
-								$curmnth = "09";
-							$nextmnth =	$mnth+1;
-							$nextmnth = $nextmnth;
-						
-							$onemoremonth = $mnth+2;
-							$onemoremonth = $onemoremonth;	
-					}
-					elseif( $mnth == 11 || $mnth == 12 )
-					{
-							if($mnth == 12)
-							{
-								$nextmnth =	"01";
-								$nextmnth = "01";
-								$onemoremonth ="02";
-							}
-							else
-							{
-								$nextmnth =	$mnth+1;
-								$nextmnth = $nextmnth;
-								$onemoremonth ="01";
-							}
-								$yr1=date('Y');
-								$yr2=date('Y')+1;
+							$mtn = $mnth;
 							
+							$curmnth  = $mnth;
+							
+							if( $mnth == 11 || $mnth == 12 )
+							{
+								if($mnth == 12)
+								{
+									$nextmnth = "01";
+									$onemoremonth ="02";
+									$yr1=date('Y');
+									$yr2=date('Y')+1;
+									
+									$this->CI->db->like('HolidayOn', $yr1."-".$curmnth );
+									$this->CI->db->or_like('HolidayOn', $yr2."-".$nextmnth );
+									$this->CI->db->or_like('HolidayOn', $yr2."-".$onemoremonth );
+								}
+								else
+								{
+									$nextmnth =	$mnth+1;
+									$nextmnth = $nextmnth;
+									$onemoremonth ="01";
+									$yr1=date('Y');
+									$yr2=date('Y')+1;
+									
+									$this->CI->db->like('HolidayOn', $yr1."-".$curmnth );
+									$this->CI->db->or_like('HolidayOn', $yr1."-".$nextmnth );
+									$this->CI->db->or_like('HolidayOn', $yr2."-".$onemoremonth );
+								}
 								
-								$this->CI->db->like('HolidayOn', $yr1."-".$curmnth );
-								$this->CI->db->or_like('HolidayOn', $yr2."-".$nextmnth );
-								$this->CI->db->or_like('HolidayOn', $yr2."-".$onemoremonth );
+						}
+						else
+						{
+							$nextmnth =	$mnth+1;
 						
-								
-					}
-					else
-					{
-						$nextmnth =	$mnth+1;
-						$nextmnth = "0".$nextmnth;
-						
-						$onemoremonth = $mnth+2;
-						$onemoremonth = "0".$onemoremonth;
-					}
-					$this->CI->db->like('AcademicYear', $this->getAcademicyear() );
-					$this->CI->db->like('HolidayOn', $yr1."-".$curmnth );
-					$this->CI->db->or_like('HolidayOn', $yr1."-".$nextmnth );
-					$this->CI->db->or_like('HolidayOn', $yr1."-".$onemoremonth ); 
+							if($nextmnth<=9)
+								$nextmnth = "0".$nextmnth;
+							else
+								$nextmnth = $nextmnth;
+							
+							
+							$onemoremonth = $mnth+2;
+							if($onemoremonth<=9)
+								$onemoremonth = "0".$onemoremonth;
+							else
+								$onemoremonth =$onemoremonth;
+							
+							
+							if($curmnth<=9)
+								$this->CI->db->or_like('HolidayOn', $yr1."-0".trim($curmnth,'0') );
+							else
+								$this->CI->db->or_like('HolidayOn', $yr1."-".$curmnth );
+							
+								$this->CI->db->or_like('HolidayOn', $yr1."-".$nextmnth );
+								$this->CI->db->or_like('HolidayOn', $yr1."-".$onemoremonth ); 
+						}
 
 				}
 			else
 			{
 				
-				$curmnth  = "03";
-				$nextmnth =	"04";
-
 				
-				$yr1=date('Y')+1;
-				$yr2=date('Y')+1;
-		
-				$this->CI->db->like('AcademicYear', $this->getAcademicyear() );
-				$this->CI->db->like('HolidayOn', $yr1."-".$curmnth );
-				$this->CI->db->or_like('HolidayOn', $yr2."-".$nextmnth );
+				if( $mnth=="14" )
+				{
+					$curmnth  = "01";
+					$nextmnth =	"02";
+					$onemoremonth="03";
+					$yr=$yr+1;
+					
+					$this->CI->db->like('HolidayOn', $yr."-".$curmnth );
+					$this->CI->db->or_like('HolidayOn', $yr."-".$nextmnth );
+					$this->CI->db->or_like('HolidayOn', $yr."-".$onemoremonth ); 
+					
+				}
+				
 				
 			
 			}//else ends here
+			
+			$this->CI->db->like('AcademicYear', $this->getAcademicyear() );
 			
 			$this->CI->db->select("month(HolidayOn) as mnth, day(HolidayOn) as day, HolidayId, HolidayFor ");
 			$this->CI->db->order_by("month(HolidayOn)","ASC");
@@ -272,10 +287,11 @@
 		public function getscheduledexams($yr,$mnth)
 		{
 			
-			
 			$yr1=date('Y');
 			$yr2=date('Y');
 			
+			if( $mnth<6 )
+				$mnth=6;
 			
 				$this->CI->db->select("month(ExamSchedule) as mnth, day(ExamSchedule) as day, ClassName, ClassSection, Exam, Subject, ExamSchedule");
 			$this->CI->db->order_by("month(ExamSchedule)","ASC");
@@ -285,124 +301,99 @@
 		
 			if( $mnth>=6 && $mnth<=12 )
 			{
-				
-
 					$mtn = $mnth;
-					
 					$curmnth  = $mnth;
-					
-					if( $mnth==9 || $mnth==10  )
-					{
-						if($mnth=="9")
-							$curmnth = "09";
 							
-							$nextmnth =	$mnth+1;
-							$nextmnth = $nextmnth;
-						
-							$onemoremonth = $mnth+2;
-							$onemoremonth = $onemoremonth;	
-					}
-					elseif( $mnth == 11 || $mnth == 12 )
+					if( $mnth == 11 || $mnth == 12 )
 					{
-							if($mnth == 12)
-							{
-								$nextmnth =	"01";
-								$nextmnth = "01";
-								$onemoremonth ="02";
-							}
-							else
-							{
-								$nextmnth =	$mnth+1;
-								$nextmnth = $nextmnth;
-								$onemoremonth ="01";
-							}
-							$yr1=date('Y');
-								$yr2=date('Y')+1;
-							
-								$this->CI->db->like('ExamSchedule', $yr1."-".$curmnth );
-								$this->CI->db->or_like('ExamSchedule', $yr2."-".$nextmnth );
-								$this->CI->db->or_like('ExamSchedule', $yr2."-".$onemoremonth );
-						
+								if($mnth == 12)
+								{
+									$nextmnth = "01";
+									$onemoremonth ="02";
+									$yr1=date('Y');
+									$yr2=date('Y')+1;
+									
+									$this->CI->db->like('ExamSchedule', $yr1."-".$curmnth );
+									$this->CI->db->or_like('ExamSchedule', $yr2."-".$nextmnth );
+									$this->CI->db->or_like('ExamSchedule', $yr2."-".$onemoremonth );
+								}
+								else
+								{
+									$nextmnth =	$mnth+1;
+									$nextmnth = $nextmnth;
+									$onemoremonth ="01";
+									$yr1=date('Y');
+									$yr2=date('Y')+1;
+									
+									$this->CI->db->like('ExamSchedule', $yr1."-".$curmnth );
+									$this->CI->db->or_like('ExamSchedule', $yr1."-".$nextmnth );
+									$this->CI->db->or_like('ExamSchedule', $yr2."-".$onemoremonth );
+								}
 								
-					}
+						}
 					else
 					{
-						$nextmnth =	$mnth+1;
-						$nextmnth = "0".$nextmnth;
 						
-						$onemoremonth = $mnth+2;
-						$onemoremonth = "0".$onemoremonth;
+							$nextmnth =	$mnth+1;
+						
+							if($nextmnth<=9)
+								$nextmnth = "0".$nextmnth;
+							else
+								$nextmnth = $nextmnth;
+							
+							
+							$onemoremonth = $mnth+2;
+							if($onemoremonth<=9)
+								$onemoremonth = "0".$onemoremonth;
+							else
+								$onemoremonth =$onemoremonth;
+							
+							
+							if($curmnth<=9)
+								$this->CI->db->or_like('ExamSchedule', $yr1."-0".trim($curmnth,'0') );
+							else
+								$this->CI->db->or_like('ExamSchedule', $yr1."-".$curmnth );
+							
+								$this->CI->db->or_like('ExamSchedule', $yr1."-".$nextmnth );
+								$this->CI->db->or_like('ExamSchedule', $yr1."-".$onemoremonth ); 
+						
 					}
-					$this->CI->db->like('ExamSchedule', $yr1."-".$curmnth );
-					$this->CI->db->or_like('ExamSchedule', $yr1."-".$nextmnth );
-					$this->CI->db->or_like('ExamSchedule', $yr1."-".$onemoremonth ); 
+					
 
 				
 			}
 			else
 			{
-				$curmnth  = "03";
-						$nextmnth =	"04";
-
-						
-						$yr1=date('Y')+1;
-						$yr2=date('Y')+1;
 				
-						$this->CI->db->like('ExamSchedule', $yr1."-".$curmnth );
-						$this->CI->db->or_like('ExamSchedule', $yr2."-".$nextmnth );
-				
-				/*
-					
-				if($mnth==10)
+				if( $mnth=="14" || $mnth=="13"  )
 				{
-					$curmnth  = "10";
-					$nextmnth =	"11";
-					$onemoremonth = "12";
+					$curmnth  = "01";
+					$nextmnth =	"02";
+					$onemoremonth="03";
+					$yr=$yr+1;
 					
-					$this->CI->db->like('ExamSchedule', $yr1."-".$curmnth );
-					$this->CI->db->or_like('ExamSchedule', $yr1."-".$nextmnth );
-					$this->CI->db->or_like('ExamSchedule', $yr1."-".$onemoremonth ); 
-					
+					$this->CI->db->like('ExamSchedule', $yr."-".$curmnth );
+					$this->CI->db->or_like('ExamSchedule', $yr."-".$nextmnth );
+					$this->CI->db->or_like('ExamSchedule', $yr."-".$onemoremonth ); 
 					
 				}
-				else
+				else if( $mnth=="15" )
 				{
-					$curmnth  = "12";
-					$nextmnth =	"01";
-					$onemoremonth = "02";
-						
-					if($mnth<=12)
-					{
-						$yr1=date('Y');
-						$yr2=date('Y')+1;
-						
-						$this->CI->db->like('ExamSchedule', $yr1."-".$curmnth );
-						$this->CI->db->or_like('ExamSchedule', $yr2."-".$nextmnth );
-						$this->CI->db->or_like('ExamSchedule', $yr2."-".$onemoremonth );
-						
-						
-					}
-					else
-					{
-						$curmnth  = "03";
-						$nextmnth =	"04";
-
-						
-						$yr1=date('Y')+1;
-						$yr2=date('Y')+1;
-				
-						$this->CI->db->like('ExamSchedule', $yr1."-".$curmnth );
-						$this->CI->db->or_like('ExamSchedule', $yr2."-".$nextmnth );
-
-						
-					}
+					$curmnth  = "03";
+					$nextmnth =	"04";
+					$onemoremonth="04";
+					$yr=$yr+1;
 					
-					 
-
-
+					$this->CI->db->like('ExamSchedule', $yr."-".$curmnth );
+					$this->CI->db->or_like('ExamSchedule', $yr."-".$nextmnth );
+					$this->CI->db->or_like('ExamSchedule', $yr."-".$onemoremonth ); 
+					
 				}
+				
+				
+				
 			
-				*/
+			
 			}//else ends here
 			
 			$this->CI->db->group_end();
@@ -424,7 +415,7 @@
 		
 //			$this->CI->db->order_by("year(Celebration_Date)","ASC");
 			$qry = $this->CI->db->get('examschedules');
-	//		return $this->CI->db->last_query();
+		#return $this->CI->db->last_query();
 	
 #echo $this->CI->db->last_query()."||".$qry->num_rows(); 
 			
@@ -434,55 +425,6 @@
 			{
 				foreach($qry->result() as $schedules)
 				{
-					
-					//get the class
-					
-					/*
-					$table='newclass';
-					$cond = array();
-					$cond['SLNO'] = $schedules->ClassName;
-					$field='ClassName';
-					$order_by='';
-					$order_by_field='';
-					$limit='';
-					
-					$Class = $this->CI->Commonmodel->getAfield($table,$cond,$field,$order_by='',$order_by_field='',$limit='');
-
-
-					$table='sections';
-					$cond = array();
-					$cond['ClassSlno'] = $schedules->ClassName;
-					$field='Section';
-					$order_by='';
-					$order_by_field='';
-					$limit='';
-					
-					$Section = $this->CI->Commonmodel->getAfield($table,$cond,$field,$order_by='',$order_by_field='',$limit='');
-					
-					
-					$table='subjects';
-					$cond = array();
-					$cond['SubjectId'] = $schedules->Subject;
-					$field='SubjectName';
-					$order_by='';
-					$order_by_field='';
-					$limit='';
-					
-					$SubjectName = $this->CI->Commonmodel->getAfield($table,$cond,$field,$order_by='',$order_by_field='',$limit='');
-					
-					$table='whichexam';
-					$cond = array();
-					$cond['ExamId'] = $schedules->Exam;
-					$field='Exam';
-					$order_by='';
-					$order_by_field='';
-					$limit='';
-					
-					$Exam = $this->CI->Commonmodel->getAfield($table,$cond,$field,$order_by='',$order_by_field='',$limit='');
-					
-					
-					*/
-					
 					$ourput_arr[$schedules->mnth][$schedules->day] = $schedules->ExamSchedule;
 				}
 				

@@ -114,14 +114,14 @@ class Schedulings extends CI_Controller
 		$mnth = $this->uri->segment(3);
 	
 	$events = $this->schedulinglib->getholidaylist($yr,$mnth);
-
+	
 /*
-	echo "<Pre>";
+echo "<Pre>";
 	print_r($events);
-	exit; 
+exit;
 */
 
-	if($events!='0')
+if($events!='0')
 	{
 		$data['events'] = $events;
 	}
@@ -230,19 +230,19 @@ public function viewexamschedules()
 	#echo $mnth; exit; 
 	
 	$schedules = $this->schedulinglib->getscheduledexams($yr,$mnth);
-/*
-echo "<pre>";
-print_r($schedules);
-exit;
 
-*/
+/*echo "<pre>";
+print_r($schedules);
+exit;*/
+
+
 if($schedules!='0')
 	{
-		$data['schedules'] = $schedules;
+		$data['events'] = $schedules;
 	}
 	else
 	{
-		$data['schedules'] = array();	
+		$data['events'] = array();	
 	}
 
 	$this->load->library('calendar',$prefs);

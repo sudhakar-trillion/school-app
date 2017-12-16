@@ -119,6 +119,15 @@ if( isaddnotificationtostudent=='add-notification-to-student' || isaddnotificati
 	$("#ClassName").focus();
 	
 	$(".cel_date" ).datepicker();
+	$("#att-date" ).datepicker({
+									dateFormat:"d/mm/yy",
+									beforeShowDay: function(date) 
+										{
+											var day = date.getDay();
+											console.log(day);
+											return [( day != 0 ), ''];
+										},	
+								});
 	
 	$( "#bookingdate" ).datepicker({
 										/*
@@ -378,6 +387,7 @@ $.ajax({
 
 $(document).ready(function()
 {
+
 	
 	$.ajax({
 			
@@ -727,6 +737,8 @@ $(document).ready(function()
 	   
    
 
+
+
 });
 
 
@@ -734,6 +746,23 @@ $(document).ready(function()
 <?PHP
 }
 ?>
+
+//$this->session->set_userdata('SelMonth',$monthNum);
+
+	$(".viewpendingFee").on('click',function()
+	{
+		var Mnth=$(this).attr('id');
+		
+		$.ajax({
+					url:base_url+"Requestdispatcher/setSelMonth",
+					type:"POST",
+					data:{"monthNum":Mnth},
+					success:function()
+					{
+						location.href=base_url+"view-students-fee-details";
+					}
+				});
+	});
 
 </script>
 

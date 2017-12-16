@@ -251,10 +251,6 @@ public function addattendance()
 	$fields = 'StudentId, Student, ProfileIPic, Roll';
 	
 	$data['studentDetails'] = $this->Commonmodel->getRows_fields($table,$cond,$fields,$order_by='',$order_by_field='',$limit);
-	
-	
-	
-	
 	$this->load->view('Admin/addattendance',$data);
 }
 	

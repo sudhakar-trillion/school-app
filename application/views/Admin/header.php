@@ -1026,7 +1026,7 @@ span.absent-label
                         </ul>
                     </li>
                      
-                     <li id="alert_notificatoin_bar" class="dropdown" title='Manage non-teaching departments'>
+                     <!--<li id="alert_notificatoin_bar" class="dropdown" title='Manage non-teaching departments'>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
 
                             <i class="fa fa-plus"></i>
@@ -1052,7 +1052,7 @@ span.absent-label
                                 </a>
                             </li>
                         </ul>
-                    </li>
+                    </li>-->
                      
                      <li id="alert_notificatoin_bar" class="dropdown" title='Manage Exams'>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
@@ -1121,6 +1121,21 @@ span.absent-label
                             <li>
                                 <p class="blue">Manage non teaching staff</p>
                             </li>
+                            <li>
+                                <a href="<?PHP echo base_url('add-department')?>">
+                                    <span class="label label-primary"><i class="fa fa-plus"></i></span> 
+                                   Add department
+                                   
+                                </a>
+                            </li>
+                            <li>
+                                <a href="<?PHP echo base_url('view-departments')?>">
+                                    <span class="label label-warning"><i class="fa fa-eye"></i></span>  
+                                    view departments
+                                   
+                                </a>
+                            </li>
+                            
                             <li>
                                 <a href="<?PHP echo base_url('add-nonteaching-staff')?>">
                                     <span class="label label-primary"><i class="fa fa-plus"></i></span> 

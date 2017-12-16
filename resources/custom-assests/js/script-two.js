@@ -10,6 +10,25 @@ $(window).load(function()
 		 $("#TotalAbsents").html("  "+totalabsents);
 		  $("#TotalPresents").html("  "+totalpresents);
 	  }
+	  
+	  $.ajax({
+				url:base_url+"Chartsdispatcher/getStudentAttOfDay",
+				type:"POST",
+				data:{"class":'',"Section":''},
+				success:function(resp)
+				{
+					resp=$.trim(resp);
+					
+					resp = JSON.parse(resp);
+					
+					//alert(resp.Absents+","+resp.Presents);
+					
+					$("#StudentTotalPresents").html(resp.Presents);
+					$("#StudentTotalAbsents").html(resp.Absents);
+				}
+				
+					   
+			   });	
 		
 });
 
@@ -337,6 +356,23 @@ $(".deleteMark").on('click',function()
 						
 						
 					});//ajax ends here
+					
+					
+					
+					$.ajax({
+								url:base_url+"Chartsdispatcher/getStudentAttOfDay",
+								type:"POST",
+								data:{"class":ClassSLNO,"Section":''},
+								success:function(resp)
+								{
+									resp=$.trim(resp);
+									resp = JSON.parse(resp);
+									$("#StudentTotalPresents").html(resp.Presents);
+									$("#StudentTotalAbsents").html(resp.Absents);
+								}
+					   
+			   				});	
+					
 
 		
    });
@@ -347,6 +383,8 @@ $(".deleteMark").on('click',function()
    {
 	  if(Currentpge=="dashboard")
 	  {
+	
+		
 	  	 
 	  console.log('hey');
 	   
@@ -495,13 +533,36 @@ $(".deleteMark").on('click',function()
 												 
 						}//success function ends here
 					});
+					
+					
+					$.ajax({
+								url:base_url+"Chartsdispatcher/getStudentAttOfDay",
+								type:"POST",
+								data:{"class":SelectedClass,"Section":SelectedSection>0?SelectedSection:''},
+								success:function(resp)
+								{
+									resp=$.trim(resp);
+									resp = JSON.parse(resp);
+									$("#StudentTotalPresents").html(resp.Presents);
+									$("#StudentTotalAbsents").html(resp.Absents);
+								}
+					   
+			   				});	
+					
 				
 		}
+	   
+	   //get the total student present and absents today.
+	   
+	   
+	   
+	   
 	   
 	   
 	   
    
 	  }
+	  
    }); // getting the student attendance graph info for the class and section ends here
    
    
@@ -1194,6 +1255,70 @@ $(".deleteMark").on('click',function()
    
       //fee due send sms ends here
 	  
+
+//send sms from the view-students-fee-details page
+
+$(".SENDSMS").on('click',function()
+{
+	
+	var Parent = $(this).parent().parent();
+	
+	
+	var Student = Parent.find(".Student").text();
+	var Stdroll = Parent.find(".Stdroll").text();	
+		Stdroll = $.trim(Stdroll);
+		Stdroll= parseInt(Stdroll);
+		
+		
+	var ClassName = Parent.find(".ClassName").text();
+	var sections = Parent.find(".Section").text();	
+	var MonthName = Parent.find(".MonthName").text();
+	var Due = Parent.find(".Due").text();	
+		Due = $.trim(Due);
+	
+	var selectedStudents=[];
+	var newarr = {'stds':Stdroll};
+	selectedStudents.push(newarr);	
+	
+
+
+		if(Due>0)
+		{
+			
+			var duesmscontent = "Dear Parent your child "+Student+ " studying in "+ClassName+" -"+sections+" has a fee due of "+Due+" for the month "+$.trim(MonthName);
+			
+			$.ajax({
+							url:base_url+'Managesms/sentsms',
+							type:"POST",
+							data:{"SMSTYPE":"Feedue","duesmscontent":duesmscontent,"ClassName":ClassName,"sections":sections,"Students":selectedStudents},
+							async:false,
+							sendBefore:function(){  },
+							success:function(resp)
+							{
+								resp = $.trim(resp);
+								if(resp=="0")
+								{
+									$(".sms-message-resp").html("<span class='alert alert-danger'>Unable to sent sms </span>");
+								}
+								else if(resp=="-1")
+								{
+									$(".sms-message-resp").html("<span class='alert alert-danger'>SMS Sent to only few parents</span>");
+								}
+								else if(resp=="1")
+								{
+									$(".sms-message-resp").html("<span class='alert alert-success'>SMS Sent Successfully</span>");
+									
+								}
+								
+								
+							}//success function ends here
+							
+						});
+		}	
+});
+
+
+//send sms from the view-students-fee-details page ends here
 	  
 	 //fee due send sms starts here
    

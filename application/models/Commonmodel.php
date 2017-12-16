@@ -204,7 +204,7 @@ class Commonmodel extends CI_Model
 	{
 		$this->db->where($cond);
 		$this->db->update($table,$data);
-		return $this->db->affected_rows(); exit; 
+		//return $this->db->affected_rows(); exit; 
 //		echo $this->db->last_query(); exit; 
 		if($this->db->affected_rows()>0)
 			return "1";
@@ -956,19 +956,35 @@ $this->db->order_by($order_by_field,$order_by);
 	
 	//getting birthdays
 	
-	public function getbirthdays($birthdaycond)
+	public function getbirthdays($birthdaycond,$table)
 	{
-		$this->db->select("concat(std.Student,' ' ,std.LastName) as StudentName, std.ProfileIPic, cls.ClassName, sec.Section");	
-		$this->db->from("students as std");
-		$this->db->join("newclass as cls","cls.SLNO=std.ClassName","inner");
-		$this->db->join("sections as sec","sec.SectionId=std.ClassSection","inner");
-		$this->db->where($birthdaycond);
-		$qry = $this->db->get('');
-		
-		if($qry->num_rows()>0)
-			return $qry;
+		if($table=='students')
+		{
+			$this->db->select("concat(std.Student,' ' ,std.LastName) as StudentName, std.ProfileIPic, cls.ClassName, sec.Section");	
+			$this->db->from("students as std");
+			$this->db->join("newclass as cls","cls.SLNO=std.ClassName","inner");
+			$this->db->join("sections as sec","sec.SectionId=std.ClassSection","inner");
+			$this->db->where($birthdaycond);
+			$qry = $this->db->get('');
+			
+			if($qry->num_rows()>0)
+				return $qry;
+			else
+				return "0";
+		}
 		else
-			return "0";
+		{
+			$this->db->select("concat(teac.SurName,' ' ,teac.LastName) as TeacerName, teac.ProfilePic");	
+			$this->db->from("teacherpersonaldetails as teac");
+			$this->db->where($birthdaycond);
+			$qry = $this->db->get('');
+			
+			if($qry->num_rows()>0)
+				return $qry;
+			else
+				return "0";
+		}
+
 	}
 	
 	

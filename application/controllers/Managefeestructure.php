@@ -538,6 +538,81 @@ class Managefeestructure extends CI_Controller
 ///studentfeedetails ends here
 
 
+//pending fee details starts here 
+
+	public function studentpendingfeedetails()
+	{
+		$this->load->view(HEADER);
+		$AcademicYear = $this->schedulinglib->getAcademicyear();
+		
+		$Feetocollect=0;
+		
+		
+		$qry = $this->db->query('SELECT count(*) TotalStudents, ClassName  FROM `students` where AcademicYear="'.$AcademicYear.'" GROUP by ClassName');
+		foreach( $qry->result() as $fee)
+		{
+			$qrey = $this->db->query("select MonthlyFee from schoolfee where Class=".$fee->ClassName." and AcademicYear='".$AcademicYear."'");	
+			
+			foreach(  $qrey->result() as $FeeFixed)
+			{
+				$Feetocollect = $Feetocollect+(($FeeFixed->MonthlyFee)*$fee->TotalStudents);	
+			}
+			
+		}
+		
+		$data=array();
+		$CurrentMnth = date('m');
+		
+		
+		 			$this->db->select("MonthNumber,MonthName");
+//					$this->db->where("MonthNumber",date('m'));
+		$Feemnths = $this->db->get('monthsname');
+		
+		$pendingFeedetails=array();
+
+		foreach( $Feemnths->result() as $mnths)
+		{
+		
+			if( $CurrentMnth<=4 )
+				$yr = date('Y')-1;
+			else
+				$yr = date('Y');
+				
+			//get the total fee paid by the month
+			
+			$qrey = $this->db->query("SELECT sum(Paid) PaidFee from feecollection where Month like '".$yr.'-'.date('m')."%' and  AcademicYear='".$AcademicYear."'");	
+		if($qrey->num_rows()>0)
+		{
+		foreach(  $qrey->result() as $FeeColl)
+			{
+				$TotalFeeCollected = $FeeColl->	PaidFee;
+			}
+		}
+		else
+			$TotalFeeCollected=0;
+			
+			
+			$PendingFeeMonth = $Feetocollect-$TotalFeeCollected;
+			$pendingFeedetails[] = array(
+											"Month"=>$mnths->MonthName,
+											"MonthNumber"=>$mnths->MonthNumber,
+											"ActualFee"=>$Feetocollect,
+											"TotalFeeCollected"=>$TotalFeeCollected,
+											"PendingFeeMonth"=>$PendingFeeMonth
+										);	
+		}
+				
+		$data['pendingFeedetails'] = $pendingFeedetails;
+		
+	
+		$this->load->view('Admin/studentPendingfeedetails',$data);
+		$this->load->view(FOOTER);
+		
+	}
+
+//pending fee details ends here 
+ 
+
 //pay the student fee
 
 	public function payfee()
@@ -615,7 +690,6 @@ class Managefeestructure extends CI_Controller
 			else
 			{
 					$this->session->set_userdata('Feepaymentdata',$_POST);
-					
 					
 					$datenow = date("d/m/Y h:m:s");
 					$transactionDate = str_replace(" ", "%20", $datenow);
@@ -759,12 +833,11 @@ public function feepaid()
 			else
 				$contactNumber = '8498081693';
 			
-			$contactNumber = '8498081693';
+			$contactNumber = '8498081693'; //for testing purpose i had given my number 
 			$message = " Dear Parent, we have recieved Rs. ".$_POST['amt']." towards ".$PaidMonth." fee, Thank you. Adi Akashara ";
 			
 			$url = "http://onlinebulksmslogin.com/spanelv2/api.php"; 
 			$from='AdiAks';
-			
 			 
 			$request="username=adiakshara&password=preschool123&to=".$contactNumber."&from=$from&message=".urlencode($message);	
 			

@@ -23,19 +23,19 @@
                           
                           
                           
-                          <div class="col-lg-3 col-md-6">
+                          <div class="col-lg-2 col-md-6">
            <div class="card dashb">
                 <div class="panel panel-default innerpan">
                     <div class="panel-body nobo">
                         <div class="row">
-                            <div class="col-xs-6 ic">
+                           <!-- <div class="col-xs-6 ic">
                                 <i class="fa fa-bell fa-4x"></i>
-                            </div>
+                            </div>-->
                             <div class="col-xs-6 text-center">
                                 <p class="dashboard-heading"><?PHP echo $TotalNotifications; ?></p>
                             </div>
                             <div class="col-xs-12">
-                                <p class="dashboard-text"><a <?PHP if( $TotalNotifications>0){?> href="<?PHP echo base_url('view-parent-notifications')?>" <?PHP } ?> style="color:#434348; cursor:default"> Unread Messages</a></p>
+                                <p class="dashboard-text"><a <?PHP if( $TotalNotifications>0){?> href="<?PHP echo base_url('view-parent-notifications')?>" <?PHP } ?> style="color:#434348; cursor:default"> Messages</a></p>
                             </div>
                         </div>
                     </div>
@@ -46,19 +46,19 @@
         
         
         
-        <div class="col-lg-3 col-md-6">
+        <div class="col-lg-2 col-md-6">
            <div class="card dashb">
                 <div class="panel panel-default innerpan">
                     <div class="panel-body nobo">
                         <div class="row">
-                            <div class="col-xs-6 ic1">
+                            <!--<div class="col-xs-6 ic1">
                                 <i class="fa fa-users fa-4x"></i>
-                            </div>
+                            </div>-->
                             <div class="col-xs-6 text-center">
                                 <p class="dashboard-heading1"><?PHP echo $Totalstaff;?></p>
                             </div>
                             <div class="col-xs-12">
-                                <p class="dashboard-text ">Total Staff</p>
+                                <p class="dashboard-text "><a style="color:#434348; cursor:default">Staff</a></p>
                             </div>
                         </div>
                     </div>
@@ -67,7 +67,26 @@
            
         </div>
         
-        
+        <div class="col-lg-2 col-md-6">
+           <div class="card dashb">
+                <div class="panel panel-default innerpan">
+                    <div class="panel-body nobo">
+                        <div class="row">
+                            <!--<div class="col-xs-6 ic3">
+                                <i class="fa fa-graduation-cap fa-5x"></i>
+                            </div>-->
+                            <div class="col-xs-6 text-center">
+                                <p class="dashboard-heading3"><?PHP echo $Totalstudents;?></p>
+                            </div>
+                            <div class="col-xs-12">
+                                <p class="dashboard-text"><a href="<?PHP echo base_url('view-students') ?>" style="color:#434348">Total students</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+           
+        </div>
         
         
         <div class="col-lg-3 col-md-6">
@@ -86,7 +105,39 @@
                             </div>
                             
                             <div class="col-xs-12" style="margin-top:-10px" >
-                                <p class="dashboard-text" style="margin-left:-10px; margin-top:-10px" ><a href="<?PHP echo base_url('view-students-fee-details')?>" style="color:#434348"><?PHP echo date('F')?> Collected Fees</a></p>
+                                <p class="dashboard-text" style="margin-left:-10px; margin-top:-10px" >
+                                <a href="<?PHP echo base_url('view-students-fee-details')?>" style="color:#434348" title="<?PHP echo date('F')?> Fees Collected">Collected Fee</a>
+                              
+                                </p>
+                            </div>
+                            
+                        <div class="clearfix"></div>    
+                    </div>
+                </div>
+                </div>
+           
+        </div>
+        
+        <div class="col-lg-3 col-md-6">
+           <div class="card dashb">
+                <div class="panel panel-default innerpan">
+                    <div class="panel-body nobo">
+                        
+                        <div class="row">
+                            <div class="col-xs-6 ic2">
+                                <i class="fa fa-rupee fa-5x"></i>
+                            </div>
+                            <div class="col-xs-6 text-left">
+                                <p class="dashboard-heading2" style="text-align:left; font-size:52px; margin-top:-3px; margin-left:-60px"><?PHP echo $PendingFeeMonth; ?></p>
+                            </div>
+                            <div class="clearfix"></div>
+                            </div>
+                            
+                            <div class="col-xs-12" style="margin-top:-10px" >
+                                <p class="dashboard-text" style="margin-left:-10px; margin-top:-10px" >
+                                
+                                <a href="<?PHP echo base_url('view-students-pending-fee-details')?>" style="color:#434348">Pending Fee</a>
+                                </p>
                             </div>
                             
                         <div class="clearfix"></div>    
@@ -99,26 +150,6 @@
         
         
         
-        <div class="col-lg-3 col-md-6">
-           <div class="card dashb">
-                <div class="panel panel-default innerpan">
-                    <div class="panel-body nobo">
-                        <div class="row">
-                            <div class="col-xs-6 ic3">
-                                <i class="fa fa-graduation-cap fa-5x"></i>
-                            </div>
-                            <div class="col-xs-6 text-center">
-                                <p class="dashboard-heading3"><?PHP echo $Totalstudents;?></p>
-                            </div>
-                            <div class="col-xs-12">
-                                <p class="dashboard-text"><a href="<?PHP echo base_url('view-students') ?>" style="color:#434348">Total students</a></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                </div>
-           
-        </div>
         
         
           
@@ -358,6 +389,20 @@
                         <h2>Class Attendance</h2>
                        <!-- sections -->
                         
+                         <span> 
+                        	<span class="present-label">Today's Present:</span><span class="Present-today" id="StudentTotalPresents"></span>
+                        </span>
+                        
+                        
+                        <span style="margin-left:50px"> 
+                        	<span class="absent-label">Today's Absent:</span><span class="Present-today" id="StudentTotalAbsents" ></span>
+                          </span>
+                        
+                        
+                        <span class="pull-right"> 
+                        	 <a href="<?PHP echo base_url('view-student-attendance')?>">View Attendance</a>
+                        </span>
+                        
                         <ul class="header-dropdown m-r--5">
                             <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="selSec" id="0">Section</span>&nbsp;<i class="fa fa-caret-down"></i></a>
                                 
@@ -416,7 +461,7 @@
 <div style="clear:both"></div>                        
                         
                         
-                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                 <div class="card tab">
                     <div class="headertop">
                         <h2>Notifications</h2>
@@ -514,20 +559,8 @@
             </div> 
             
             
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+   
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                 <div class="card tab">
                     <div class="headertop">
                         <h2>Activities</h2>
@@ -633,10 +666,7 @@
             </div>
             
             
-            
-            
-            
-            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                 <div class="card tab">
                     <div class="headertop">
                         <h2>Birthdays</h2>
@@ -712,6 +742,61 @@
                 
             </div>
             
+            
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="card tab">
+                    <div class="headertop">
+                        <h2>Staff Birthdays</h2>
+                        
+                    </div>
+                   <div class="body">
+                        <ul class="basic-list" id="birthdayListing">
+                        <?PHP
+						if( $BirthdayStaff!='0' )
+						{
+							foreach( $BirthdayStaff->result() as $teacbdays)
+							{
+								?>
+                                
+                                
+                            		 <li>
+                                     	<span style="float:left; width:10%">
+                                        	<img src="<?PHP echo $teacbdays->ProfilePic ?>" style="width:100%;  border:1px solid: #999; border-radius:20%" />
+                                         </span>
+                                         
+                                         <span style="margin-left:20px">
+
+                                  		    <?PHP echo $teacbdays->TeacerName ?> 
+                                         </span>
+                                         <span style="clear:both"></span>
+                                     </li>
+                                     
+                                     
+                                <?PHP	
+							}
+						}
+						else
+						{
+							?>
+                            <li>No birthday today</li>
+                            <?PHP
+						}	
+
+						?>
+                        <!--
+                            <li>Mark Otto <span class="pull-right label-danger label">21%</span></li>
+                            <li>Jacob Thornton <span class="pull-right label-purple label">50%</span></li>
+                            <li>Jacob Thornton<span class="pull-right label-success label">90%</span></li>
+                            <li>M. Arthur <span class="pull-right label-info label">75%</span></li>
+                            <li>Jacob Thornton <span class="pull-right label-warning label">60%</span></li>
+                            <li>M. Arthur <span class="pull-right label-success label">91%</span></li>
+                            -->
+                        </ul>
+                    </div>
+                    
+                </div>
+                
+            </div>
              
                           
                           

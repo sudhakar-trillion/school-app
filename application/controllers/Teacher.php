@@ -147,7 +147,7 @@ class Teacher extends CI_Controller
 							
 							$setdata = array();
 							
-							$table = "TeacherPersonalDetails";	
+							$table = "teacherpersonaldetails";	
 							
 							$setdata['ProfilePic'] = $picpath;
 							$setdata['LastUpdated'] = time();
@@ -167,7 +167,7 @@ class Teacher extends CI_Controller
 							else
 							{
 								$prevpic = $docroot = $_SERVER['DOCUMENT_ROOT']."/".$publicfolder."/".$TeacherName.$picpath;
-								unlink($prevpic);
+								unlink(@$prevpic);
 								
 								$msg = "<div class='alert alert-danger picupdated'>Unable to add profile pic contact admin</div>";
 								
@@ -196,7 +196,7 @@ class Teacher extends CI_Controller
 							else
 							{
 								$prevpic = $docroot = $_SERVER['DOCUMENT_ROOT']."/".$publicfolder."/".$TeacherName.$picpath;
-								unlink($prevpic);
+								unlink(@$prevpic);
 								
 								$msg = "<div class='alert alert-danger picupdated'>Unable to add profile pic contact admin</div>";
 								
@@ -1004,7 +1004,7 @@ $data['Subjects'] = $this->Commonmodel->twotablejoin('assignedsubjects as assign
 		
 		
 		extract($_POST);
-		$AcademicYear = $this->schedulinglib->getAcademicyear();
+		$AcademicYear = $this->schedulinglib->getAcademicyear(); 
 		$AttendanceFor = date('Y-m-d');
 		$TeacherId = $teacherid;
 		$Present =$PresentAbsent;

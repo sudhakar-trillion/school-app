@@ -28,8 +28,12 @@
                           
                             <div class="col-md-8 text-right">
                             
-                           <div class="form-group cla">
-
+                           <div class="form-group cla" style="width:100px">
+							<input type="text" class="form-control" name="att-date" id="att-date" placeholder="Select Date" value="<?PHP echo date('d/m/Y'); ?>" />
+                            </div>
+                            
+                        <div class="form-group cla">
+                            
   <select class="form-control " name="ClassName" id="ClassName">
     <option value="0">Seclect Class</option>
     <?PHP
@@ -48,7 +52,7 @@
 
  <div class="form-group cla mr1">
 
-  <select class="form-control getstudents"  name="sections" id="sections">
+  <select class="form-control getstudents"  name="sections" id="sections" addedit="add">
     <option value="0">Seclect Section</option>
     <?PHP
 		foreach($sections->result() as $Sects)
@@ -72,10 +76,15 @@
 			
 			if($studentDetails!='0')
 			{
+				?>
+                <div class="respective-students">
+				<?PHP
+				
+				
 				foreach($studentDetails->result() as $std)
 				{
 					?>
-		                    <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
+		         <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
                 <div class="card">
                     <div class="body">
                         <div class="member-card verified">
@@ -122,6 +131,10 @@
                 
                 </div>
                 <?PHP
+			
+			?>
+            </div>
+            <?PHP
 			}
 			?>
 

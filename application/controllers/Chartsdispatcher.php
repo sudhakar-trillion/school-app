@@ -262,7 +262,61 @@ row+1  as DayOfMonth from( SELECT @row := @row + 1 as row FROM  (select 0 union 
 	
 	//staffpresentabsentends here	
 	
+	//get students attendance of the day	
 	
+	public function getStudentAttOfDay()
+	{
+		extract( $_POST );
+		
+		$AcademicYear = $this->schedulinglib->getAcademicyear();
+		
+		$cond=array();
+		$table ='studentattendance';
+		
+		$cond['AcademicYear'] = $AcademicYear;
+		$cond['AttendanceOn'] = date('Y-m-d');
+		
+		if( trim($class)!='')
+			$cond['ClassId'] =  trim($class);
+		
+		if( trim($Section) !='' )
+			$cond['SectionId'] =  trim($Section);
+		
+		$cond['PresentAbsent'] = 'Present';
+		
+		$this->db->select( '*' );			
+		$this->db->where($cond);
+		$PresentAbsents = $this->db->get($table);
+		
+		$output = array();
+		
+		$output['Presents'] = $PresentAbsents->num_rows();
+		
+		$cond=array();
+		$table ='studentattendance';
+		
+		$cond['AcademicYear'] = $AcademicYear;
+		$cond['AttendanceOn'] = date('Y-m-d');
+		
+		if( trim($class)!='')
+			$cond['ClassId'] =  trim($class);
+		
+		if( trim($Section) !='' )
+			$cond['SectionId'] =  trim($Section);
+		
+		$cond['PresentAbsent'] = 'Absent';
+		
+		$this->db->select( '*' );			
+		$this->db->where($cond);
+		$PresentAbsents = $this->db->get($table);
+		
+		$output['Absents'] = $PresentAbsents->num_rows();
+		
+		echo json_encode($output);
+		
+		
+		
+	}
 
 }//class ends here		
 

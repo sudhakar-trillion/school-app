@@ -55,6 +55,7 @@ $route['translate_uri_dashes'] 				= FALSE;
 
 $route['configure-your-school'] 			= 'Installation/index';
 
+$route['test-goes-here']					= 'Test';
 $route['logout'] 							= 'admin/logout';
 
 $route['dashboard']							= 'admin/dashboard';
@@ -138,6 +139,8 @@ $route['edit-fee-structure/:num'] 			= 'managefeestructure/editfeestructure';
 
 $route['view-students-fee-details'] 		= 'managefeestructure/studentfeedetails';
 $route['view-students-fee-details/:num']	= 'managefeestructure/studentfeedetails';
+
+$route['view-students-pending-fee-details'] = 'managefeestructure/studentpendingfeedetails';
 
 
 $route['pay-fee'] 							= 	'managefeestructure/payfee';
